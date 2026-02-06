@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+/* Remove default browser spacing */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* Prevents accidental side-scrolling */
+  padding-top: 45px;
+}
+
+/* Optional: Set a default font to match your logo style */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+main{
+  margin-top: 90px;
+}

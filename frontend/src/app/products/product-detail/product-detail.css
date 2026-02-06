@@ -1,0 +1,327 @@
+/* --- Global Page Setup --- */
+.product-detail-page {
+  background-color: #fcfcfc;
+  padding-bottom: 100px;
+  font-family: 'Inter', sans-serif;
+  color: #1a1a1a;
+}
+
+/* --- Navigation & Header --- */
+.back-nav-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-top: 110px; /* Safe distance from fixed navbar */
+  margin-bottom: 25px;
+}
+
+.back-pill-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #111;
+  color: #ffffff;
+  border: 1px solid #333;
+  padding: 12px 28px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.4s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.back-pill-btn:hover {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15);
+}
+
+.detail-header h1 {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 900;
+  padding: 20px 0 40px;
+  letter-spacing: 4px;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* --- Layout Grid --- */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  max-width: 1300px;
+  margin: 0 auto;
+  gap: 80px;
+  padding: 0 40px;
+}
+
+/* --- Left Side: Visuals & Pricing --- */
+.title-section {
+  margin-bottom: 30px;
+  border-left: 5px solid #610000;
+  padding-left: 20px;
+}
+
+.brand-name { 
+  font-size: 2.5rem; 
+  font-weight: 800; 
+  margin: 0; 
+  color: #111;
+  line-height: 1.1;
+}
+
+.price-val { 
+  font-size: 2rem; 
+  color: #8b0000; 
+  font-weight: 700; 
+  margin-top: 10px;
+}
+
+.main-car-image {
+  background: white;
+  border-radius: 30px;
+  padding: 40px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  height: 400px; 
+  align-items: center;
+  overflow: hidden;
+}
+
+.main-car-image img { 
+  max-width: 100%; 
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 15px rgba(0,0,0,0.1));
+}
+
+.thumbnail-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.thumb-card {
+  cursor: pointer;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 3px solid transparent;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.thumb-card img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  display: block;
+}
+
+.thumb-card:hover {
+  transform: translateY(-3px);
+}
+
+.thumb-card.active {
+  border-color: #610000;
+  box-shadow: 0 5px 15px rgba(97, 0, 0, 0.2);
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* --- Right Side: Specs & Equipment --- */
+.spec-section h4, .equipment-section h4 {
+  font-size: 1.4rem;
+  margin-bottom: 25px;
+  font-weight: 800;
+  color: #222;
+}
+
+.spec-section h4::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: #610000;
+  margin-top: 8px;
+}
+
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.spec-item {
+  background: #ffffff;
+  padding: 25px 15px;
+  border-radius: 15px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.spec-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(97, 0, 0, 0.08);
+  border-color: #61000033;
+}
+
+.spec-icon {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 12px;
+}
+
+.spec-label { 
+  display: block; 
+  color: #999; 
+  font-size: 0.75rem; 
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px; 
+}
+
+.spec-value { 
+  font-weight: 700; 
+  color: #333; 
+  font-size: 1.1rem;
+}
+
+/* --- Equipment & Action --- */
+.equipment-section {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+  margin-top: 40px;
+}
+
+.equipment-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.equipment-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+  color: #444;
+  font-size: 1rem;
+}
+
+.check-icon {
+  background: #610000;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+.owner-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #8b0000 0%, #610000 100%);
+  color: white;
+  border: none;
+  padding: 22px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-top: 50px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(97, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.owner-btn:hover {
+  transform: scale(1.02);
+  filter: brightness(1.1);
+}
+
+/* --- Loading State --- */
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  background-color: #000;
+  color: white;
+  text-align: center;
+}
+
+.spinner-box {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top-color: #e0e0e0;
+  animation: spin 1s ease-in-out infinite;
+  position: relative;
+}
+
+.circle-core {
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 15px #fff;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.cancel-btn {
+  background: transparent;
+  border: 1px solid #444;
+  color: #aaa;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+/* --- Responsive Viewports --- */
+@media (max-width: 1100px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .detail-header h1 { font-size: 2.2rem; }
+}
+
+@media (max-width: 768px) {
+  .back-nav-container { padding-top: 90px; }
+  .back-pill-btn { width: 80%; justify-content: center; }
+  .brand-name { font-size: 2rem; }
+  .specs-grid { grid-template-columns: repeat(2, 1fr); }
+  .main-car-image { height: 300px; padding: 20px; }
+  .equipment-grid { grid-template-columns: 1fr; }
+}

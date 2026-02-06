@@ -1,0 +1,306 @@
+.main-footer {
+  background: #020202;
+  color: #fff;
+  padding: 100px 5% 20px;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  border-top: 1px solid #222;
+}
+
+/* Background Blueprint Grid */
+.main-footer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+}
+
+.footer-blueprint {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 40px;
+  position: relative;
+  z-index: 5;
+}
+
+/* Section Styling */
+.blueprint-section {
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: 30px;
+  background: rgba(0,0,0,0.4);
+}
+
+/* Left Section: Specs */
+.serial-no {
+  font-size: 0.6rem;
+  color: #e31e24;
+  letter-spacing: 2px;
+  display: block;
+}
+
+.spec-title {
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.spec-item {
+  border-left: 2px solid #e31e24;
+  padding-left: 10px;
+}
+
+.spec-item .label {
+  display: block;
+  font-size: 0.5rem;
+  color: #555;
+}
+
+.spec-item .value {
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
+/* Center Section: Brand */
+.brand-core {
+  text-align: center;
+  border: none; /* Keep center clean */
+  background: transparent;
+}
+
+.glitch-logo {
+  height: 110px;
+  filter: grayscale(1) brightness(1.5);
+  transition: 0.5s;
+}
+
+.brand-core:hover .glitch-logo {
+  filter: grayscale(0) drop-shadow(0 0 15px rgba(227,30,36,0.5));
+}
+
+.blueprint-coordinates {
+  font-size: 0.7rem;
+  color: #444;
+  margin: 15px 0;
+  font-family: monospace;
+}
+
+.main-slogan {
+  font-size: 2.8rem;
+  text-transform: uppercase;
+  font-weight: 900;
+  line-height: 0.9;
+}
+
+.outline-text {
+  -webkit-text-stroke: 1px #fff;
+  color: transparent;
+}
+
+/* Right Section: Comms */
+.comm-row {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  padding-bottom: 5px;
+}
+
+.comm-label {
+  font-size: 0.65rem;
+  font-weight: 900;
+  color: #e31e24;
+}
+
+.comm-value {
+  font-size: 0.85rem;
+  color: #bbb;
+  text-decoration: none;
+}
+
+.btn-outline {
+  display: inline-block;
+  border: 1px solid #fff;
+  padding: 10px 20px;
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  margin-top: 20px;
+  margin-right: 10px;
+  transition: 0.3s;
+}
+
+.btn-outline:hover {
+  background: #e31e24;
+  border-color: #e31e24;
+}
+
+/* Meta Bar */
+.meta-bar {
+  margin-top: 80px;
+  border-top: 1px solid #222;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+  font-size: 0.6rem;
+  color: #333;
+  letter-spacing: 2px;
+}
+
+/* Mobile Tweak */
+@media (max-width: 1024px) {
+  .footer-blueprint { grid-template-columns: 1fr; }
+  .main-slogan { font-size: 2rem; }
+}
+
+
+@media (max-width: 768px) {
+  /* Global reset for the footer elements to handle widths correctly */
+  .main-footer,
+  .main-footer *,
+  .main-footer *::before,
+  .main-footer *::after {
+    box-sizing: border-box;
+  }
+
+  .main-footer {
+    padding: 60px 6% 20px;
+    width: 100%;
+    overflow-x: hidden; /* Safety catch for horizontal scroll */
+  }
+
+  /* Blueprint Grid */
+  .main-footer::before {
+    opacity: 0.3;
+    background-size: 80px 80px;
+  }
+
+  .footer-blueprint {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    width: 100%;
+  }
+
+  .blueprint-section {
+    position: relative;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    color: #aaa;
+    padding: 16px;
+    width: 100%; /* Ensure section doesn't expand */
+  }
+
+  .blueprint-section:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 10%;
+    width: 80%;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(227,30,36,0.4),
+      transparent
+    );
+  }
+
+  /* Section Visibility */
+  .specs, .logo-shield, .blueprint-coordinates {
+    display: none;
+  }
+
+  /* Brand Core */
+  .brand-core {
+    padding: 8px 0 12px;
+    text-align: center;
+  }
+
+  .glitch-logo {
+    height: 80px;
+  }
+
+  .main-slogan {
+    font-size: 1.6rem;
+    margin: 10px 0;
+    line-height: 1;
+    letter-spacing: 0.5px;
+  }
+
+  /* Comms & Social Blueprint Fix */
+  .comms {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .comm-box {
+    width: 100%;
+  }
+
+  .comm-row {
+    padding: 8px 0;
+    gap: 4px;
+    display: flex;
+    flex-wrap: wrap; /* Allows long emails to wrap if needed */
+  }
+
+  .comm-label {
+    font-size: 0.7rem;
+    flex-shrink: 0;
+  }
+
+  .comm-value {
+    font-size: 0.75rem;
+    word-break: break-all; /* Prevents long emails from breaking container */
+  }
+
+  .social-blueprint {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+    width: 100%; /* Forces container to stay within parent */
+  }
+
+  .btn-outline {
+    display: block;
+    width: 100%; /* Fits exactly to social-blueprint width */
+    text-align: center;
+    margin: 0;
+    padding: 12px;
+    min-width: 0; /* Important: overrides default flex min-width */
+  }
+
+  /* Meta Bar */
+  .meta-bar {
+    margin-top: 30px;
+    gap: 10px;
+    font-size: 0.6rem;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .bar-segment {
+    color: #666;
+  }
+
+  .bar-segment.right {
+    opacity: 0.6;
+  }
+}
+
+

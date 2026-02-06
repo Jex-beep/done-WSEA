@@ -1,0 +1,124 @@
+<app-nav></app-nav>
+
+<div class="product-detail-page">
+  
+  <div class="main-wrapper" *ngIf="car$ | async as car; else loadingOrError">
+    
+    <header class="detail-header">
+      <div class="header-content">
+        <div class="back-nav-container">
+          <button class="back-pill-btn" routerLink="/products">
+            <span class="btn-icon">←</span>
+            <span class="btn-text">Inventory</span>
+          </button>
+        </div>
+        <h1>CAR DETAILS</h1>
+      </div>
+    </header>
+
+    <div class="content-grid">
+      <div class="visual-container">
+        <div class="title-section">
+          <h2 class="brand-name">{{ car.year }} {{ car.make }} {{ car.model }}</h2>
+          <h3 class="price-val">{{ car.price | currency:'PHP':'symbol-narrow':'1.0-0' }}</h3>
+        </div>
+
+        <div class="main-car-image">
+          <img [src]="formatImg(mainDisplayImage || car.image)" 
+               [alt]="car.make" 
+               class="fade-in">
+        </div>
+
+        <div class="thumbnail-grid">
+          <div class="thumb-card" 
+               [class.active]="!mainDisplayImage || mainDisplayImage === car.image" 
+               (click)="setMainImage(car.image)">
+            <img [src]="formatImg(car.image)" alt="Main View">
+          </div>
+
+          @for (img of car.gallery; track img) {
+            <div class="thumb-card" 
+                 [class.active]="mainDisplayImage === img" 
+                 (click)="setMainImage(img)">
+              <img [src]="formatImg(img)" alt="Gallery angle">
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="info-container">
+        <section class="spec-section">
+          <h4>Technical Specification</h4>
+          <div class="specs-grid">
+            <div class="spec-item">
+              <img src="/specification/gear.png" class="spec-icon">
+              <span class="spec-label">Gear Box</span>
+              <span class="spec-value">{{ car.gearbox }}</span>
+            </div>
+            <div class="spec-item">
+              <img src="/specification/gas.png" class="spec-icon">
+              <span class="spec-label">Fuel</span>
+              <span class="spec-value">{{ car.fuel }}</span>
+            </div>
+            <div class="spec-item">
+              <img src="/specification/engine.png" class="spec-icon">
+              <span class="spec-label">Engine</span>
+              <span class="spec-value">{{ car.engine }}</span>
+            </div>
+            <div class="spec-item">
+              <img src="/specification/aircon.png" class="spec-icon">
+              <span class="spec-label">Aircon</span>
+              <span class="spec-value">{{ car.ac }}</span>
+            </div>
+            <div class="spec-item">
+              <img src="/specification/seats.png" class="spec-icon">
+              <span class="spec-label">Seats</span>
+              <span class="spec-value">{{ car.seats }}</span>
+            </div>
+            <div class="spec-item">
+              <img src="/specification/distance.png" class="spec-icon">
+              <span class="spec-label">Distance</span>
+              <span class="spec-value">{{ car.distance | number:'1.0-0' }} km</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="description-section" *ngIf="car.description">
+          <h4>Description</h4>
+          <p>{{ car.description }}</p>
+        </section>
+
+        <section class="equipment-section" *ngIf="car.equipment?.length">
+          <h4>Car Equipment</h4>
+          <div class="equipment-grid">
+            @for (item of car.equipment; track item) {
+              <div class="equipment-item">
+                <span class="check-icon">✔</span> {{ item }}
+              </div>
+            }
+          </div>
+        </section>
+
+        <button class="owner-btn" routerLink="/contact">Inquire Now!</button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loadingOrError>
+    <div class="loading-state">
+      <div class="loading-content">
+        <div class="spinner-box">
+          <div class="circle-core"></div>
+        </div>
+        <h2>Fetching Vehicle Details</h2>
+        <p>Connecting to M&J Quality Cars Showroom...</p>
+        <button class="cancel-btn" routerLink="/products">
+          <span>×</span> Cancel & Go Back
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+</div>
+
+<app-footer></app-footer>

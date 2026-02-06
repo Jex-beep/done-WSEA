@@ -1,0 +1,271 @@
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms'; 
+import { Title, Meta } from '@angular/platform-browser';
+import { RouterLink } from '@angular/router';
+import { Nav } from '../nav/nav';
+import { Footer } from '../footer/footer';
+import { BlogService } from '../services/blogs';
+import { AuthService } from '../services/auth';
+import { QuillModule } from 'ngx-quill';
+import { Router, NavigationEnd } from '@angular/router';
+
+@Component({
+  selector: 'app-blog',
+  standalone: true,
+  imports: [CommonModule, Nav, Footer, RouterLink, FormsModule, QuillModule],
+  templateUrl: './blog.html',
+  styleUrl: './blog.css'
+})
+export class Blog implements OnInit {
+  public authService = inject(AuthService);
+  private blogService = inject(BlogService);
+  private titleService = inject(Title);
+  private metaService = inject(Meta);
+  private cdr = inject(ChangeDetectorRef);
+
+  // --- State Management ---
+  isLoading: boolean = true; // Added for loading state
+  selectedCategory: string = 'All';
+  blogs: any[] = [];
+  showAddModal = false;
+  isSaving = false;
+  isEditMode = false;
+  currentEditId: string | null = null;
+
+  showSuccessPopup: boolean = false;
+  successMessage: string = '';
+  
+  // Track filenames for the UI display
+  mainFileName: string = '';
+  authorFileName: string = '';
+
+  newBlog: any = {
+    title: '',
+    category: 'Guides',
+    date: '',
+    author: '',
+    authorImage: '',
+    readTime: '',
+    image: '',
+    description: '',
+    content: ''
+  };
+
+  quillConfig = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote', 'code-block'],
+      [{ 'header': 1 }, { 'header': 2 }],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'script': 'sub'}, { 'script': 'super' }],
+      [{ 'indent': '-1'}, { 'indent': '+1' }],
+      [{ 'direction': 'rtl' }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'font': [] }],
+      [{ 'align': [] }],
+      ['clean'],
+      ['link', 'image', 'video']
+    ]
+  };
+
+  ngOnInit(): void {
+    this.loadBlogs();
+    this.setInitialSEO();
+  }
+
+  setInitialSEO() {
+    this.titleService.setTitle('Automotive Blog & Guides | M&J Quality Used Cars');
+    this.metaService.addTags([
+      { name: 'description', content: 'Expert car buying guides and automotive news in Mabalacat City from M&J Quality Used Cars.' },
+      { name: 'keywords', content: 'used cars Mabalacat blog, Pampanga car guides, M&J automotive news, car maintenance Pampanga, Mabalacat used car dealer, automotive tips Philippines' },
+      { property: 'og:title', content: 'M&J Automotive Blog - Expert Insights' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:description', content: 'Providing the community with quality car advice and news.' },
+      { property: 'og:image', content: '/assets/blog-thumbnail.jpg' },
+      { property: 'og:url', content: 'https://mjqualityusedcars.com/blog' },
+      { name: 'geo.region', content: 'PH-PAM' },
+      { name: 'geo.placename', content: 'Mabalacat City' },
+      { name: 'author', content: 'M&J Quality Used Cars' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'robots', content: 'index, follow' },
+      { name: 'theme-color', content: '#e31e24' }
+    ]);
+  }
+
+  loadBlogs() {
+    this.isLoading = true; // Start spinner
+    this.blogService.getBlogs().subscribe({
+      next: (data: any) => {
+        this.blogs = data;
+        this.isLoading = false; // Stop spinner
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('Blog database connection failed', err);
+        this.isLoading = false; // Stop spinner on error
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  // Handle Image selection and preview filename
+  onImageSelected(event: any, type: 'featured' | 'author') {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (type === 'featured') {
+      this.mainFileName = file.name;
+    } else {
+      this.authorFileName = file.name;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      if (type === 'featured') {
+        this.newBlog.image = e.target.result;
+      } else {
+        this.newBlog.authorImage = e.target.result;
+      }
+      this.cdr.detectChanges();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Handle clearing specific files
+  clearFile(type: 'author' | 'featured', input: HTMLInputElement) {
+    input.value = ''; 
+    if (type === 'author') {
+      this.authorFileName = '';
+      this.newBlog.authorImage = '';
+    } else {
+      this.mainFileName = '';
+      this.newBlog.image = '';
+    }
+    this.cdr.detectChanges();
+  }
+
+  submitBlog(event?: Event) {
+    if (event) event.preventDefault();
+    if (this.isSaving) return;
+    
+    this.isSaving = true;
+
+    // Default date if left blank
+    if (!this.newBlog.date) {
+      this.newBlog.date = new Date().toISOString().split('T')[0];
+    }
+
+    const blogToSave = { ...this.newBlog }; 
+    
+    this.triggerSuccess(this.isEditMode ? 'Updating article...' : 'Publishing article...'); 
+
+    if (this.isEditMode && this.currentEditId) {
+      this.blogService.updateBlog(this.currentEditId, blogToSave).subscribe({
+        next: () => this.loadBlogs(),
+        error: (err) => {
+          console.error("❌ Update Failed", err);
+          this.handleError(err);
+        }
+      });
+    } else {
+      this.blogService.addBlog(blogToSave).subscribe({
+        next: () => this.loadBlogs(),
+        error: (err) => {
+          console.error("❌ Save Failed", err);
+          this.handleError(err);
+        }
+      });
+    }
+  }
+
+  triggerSuccess(msg: string) {
+    this.successMessage = msg;
+    this.showSuccessPopup = true;
+    this.showAddModal = false; 
+    this.isSaving = false;
+    document.body.style.overflow = 'auto';
+    
+    setTimeout(() => { 
+      this.showSuccessPopup = false; 
+      this.cdr.detectChanges(); 
+    }, 3000);
+
+    this.resetForm();
+    this.cdr.detectChanges();
+  }
+
+  handleError(err: any) {
+    this.isSaving = false;
+    this.successMessage = "Error: Could not save article.";
+    this.showSuccessPopup = true;
+    this.cdr.detectChanges();
+    setTimeout(() => { this.showSuccessPopup = false; this.cdr.detectChanges(); }, 4000);
+  }
+
+  toggleAddModal() {
+    this.showAddModal = !this.showAddModal;
+    this.isEditMode = false;
+    this.currentEditId = null;
+    document.body.style.overflow = this.showAddModal ? 'hidden' : 'auto';
+    if (!this.showAddModal) this.resetForm();
+    this.cdr.detectChanges();
+  }
+
+  openEditModal(blog: any) {
+    this.isEditMode = true;
+    this.currentEditId = blog._id;
+    this.newBlog = { ...blog };
+    
+    this.mainFileName = blog.image ? 'Existing Featured Image' : '';
+    this.authorFileName = blog.authorImage ? 'Existing Author Image' : '';
+    
+    this.showAddModal = true;
+    document.body.style.overflow = 'hidden';
+    this.cdr.detectChanges();
+  }
+
+  resetForm() {
+    this.mainFileName = '';
+    this.authorFileName = '';
+    this.newBlog = {
+      title: '', category: 'Guides', date: '', author: 'M&J Admin',
+      authorImage: '', readTime: '5 min read', image: '', description: '', content: ''
+    };
+    this.cdr.detectChanges();
+  }
+
+  onDelete(id: string) {
+    if(confirm('Delete this article?')) {
+      this.blogService.deleteBlog(id).subscribe({
+        next: () => {
+          this.loadBlogs();
+          this.triggerSuccess('Article removed.');
+        },
+        error: () => alert('Delete failed.')
+      });
+    }
+  }
+
+  filterBlogs(category: string): void {
+    this.selectedCategory = category;
+    this.cdr.detectChanges();
+  }
+
+  get availableBlogs() {
+    if (this.selectedCategory === 'All') return this.blogs;
+    return this.blogs.filter(post => post.category.toLowerCase() === this.selectedCategory.toLowerCase());
+  }
+
+  // Added
+
+  constructor(private router: Router) {
+  this.router.events.subscribe(event => {
+    if (event instanceof NavigationEnd) {
+      (window as any).gtag('config', 'G-R5W1YYRC92', { page_path: event.urlAfterRedirects });
+      console.log('GA page view:', event.urlAfterRedirects);
+    }
+  });
+}}

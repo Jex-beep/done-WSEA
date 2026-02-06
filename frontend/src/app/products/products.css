@@ -1,0 +1,1063 @@
+/* --- Global Base & Viewport Protection --- */
+:host {
+  display: block;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.products-page {
+  background-color: #fcfcfc;
+  padding-bottom: 50px;
+  width: 100%;
+}
+
+/* 1. The Curved Header */
+.header-banner {
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 80px 20px 100px;
+  border-bottom-left-radius: 50% 100px;
+  border-bottom-right-radius: 50% 100px;
+  margin-bottom: 0; 
+}
+
+.header-banner h1 {
+  font-size: 3.5rem;
+  letter-spacing: 2px;
+  font-weight: 800;
+  margin: 0;
+}
+
+/* 2. Category Filter Styling (The "Midnight Frame") */
+.filter-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin: 50px 0;
+  z-index: 10;
+  padding: 0 15px;
+}
+
+.category-filters {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 18px 35px;
+  /* Glassmorphism effect */
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 100px;
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  /* Depth shadow */
+  box-shadow: 
+    0 15px 40px rgba(0, 0, 0, 0.08),
+    0 5px 10px rgba(0, 0, 0, 0.03);
+}
+
+.filter-btn {
+  background: #ffffff;
+  border: 1.5px solid #d1d1d1;
+  padding: 12px 26px;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #222;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.btn-icon {
+  width: 20px;
+  height: auto;
+  opacity: 0.9;
+  transition: 0.3s;
+}
+
+/* --- Active State: Deep MJ Crimson --- */
+.filter-btn.active {
+  background-color: #610000;
+  border-color: #4a0000;
+  color: #ffffff;
+  box-shadow: 
+    0 8px 25px rgba(97, 0, 0, 0.4),
+    inset 0 2px 5px rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.filter-btn.active .btn-icon {
+  filter: brightness(0) invert(1);
+  transform: scale(1.1);
+}
+
+/* --- Hover State: Interactive Lift --- */
+.filter-btn:hover:not(.active) {
+  background-color: #fdfdfd;
+  border-color: #610000;
+  color: #610000;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Under-Glow Indicator --- */
+.filter-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 4px;
+  background: #610000;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #610000;
+}
+
+/* 3. Grid and Cards */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 40px;
+  padding: 40px 8% 60px;
+}
+
+.car-card {
+  background: white;
+  border-radius: 15px;
+  padding: 7px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  transition: all 0.3s ease;
+}
+
+.car-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.image-container {
+  background-color: #f2f2f2;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centers short images vertically */
+  height: 220px;       /* SET A FIXED HEIGHT */
+  overflow: hidden;    /* Prevents oversized images from leaking out */
+  padding: 0;          /* Remove padding to let the image control the space */
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+}
+
+.car-info h3 {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.price {
+  color: #8b0000;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.car-type {
+  color: #777;
+  margin: 5px 0 15px;
+}
+
+.view-details {
+  width: 100%;
+  background-color: #610000;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+/* 4. Brand Section Styling */
+.brand-logos {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 60px 10%;
+  opacity: 0.7;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.brand-logos img {
+  height: 40px;
+  filter: grayscale(1);
+  transition: 0.3s;
+}
+
+.brand-logos img:hover {
+  filter: grayscale(0);
+  opacity: 1;
+}
+
+/* 5. Contact Banner Section */
+.contact-banner {
+  background-color: #610000;
+  color: white;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  /* Ensure the banner itself stretches and centers its inner content */
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+}
+
+.contact-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 380px;
+}
+
+.text-side {
+  flex: 1.2;
+  padding: 40px 0;
+}
+
+.text-side h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+  opacity: 0.9;
+}
+
+.text-side h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
+
+.benefit-bar {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+}
+
+.phone-number {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.description {
+  max-width: 400px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin-bottom: 20px;
+  opacity: 0.8;
+}
+
+.contact-btn {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.image-side {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-self: flex-end;
+}
+
+.cta-car {
+  width: 110%;
+  height: auto;
+  transform: translateX(15%);
+  display: block;
+  filter: drop-shadow(-10px 0 15px rgba(0,0,0,0.2));
+}
+.mobile-filter-trigger, .close-filters{
+  display: none !important;
+}
+
+/* --- MOBILE RESPONSIVE FIXES --- */
+
+/* --- CONSOLIDATED MOBILE FIXES --- */
+
+@media (max-width: 992px) {
+  .contact-banner { padding: 0 1%; }
+  .contact-content { flex-direction: column; text-align: center; padding-top: 30px; min-height: auto; }
+  .text-side { padding: 0 0 15px 0; width: 100%; }
+  .text-side h2 { font-size: 1.1rem; margin-bottom: 0px; }
+  .text-side h1 { font-size: 1.7rem; margin-bottom: 8px; }
+  .benefit-bar { justify-content: center; gap: 10px; font-size: 0.75rem; margin-bottom: 12px; }
+  .phone-number { font-size: 1.5rem; margin-bottom: 8px; }
+  .description { font-size: 0.85rem; line-height: 1.3; margin: 0 auto 15px; max-width: 300px; }
+  .contact-btn { padding: 10px 25px; font-size: 0.85rem; }
+  .image-side { height: 160px; width: 100%; justify-content: center; margin-top: 10px; overflow: hidden; }
+  .cta-car { width: 80%; max-width: 320px; transform: none; margin-top: 10px; }
+
+  .brand-logos { display: flex; justify-content: center; align-items: center; padding: 60px 10%; gap: 40px; background-color: #fcfcfc; overflow: hidden; }
+  .brand-logos img { height: 45px; width: auto; filter: grayscale(1); opacity: 0.6; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
+  .brand-logos img:hover { filter: grayscale(0); opacity: 1; transform: translateY(-5px) scale(1.1); }
+  
+  /* Initial State for Filter Logic */
+  .mobile-filter-trigger { display: none; }
+  .close-filters { display: none; }
+}
+
+/* --- FIXED CENTERED POPUP CSS --- */
+
+@media (max-width: 768px) {
+  /* Ensure the row is HIDDEN by default on mobile */
+  .category-filters {
+    display: none !important; 
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    /* Elegant Start State: Slightly lower and smaller */
+    transform: translate(-50%, -45%) scale(0.95) !important;
+    width: 88% !important;
+    max-width: 320px !important;
+    height: auto !important;
+    /* Elegant Glass Effect */
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 30px !important; /* Smoother corners */
+    z-index: 10001 !important;
+    flex-direction: column !important;
+    padding: 60px 25px 30px !important;
+    /* Soft Multi-layered Shadow */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+    pointer-events: none;
+  }
+
+  /* Show ONLY when the variable is true - Smooth Fade & Scale */
+  .category-filters.mobile-open {
+    display: flex !important;
+    opacity: 1 !important;
+    transform: translate(-50%, -50%) scale(1) !important;
+    pointer-events: auto;
+  }
+
+  /* The Close Button inside the card - Minimalist & Clean */
+  .close-filters {
+    display: flex !important;
+    position: absolute !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 36px;
+    height: 36px;
+    background: #f5f5f7; /* Apple-style light gray */
+    color: #000;
+    border-radius: 50%;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  
+  .close-filters:active { background: #e8e8ed; }
+
+  /* The Trigger Button - Refined border and spacing */
+  .mobile-filter-trigger {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 14px 24px;
+    border: 1.5px solid rgba(97, 0, 0, 0.15); /* Softer Crimson border */
+    border-radius: 100px;
+    width: 280px;
+    margin: 25px auto;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Filter Buttons - Left aligned for a premium list feel */
+  .filter-btn {
+    width: 100% !important;
+    margin: 6px 0 !important;
+    justify-content: flex-start !important;
+    padding: 14px 20px !important;
+    font-size: 0.95rem !important;
+    border-radius: 15px !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    color: #333;
+    transition: all 0.2s ease;
+  }
+
+  .filter-btn.active {
+    background: rgba(97, 0, 0, 0.05) !important;
+    border-color: rgba(97, 0, 0, 0.3) !important;
+    color: #610000 !important;
+  }
+
+  .blog-grid { grid-template-columns: 1fr; gap: 30px; }
+    /* 1. Header Banner: Scaled for Mobile */
+  .header-banner {
+    padding: 60px 20px 80px;
+    border-bottom-left-radius: 50% 40px; /* Toned down curve */
+    border-bottom-right-radius: 50% 40px;
+  }
+
+  .header-banner h1 {
+    font-size: 2.2rem; /* Toned down from 3.5rem */
+    letter-spacing: 1px;
+  }
+}
+@media (max-width: 480px) {
+  .product-grid { grid-template-columns: 1fr; }
+  .phone-number { font-size: 1.6rem; }
+  .brand-logos { gap: 8px; padding: 20px 10px; }
+  .brand-logos img { max-height: 18px; }
+}
+
+/* ================================== MJ ELITE ADMIN UI ================================== */
+
+/* Global Reset & Smooth Font Rendering */
+.modal-container *, .floating-add * {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+/* --- HEADER TEXT STYLE --- */
+.modal-header-text h2 {
+  color: #ffffff;      /* Pure white, not black */
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+
+.modal-header-text h2 span {
+  color: #e31e24;      /* Professional Red accent */
+}
+/* --- THE FLOATING ADD BUTTON --- */
+.floating-add {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: #e31e24;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 25px rgba(227, 30, 36, 0.4);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.floating-add:active { transform: scale(0.9); }
+
+/* --- MODAL OVERLAY --- */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* Mobile: Tray sticks to bottom */
+}
+
+/* --- THE MODAL CONTAINER (The "Tray") --- */
+.modal-container {
+  background: #0d0d0d;
+  background: linear-gradient(to bottom, #141414, #0d0d0d);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 4px solid #e31e24;
+  width: 100%;
+  max-width: 800px;
+  max-height: 92vh; /* Optimal for mobile thumb reach */
+  overflow-y: auto;
+  padding: 25px 20px 40px 20px;
+  position: relative;
+  border-radius: 25px 25px 0 0; /* Pro mobile app look */
+  box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Mobile Top Handle Decorator */
+.modal-container::before {
+  content: "";
+  width: 40px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* --- THE X (CLOSE) BUTTON --- */
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 32px;
+  height: 32px;
+  background: #222;
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.close-modal:hover { background: #e31e24; border-color: #e31e24; }
+
+/* --- FORM GRID & GROUPS --- */
+.form-grid {
+  display: flex;
+  flex-direction: column; /* Stacked for Mobile first */
+  gap: 22px;
+  margin-top: 20px;
+}
+
+.form-group label {
+  color: #888;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+/* --- PREMIUM INPUTS --- */
+.form-group input, 
+.form-group select,
+.form-group textarea {
+  background: #181818;
+  border: 1px solid #282828;
+  border-radius: 12px;
+  padding: 16px;
+  color: #fff;
+  font-size: 16px; /* Essential: Prevents iOS auto-zoom */
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus, .form-group select:focus {
+  border-color: #e31e24;
+  outline: none;
+  background: #1c1c1c;
+}
+
+/* --- CLEAN UPLOAD AREA --- */
+.upload-area {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1.5px dashed #333;
+  padding: 30px 15px;
+  border-radius: 16px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.upload-btn {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #e31e24;
+  padding: 12px 30px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.upload-btn:hover { background: #e31e24; }
+
+/* --- ACTION BUTTON --- */
+.submit-modal-btn {
+  width: 100%;
+  background: #e31e24;
+  color: white;
+  border: none;
+  padding: 18px;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 10px;
+  box-shadow: 0 10px 20px rgba(227, 30, 36, 0.3);
+  cursor: pointer;
+}
+/* This removes the "Choose File" text and the second button */
+.file-input-hidden {
+  display: none !important;
+}
+
+/* Optional: Style the status text so it's not black */
+.file-status {
+  color: #ffffff;
+  font-size: 0.85rem;
+  margin-top: 10px;
+}
+
+/* ================================== ADMIN BUTTON STYLES ================================== */
+.admin-btns {
+  display: flex;
+  gap: 10px;
+  margin-left: 10px;
+}
+
+.admin-btns button {
+  width: 44px !important;    /* Industry standard for mobile touch */
+  height: 44px !important;   /* Makes them perfectly square */
+  border-radius: 12px !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem !important;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Specific button colors */
+.btn-edit {
+  background: #f39c12 !important; /* Premium Amber */
+  color: white !important;
+}
+
+.btn-delete {
+  background: #e74c3c !important; /* Alert Red */
+  color: white !important;
+}
+
+/* Hover/Tap Effects */
+.admin-btns button:hover {
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.admin-btns button:active {
+  transform: scale(0.9);
+}
+
+/* ================================== SUCCESS TOAST POPUP ================================== */
+
+.success-toast-overlay {
+  position: fixed;
+  top: 30px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 1000000; /* Higher than modal */
+  pointer-events: none;
+}
+
+.success-toast {
+  pointer-events: auto;
+  background: #111;
+  border-left: 5px solid #2ecc71; /* Green success bar */
+  padding: 16px 24px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  min-width: 320px;
+  animation: slideInDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.success-icon {
+  width: 32px;
+  height: 32px;
+  background: #2ecc71;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.success-icon::after {
+  content: '✓';
+  color: white;
+  font-weight: 900;
+  font-size: 1.2rem;
+}
+
+.success-text h3 {
+  color: #fff;
+  margin: 0;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.success-text p {
+  color: #aaa;
+  margin: 2px 0 0;
+  font-size: 0.85rem;
+}
+
+.success-close {
+  background: transparent;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  margin-left: auto;
+  font-size: 1.2rem;
+}
+
+@keyframes slideInDown {
+  from { transform: translateY(-100px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+/* --- DYNAMIC EQUIPMENT STYLES --- */
+.equipment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.equipment-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.equipment-item input {
+  flex: 1;
+}
+
+.remove-equip {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-equip-btn {
+  background: transparent;
+  border: 1.5px dashed #444;
+  color: #aaa;
+  padding: 10px;
+  width: 100%;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+/* ==========================================================================
+   MASTER FILENAME BADGE - UNIFIED STYLES
+   ========================================================================== */
+
+/* 1. Container for the badge lists */
+.upload-area .filename-list {
+  display: block !important;
+  width: 100% !important;
+  margin-top: 15px !important;
+  text-align: left !important;
+  padding: 0 !important;
+}
+
+/* 2. Unified Base Style for ALL badges (Main & Gallery) */
+.filename-item {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 100% !important;
+  /* Matching the dark premium theme */
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid #333 !important;
+  padding: 12px 16px !important;
+  border-radius: 12px !important;
+  margin-bottom: 8px !important;
+  box-sizing: border-box !important;
+  animation: fadeIn 0.3s ease;
+}
+
+/* 3. Unified Text Style */
+.filename-item span {
+  color: #ffffff !important; /* Pure white for both */
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 85%;
+}
+
+/* 4. Removed the Amber color difference - Now they look identical */
+.main-file-badge {
+  /* Inherits from .filename-item above */
+  margin-top: 10px;
+}
+
+/* 5. The Remove (X) Button Style */
+.remove-file {
+  background: transparent !important;
+  border: none !important;
+  color: #888 !important;
+  font-size: 1.2rem !important;
+  line-height: 1;
+  cursor: pointer !important;
+  padding: 0 0 0 10px !important;
+  transition: 0.2s;
+}
+
+.remove-file:hover {
+  color: #e74c3c !important; /* Turns red on hover */
+  transform: scale(1.2);
+}
+
+/* ==========================================================================
+   ADMIN ACTION BUTTONS
+   ========================================================================== */
+
+.admin-btns {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-btns button {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 12px !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem !important;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn-edit { background: #f39c12 !important; color: white !important; }
+.btn-delete { background: #e74c3c !important; color: white !important; }
+
+.admin-btns button:hover {
+  transform: translateY(-3px) scale(1.1);
+}
+
+/* ==========================================================================
+   EQUIPMENT & EXTRAS
+   ========================================================================== */
+
+.equipment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.equipment-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.remove-equip {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.add-equip-btn {
+  background: transparent;
+  border: 1.5px dashed #444;
+  color: #aaa;
+  padding: 10px;
+  width: 100%;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.add-equip-btn:hover {
+  border-color: #e31e24;
+  color: #fff;
+}
+
+/* ==========================================================================
+   RESPONSIVE & ANIMATIONS
+   ========================================================================== */
+
+@media (min-width: 769px) {
+  .modal-overlay { align-items: center; }
+  .modal-container {
+    border-radius: 20px;
+    padding: 40px;
+    max-height: 85vh;
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 30px;
+  }
+  .form-group.full { grid-column: span 2; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Loading State Overlay --- */
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh; /* Adjust based on your layout */
+  background-color: transparent; /* Or #000 if you want a dark loader */
+  color: #333;
+  text-align: center;
+  padding: 40px;
+}
+
+.spinner-box {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  border: 4px solid rgba(227, 30, 36, 0.1); /* Light M&J Red */
+  border-radius: 50%;
+  border-top-color: #e31e24; /* M&J Signature Red */
+  animation: spin 1s ease-in-out infinite;
+  position: relative;
+}
+
+.circle-core {
+  width: 12px;
+  height: 12px;
+  background-color: #e31e24;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 15px rgba(227, 30, 36, 0.5);
+}
+
+@keyframes spin { 
+  to { transform: rotate(360deg); } 
+}
+
+.loading-content h2 {
+  font-size: 1.5rem;
+  margin-top: 20px;
+  color: #1a1a1a;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.loading-content p {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.cancel-btn {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  color: #666;
+  padding: 8px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background: #e31e24;
+  color: #fff;
+  border-color: #e31e24;
+}
+
+/* --- Smooth Entrance for Car Cards --- */
+.car-card {
+  /* ... keep your existing styles ... */
+  animation: cardEntrance 0.5s ease-out forwards;
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- No Results State --- */
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  border: 2px dashed #eee;
+  margin: 20px 0;
+}
+
+.no-results p {
+  color: #888;
+  font-style: italic;
+  font-size: 1.1rem;
+}

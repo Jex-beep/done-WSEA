@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://mjqualitycars.com/</loc><priority>1.0</priority></url>
+  <url><loc>https://mjqualitycars.com/products</loc><priority>0.8</priority></url>
+  <url><loc>https://mjqualitycars.com/about</loc><priority>0.5</priority></url>
+  <url><loc>https://mjqualitycars.com/contact</loc><priority>0.5</priority></url>
+  <url><loc>https://mjqualitycars.com/blog</loc><priority>0.7</priority></url>
+
+  <url><loc>https://mjqualitycars.com/blog/1</loc><priority>0.7</priority></url>
+  <url><loc>https://mjqualitycars.com/blog/2</loc><priority>0.7</priority></url>
+  <url><loc>https://mjqualitycars.com/blog/3</loc><priority>0.7</priority></url>
+  <url><loc>https://mjqualitycars.com/blog/4</loc><priority>0.7</priority></url>
+  <url><loc>https://mjqualitycars.com/blog/5</loc><priority>0.7</priority></url>
+  <url><loc>https://mjqualitycars.com/blog/6</loc><priority>0.7</priority></url>
+</urlset>

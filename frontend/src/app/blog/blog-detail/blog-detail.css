@@ -1,0 +1,333 @@
+/* 1. Page & Layout Reset */
+.blog-detail-view {
+  max-width: 850px; 
+  margin: 120px auto 100px;
+  padding: 0 25px;
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 2. Author Header Section */
+.author-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.author-avatar {
+  width: 85px; 
+  height: 85px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.author-info {
+  text-align: center;
+}
+
+.author-name {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: #000;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.author-role {
+  font-size: 0.9rem;
+  color: #e30613; 
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+/* 3. Title & Meta - FIXED */
+.detail-title {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.3;
+  color: #000;
+  margin: 15px 0 25px;
+  letter-spacing: -1px;
+  padding: 0 15px;
+  
+  /* PROPER WORD WRAPPING - FINAL FIX */
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  white-space: normal !important;
+  hyphens: none !important;
+  -webkit-hyphens: none !important;
+  -moz-hyphens: none !important;
+  
+  /* Ensure full width */
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.detail-meta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  color: #777;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 30px;
+}
+
+.meta-dot {
+  width: 5px;
+  height: 5px;
+  background-color: #e30613;
+  border-radius: 50%;
+}
+
+/* 4. Back Button Style */
+.back-nav-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 60px;
+}
+
+.back-btn {
+  text-decoration: none;
+  color: #000;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: #f4f4f4;
+  border-radius: 100px;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #e30613;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   5. THE FINAL CONTENT FIX (NO LETTER BREAKS) - NUCLEAR VERSION
+   ========================================================================== */
+.main-layout {
+  display: block !important;
+  width: 100% !important;
+}
+
+.post-body {
+  max-width: 720px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+
+.rich-text {
+  font-size: 1.25rem;
+  line-height: 1.9;
+  color: #222;
+  font-family: 'Georgia', serif;
+  display: block !important;
+  width: 100% !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  white-space: normal !important;
+}
+
+/* NUCLEAR FIX - Target ALL elements including strong, em, span */
+::ng-deep .rich-text,
+::ng-deep .rich-text *,
+::ng-deep .rich-text p,
+::ng-deep .rich-text h1,
+::ng-deep .rich-text h2,
+::ng-deep .rich-text h3,
+::ng-deep .rich-text h4,
+::ng-deep .rich-text h5,
+::ng-deep .rich-text h6,
+::ng-deep .rich-text div {
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  white-space: normal !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  hyphens: none !important;
+  -webkit-hyphens: none !important;
+  -moz-hyphens: none !important;
+}
+
+/* Keep inline elements inline but with word wrapping */
+::ng-deep .rich-text strong,
+::ng-deep .rich-text em,
+::ng-deep .rich-text span,
+::ng-deep .rich-text a,
+::ng-deep .rich-text b,
+::ng-deep .rich-text i,
+::ng-deep .rich-text u {
+  display: inline !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  white-space: normal !important;
+}
+
+/* Block elements get full width */
+::ng-deep .rich-text p,
+::ng-deep .rich-text h1,
+::ng-deep .rich-text h2,
+::ng-deep .rich-text h3,
+::ng-deep .rich-text h4,
+::ng-deep .rich-text h5,
+::ng-deep .rich-text h6,
+::ng-deep .rich-text div {
+  display: block !important;
+  width: 100% !important;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   QUILL ALIGNMENT & UNIFORM IMAGES
+   ========================================================================== */
+::ng-deep .rich-text .ql-align-center,
+::ng-deep .rich-text .ql-align-center * {
+  text-align: center !important;
+}
+
+::ng-deep .rich-text .ql-align-right,
+::ng-deep .rich-text .ql-align-right * {
+  text-align: right !important;
+}
+
+::ng-deep .rich-text .ql-align-justify,
+::ng-deep .rich-text .ql-align-justify * {
+  text-align: justify !important;
+}
+
+::ng-deep .rich-text img {
+  display: block !important;
+  width: 100% !important; 
+  max-width: 720px !important; 
+  height: auto !important;
+  min-height: 400px;
+  object-fit: cover; 
+  margin: 40px auto; 
+  border-radius: 20px;
+  box-shadow: 0 15px 45px rgba(0,0,0,0.08);
+}
+
+/* 6. Responsive Adjustments */
+@media (max-width: 768px) {
+  .blog-detail-view { 
+    margin-top: 100px; 
+    padding: 0 20px; 
+  }
+  
+  .detail-title { 
+    font-size: 2.1rem; 
+    letter-spacing: 0px;
+  }
+  
+  .author-avatar { 
+    width: 70px; 
+    height: 70px; 
+  }
+  
+  ::ng-deep .rich-text img {
+    height: 300px !important; 
+    min-height: auto;
+  }
+}
+
+/* --- Reusable Loading State --- */
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background-color: #000;
+  color: white;
+  text-align: center;
+}
+
+.spinner-box {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top-color: #e31e24; 
+  animation: spin 1s ease-in-out infinite;
+  position: relative;
+}
+
+.circle-core {
+  width: 12px;
+  height: 12px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes spin { 
+  to { transform: rotate(360deg); } 
+}
+
+.loading-content h2 {
+  font-size: 1.8rem;
+  margin-top: 25px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.loading-content p {
+  color: #888;
+  margin-bottom: 25px;
+}
+
+.cancel-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #333;
+  color: #888;
+  padding: 12px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cancel-btn:hover {
+  background: #e31e24;
+  color: #fff;
+  border-color: #e31e24;
+}

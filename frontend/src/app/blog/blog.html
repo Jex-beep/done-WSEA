@@ -1,0 +1,179 @@
+<app-nav></app-nav>
+
+@if (showSuccessPopup) {
+  <div class="success-toast-overlay">
+    <div class="success-toast">
+      <div class="success-icon"></div>
+      <div class="success-text">
+        <h3>{{ successMessage }}</h3>
+        <p>Database synchronization complete.</p>
+      </div>
+      <button class="success-close" (click)="showSuccessPopup = false">✕</button>
+    </div>
+  </div>
+}
+
+<section class="blog-page">
+  <div class="header-banner">
+    <h1>OUR BLOGS</h1>
+  </div>
+
+  <div class="filter-container">
+    <div class="category-filters">
+      <button class="filter-btn" [class.active]="selectedCategory === 'All'" (click)="filterBlogs('All')">All</button>
+      <button class="filter-btn" [class.active]="selectedCategory === 'Guides'" (click)="filterBlogs('Guides')">Guides</button>
+      <button class="filter-btn" [class.active]="selectedCategory === 'News'" (click)="filterBlogs('News')">News</button>
+      <button class="filter-btn" [class.active]="selectedCategory === 'Maintenance'" (click)="filterBlogs('Maintenance')">Maintenance</button>
+    </div>
+  </div>
+
+  @if (isLoading) {
+    <ng-container *ngTemplateOutlet="loadingOrError"></ng-container>
+  } @else {
+    <div class="blog-container">
+      <div class="blog-grid">
+        @for (post of availableBlogs; track post._id) {
+          <article class="blog-card" [routerLink]="['/blog', post._id]">
+            
+            <div class="card-image">
+              <img [src]="post.image" [alt]="post.title">
+            </div>
+
+            <div class="card-content">
+              <h2 class="blog-title">{{ post.title }}</h2>
+              
+              <div class="blog-meta">
+                <div class="meta-info">
+                  <span class="category">{{ post.category }}</span>
+                  <span class="divider">/</span>
+                  <span class="date">{{ (post.date | date:'MMMM d, y') || post.date }}</span>
+                </div>
+
+                @if (authService.isLoggedIn()) {
+                  <div class="admin-actions">
+                     <button class="edit-blog-btn" (click)="$event.stopPropagation(); openEditModal(post)">✎</button>
+                     <button class="delete-blog-btn" (click)="$event.stopPropagation(); onDelete(post._id)">🗑</button>
+                  </div>
+                }
+              </div>
+            </div>
+          </article>
+        } @empty {
+          <div class="no-results">
+            <p>No blog posts found in this category.</p>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (authService.isLoggedIn()) {
+    <button class="floating-add" (click)="toggleAddModal()" title="Add New Blog"> + </button>
+  }
+</section>
+
+@if (showAddModal) {
+  <div class="modal-overlay">
+    <div class="modal-container blog-editor-modal">
+      <div class="modal-header">
+        <h2>{{ isEditMode ? 'Edit' : 'Create New' }} <span class="highlight-red">Article</span></h2>
+        <button class="close-modal-x" (click)="toggleAddModal()">✕</button>
+      </div>
+
+      <form (submit)="submitBlog($event)" class="modal-form">
+        
+        <div class="form-row">
+          <div class="form-group full">
+            <label>Article Title</label>
+            <input [(ngModel)]="newBlog.title" name="title" placeholder="Main title for the blog list" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Author Name</label>
+            <input [(ngModel)]="newBlog.author" name="author" placeholder="John Mark" required>
+          </div>
+          <div class="form-group">
+            <label>Publish Date</label>
+            <input type="date" [(ngModel)]="newBlog.date" name="date" required>
+          </div>
+          <div class="form-group">
+            <label>Read Time</label>
+            <input [(ngModel)]="newBlog.readTime" name="readTime" placeholder="6 Mins Read">
+          </div>
+        </div>
+
+        <div class="stack-column">
+          <div class="form-group">
+            <label>Category</label>
+            <select [(ngModel)]="newBlog.category" name="category" required>
+              <option value="Guides">Guides</option>
+              <option value="News">News</option>
+              <option value="Maintenance">Maintenance</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>Author Image</label>
+            <div class="file-input-wrapper">
+              <input type="file" (change)="onImageSelected($event, 'author')" accept="image/*" #authorInput>
+              <div class="file-name-display" *ngIf="authorFileName">
+                <span class="file-icon">📄</span> {{ authorFileName }}
+                <button type="button" class="remove-file-btn" (click)="clearFile('author', authorInput)">✕</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Featured Image (Thumbnail)</label>
+            <div class="file-input-wrapper">
+              <input type="file" (change)="onImageSelected($event, 'featured')" accept="image/*" #featuredInput>
+              <div class="file-name-display" *ngIf="mainFileName">
+                <span class="file-icon">🖼️</span> {{ mainFileName }}
+                <button type="button" class="remove-file-btn" (click)="clearFile('featured', featuredInput)">✕</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group full">
+            <label>Short Teaser Description</label>
+            <textarea [(ngModel)]="newBlog.description" name="description" rows="2" placeholder="Brief summary..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group full">
+            <label>Main Content</label>
+            <div class="editor-wrapper">
+              <quill-editor [(ngModel)]="newBlog.content" name="content" [modules]="quillConfig" theme="snow"></quill-editor>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-publish-post" [disabled]="isSaving">
+          {{ isSaving ? 'Publishing...' : (isEditMode ? 'Update Post' : 'Publish Post') }}
+        </button>
+      </form>
+    </div>
+  </div>
+}
+
+<ng-template #loadingOrError>
+  <div class="loading-state">
+    <div class="loading-content">
+      <div class="spinner-box">
+        <div class="circle-core"></div>
+      </div>
+      <h2>Fetching Blog Posts</h2>
+      <p>Connecting to M&J Quality Cars Showroom...</p>
+      <button class="cancel-btn" routerLink="/products">
+        <span>×</span> Cancel & Go Back
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<app-footer></app-footer>
