@@ -1,3 +1,5 @@
+// Add this to your imports at the top
+import { ImageOptimizationService } from '../services/image-optimization';
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
@@ -23,6 +25,7 @@ export class Blog implements OnInit {
   private metaService = inject(Meta);
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
+  private imageService = inject(ImageOptimizationService)
 
   // --- State Management ---
   isLoading: boolean = true;
@@ -178,7 +181,7 @@ export class Blog implements OnInit {
     this.cdr.detectChanges();
   }
 
-  onImageSelected(event: any, type: 'featured' | 'author') {
+async onImageSelected(event: any, type: 'featured' | 'author') {
     const file = event.target.files[0];
     if (!file) return;
 
@@ -193,11 +196,17 @@ export class Blog implements OnInit {
     this.cdr.detectChanges();
 
     const reader = new FileReader();
-    reader.onload = (e: any) => {
+    reader.onload = async (e: any) => {
+      const originalImage = e.target.result;
+
+      // 2. COMPRESS: This is the "bypass" for your 12MB problem.
+      // It shrinks the string size before it ever hits your database.
+      const compressed = await this.imageService.compressImage(originalImage);
+
       if (type === 'featured') {
-        this.newBlog.image = e.target.result;
+        this.newBlog.image = compressed;
       } else {
-        this.newBlog.authorImage = e.target.result;
+        this.newBlog.authorImage = compressed;
       }
       this.cdr.detectChanges(); 
     };
