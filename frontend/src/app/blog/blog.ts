@@ -27,7 +27,7 @@ export class Blog implements OnInit {
   // --- State Management ---
   isLoading: boolean = true;
   selectedCategory: string = 'All';
-  isFilterMenuOpen: boolean = false; // Logic from Products
+  isFilterMenuOpen: boolean = false; 
   blogs: any[] = [];
   showAddModal = false;
   isSaving = false;
@@ -48,8 +48,10 @@ export class Blog implements OnInit {
     authorImage: '',
     readTime: '',
     image: '',
+    imageAlt: '', 
     description: '',
-    content: ''
+    content: '',
+    inlineImages: [] 
   };
 
   quillConfig = {
@@ -74,7 +76,10 @@ export class Blog implements OnInit {
   constructor() {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        (window as any).gtag('config', 'G-R5W1YYRC92', { page_path: event.urlAfterRedirects });
+        // Analytics tracking
+        if ((window as any).gtag) {
+          (window as any).gtag('config', 'G-R5W1YYRC92', { page_path: event.urlAfterRedirects });
+        }
         console.log('GA page view:', event.urlAfterRedirects);
       }
     });
@@ -85,25 +90,52 @@ export class Blog implements OnInit {
     this.setInitialSEO();
   }
 
-  // --- SEO & Meta Tags (Logic from Products) ---
+  // --- Quill Image Detection Logic ---
+  onContentChanged(event: any) {
+    const html = event.html;
+    if (!html) {
+      this.newBlog.inlineImages = [];
+      return;
+    }
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const images = Array.from(doc.querySelectorAll('img'));
+
+    // Sync the local inlineImages array with images found in the editor
+    this.newBlog.inlineImages = images.map((img: any, index: number) => {
+      const existingAlt = this.newBlog.inlineImages[index]?.alt || img.getAttribute('alt') || '';
+      return {
+        src: img.getAttribute('src'),
+        alt: existingAlt
+      };
+    });
+    this.cdr.detectChanges();
+  }
+
+// --- SEO & Meta Tags ---
   setInitialSEO() {
-    this.titleService.setTitle('Automotive Blog & Guides | M&J Quality Used Cars');
+    const siteTitle = 'M&J Quality Used Cars | Automotive Blog & Guides Mabalacat City';
+    const description = 'Expert car buying guides, maintenance tips, and automotive news in Mabalacat City, Pampanga. Trust M&J Quality Used Cars for reliable vehicle advice.';
+    
+    this.titleService.setTitle(siteTitle);
     this.metaService.addTags([
-      { name: 'description', content: 'Expert car buying guides and automotive news in Mabalacat City from M&J Quality Used Cars.' },
-      { name: 'keywords', content: 'used cars Mabalacat blog, Pampanga car guides, M&J automotive news, car maintenance Pampanga, car dealer pampanga' },
+      { name: 'description', content: description },
+      { name: 'keywords', content: 'used cars Mabalacat City, second hand cars Pampanga, M&J Quality Cars blog, car dealer Sta. Ines, car maintenance tips Philippines, buy used cars Mabalacat, automotive guides Pampanga' },
       { name: 'robots', content: 'index, follow' },
       { name: 'author', content: 'M&J Quality Used Cars' },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:site_name', content: 'M&J Quality Used Cars' },
-      { property: 'og:title', content: 'M&J Automotive Blog - Expert Insights' },
-      { property: 'og:description', content: 'Providing the community with quality car advice and news.' },
-      { property: 'og:image', content: '/assets/blog-thumbnail.jpg' },
-      { property: 'og:url', content: 'https://mjqualityusedcars.com/blog' },
+      // Local SEO / Geo Tags
       { name: 'geo.region', content: 'PH-PAM' },
       { name: 'geo.placename', content: 'Mabalacat City' },
+      { name: 'geo.position', content: '15.2238;120.5739' },
+      { name: 'ICBM', content: '15.2238, 120.5739' },
+      // Social Media Tags
+      { property: 'og:type', content: 'website' },
+      { property: 'og:title', content: siteTitle },
+      { property: 'og:description', content: description },
+      { property: 'og:image', content: '/assets/blog-thumbnail.jpg' },
+      { property: 'og:url', content: 'https://mjqualityusedcars.com/blog' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'revisit-after', content: '1 day' },
-      { name: 'format-detection', content: 'telephone=no' },
       { name: 'theme-color', content: '#e31e24' }
     ]);
   }
@@ -131,7 +163,6 @@ export class Blog implements OnInit {
     });
   }
 
-  // --- Mobile Navigation Logic (Direct Copy from Products) ---
   toggleFilterMenu(): void {
     this.isFilterMenuOpen = !this.isFilterMenuOpen;
     document.body.style.overflow = this.isFilterMenuOpen ? 'hidden' : 'auto';
@@ -147,16 +178,19 @@ export class Blog implements OnInit {
     this.cdr.detectChanges();
   }
 
-  // --- Image Handling ---
   onImageSelected(event: any, type: 'featured' | 'author') {
     const file = event.target.files[0];
     if (!file) return;
 
+    // 1. Set the filename immediately so the *ngIf in HTML sees it
     if (type === 'featured') {
       this.mainFileName = file.name;
     } else {
       this.authorFileName = file.name;
     }
+    
+    // Trigger detection so the UI shows the "Alt Text" field as soon as filename is set
+    this.cdr.detectChanges();
 
     const reader = new FileReader();
     reader.onload = (e: any) => {
@@ -165,7 +199,7 @@ export class Blog implements OnInit {
       } else {
         this.newBlog.authorImage = e.target.result;
       }
-      this.cdr.detectChanges();
+      this.cdr.detectChanges(); 
     };
     reader.readAsDataURL(file);
   }
@@ -178,6 +212,7 @@ export class Blog implements OnInit {
     } else {
       this.mainFileName = '';
       this.newBlog.image = '';
+      this.newBlog.imageAlt = '';
     }
     this.cdr.detectChanges();
   }
@@ -192,7 +227,34 @@ export class Blog implements OnInit {
       this.newBlog.date = new Date().toISOString().split('T')[0];
     }
 
+    // FIXED: Ensure Featured Image Alt is properly set with fallback
+    if (!this.newBlog.imageAlt || this.newBlog.imageAlt.trim() === '') {
+      this.newBlog.imageAlt = this.newBlog.title || 'Blog featured image';
+    }
+
+    // Process Quill content images and ensure they have alt tags
+    if (this.newBlog.content) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(this.newBlog.content, 'text/html');
+      const images = doc.querySelectorAll('img');
+
+      images.forEach((img, index) => {
+        // Fallback: If no custom inline alt, use "Title - image index"
+        const fallbackAlt = `${this.newBlog.title || 'Blog content'} - image ${index + 1}`;
+        const altText = (this.newBlog.inlineImages[index] && this.newBlog.inlineImages[index].alt) 
+                        ? this.newBlog.inlineImages[index].alt 
+                        : fallbackAlt;
+        
+        img.setAttribute('alt', altText);
+      });
+      
+      this.newBlog.content = doc.body.innerHTML;
+    }
+
     const blogToSave = { ...this.newBlog }; 
+
+    // Log to verify alt text is being saved
+    console.log('Saving blog with imageAlt:', blogToSave.imageAlt);
 
     if (this.isEditMode && this.currentEditId) {
       this.blogService.updateBlog(this.currentEditId, blogToSave).subscribe({
@@ -245,7 +307,13 @@ export class Blog implements OnInit {
   openEditModal(blog: any) {
     this.isEditMode = true;
     this.currentEditId = blog._id;
-    this.newBlog = { ...blog };
+    // Deep copy to prevent accidental live-binding
+    this.newBlog = JSON.parse(JSON.stringify(blog));
+    
+    // Ensure the alt property exists even for old posts
+    if (!this.newBlog.imageAlt) this.newBlog.imageAlt = blog.title;
+    if (!this.newBlog.inlineImages) this.newBlog.inlineImages = [];
+    
     this.mainFileName = blog.image ? 'Existing Featured Image' : '';
     this.authorFileName = blog.authorImage ? 'Existing Author Image' : '';
     this.showAddModal = true;
@@ -257,8 +325,17 @@ export class Blog implements OnInit {
     this.mainFileName = '';
     this.authorFileName = '';
     this.newBlog = {
-      title: '', category: 'Guides', date: '', author: 'M&J Admin',
-      authorImage: '', readTime: '5 min read', image: '', description: '', content: ''
+      title: '', 
+      category: 'Guides', 
+      date: '', 
+      author: 'M&J Admin',
+      authorImage: '', 
+      readTime: '5 min read', 
+      image: '', 
+      imageAlt: '',
+      description: '', 
+      content: '',
+      inlineImages: []
     };
     this.cdr.detectChanges();
   }

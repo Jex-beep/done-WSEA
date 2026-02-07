@@ -62,7 +62,8 @@
           <article class="blog-card" [routerLink]="['/blog', post._id]">
             
             <div class="card-image">
-              <img [src]="post.image" [alt]="post.title">
+              <!-- ✅ FIXED: Proper alt text binding with fallback -->
+              <img [src]="post.image" [alt]="post.imageAlt || post.title">
             </div>
 
             <div class="card-content">
@@ -161,6 +162,12 @@
               </div>
             </div>
           </div>
+
+          <!-- ✅ FIXED: Changed condition from newBlog.image to mainFileName -->
+          <div class="form-group full animate-fade-in" *ngIf="mainFileName">
+            <label>Featured Image Alt Text <span class="hint">(SEO & Accessibility)</span></label>
+            <input [(ngModel)]="newBlog.imageAlt" name="imageAlt" placeholder="Describe the featured image...">
+          </div>
         </div>
 
         <div class="form-row">
@@ -174,7 +181,28 @@
           <div class="form-group full">
             <label>Main Content</label>
             <div class="editor-wrapper">
-              <quill-editor [(ngModel)]="newBlog.content" name="content" [modules]="quillConfig" theme="snow"></quill-editor>
+              <!-- ✅ FIXED: Added (onContentChanged) event handler -->
+              <quill-editor 
+                [(ngModel)]="newBlog.content" 
+                name="content" 
+                [modules]="quillConfig" 
+                (onContentChanged)="onContentChanged($event)"
+                theme="snow">
+              </quill-editor>
+            </div>
+
+            <!-- ✅ ADDED: Inline images alt text inputs -->
+            <div class="inline-alt-container animate-fade-in" *ngIf="newBlog.inlineImages && newBlog.inlineImages.length > 0">
+              <p class="alt-header">Detecting {{ newBlog.inlineImages.length }} Inline Image{{ newBlog.inlineImages.length > 1 ? 's' : '' }}</p>
+              <div class="alt-field-row" *ngFor="let img of newBlog.inlineImages; let i = index">
+                <div class="alt-preview">
+                  <img [src]="img.src" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;">
+                </div>
+                <div class="alt-input-wrap">
+                  <label>Alt Text for Image #{{ i + 1 }}</label>
+                  <input [(ngModel)]="newBlog.inlineImages[i].alt" [name]="'inlineAlt' + i" placeholder="Describe this image...">
+                </div>
+              </div>
             </div>
           </div>
         </div>

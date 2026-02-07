@@ -25,7 +25,7 @@
 
         <div class="main-car-image" (click)="openZoom(mainDisplayImage || car.image)">
           <img [src]="formatImg(mainDisplayImage || car.image)" 
-               [alt]="car.make" 
+               [alt]="car.make + ' ' + car.model + ' showroom view Mabalacat Pampanga'" 
                class="fade-in clickable-img">
           <div class="zoom-badge">Click to Enlarge</div>
         </div>
@@ -34,14 +34,14 @@
           <div class="thumb-card" 
                [class.active]="!mainDisplayImage || mainDisplayImage === car.image" 
                (click)="setMainImage(car.image)">
-            <img [src]="formatImg(car.image)" alt="Main View">
+            <img [src]="formatImg(car.image)" [alt]="car.make + ' ' + car.model + ' angle 1'">
           </div>
 
-          @for (img of car.gallery; track img) {
+          @for (img of car.gallery; track img; let i = $index) {
             <div class="thumb-card" 
                  [class.active]="mainDisplayImage === img" 
                  (click)="setMainImage(img)">
-              <img [src]="formatImg(img)" alt="Gallery angle">
+              <img [src]="formatImg(img)" [alt]="car.make + ' ' + car.model + ' angle ' + (i + 2)">
             </div>
           }
         </div>
@@ -108,7 +108,7 @@
   <div class="lightbox-overlay" *ngIf="zoomedImage" (click)="closeZoom()">
     <div class="lightbox-content" (click)="$event.stopPropagation()">
       <button class="close-lightbox" (click)="closeZoom()">✕</button>
-      <img [src]="formatImg(zoomedImage)" alt="Vehicle Full View">
+      <img [src]="formatImg(zoomedImage)" [alt]="'Enlarged view of vehicle'">
     </div>
   </div>
 

@@ -101,5 +101,12 @@ export class ProductDetail implements OnInit {
     this.metaService.updateTag({ name: 'twitter:title', content: carTitle });
     this.metaService.updateTag({ name: 'twitter:description', content: fullDesc });
     this.metaService.updateTag({ name: 'twitter:image', content: this.formatImg(car.image) });
+    
+    // Additional SEO Tags from Saved Info
+    this.metaService.updateTag({ name: 'geo.region', content: 'PH-PAM' });
+    this.metaService.updateTag({ name: 'geo.placename', content: 'Mabalacat City' });
+    this.metaService.updateTag({ name: 'geo.position', content: '15.2215;120.5744' });
+    this.metaService.updateTag({ name: 'revisit-after', content: '1 day' });
+    this.metaService.updateTag({ name: 'theme-color', content: '#e31e24' });
   }
 }

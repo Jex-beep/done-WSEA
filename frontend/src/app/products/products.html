@@ -67,7 +67,7 @@
       @for (car of availableCars; track car._id) {
         <div class="car-card">
           <div class="image-container">
-            <img [src]="car.image" [alt]="car.make + ' ' + car.model">
+            <img [src]="car.image" [alt]="car.altText || (car.make + ' ' + car.model + ' for sale in Mabalacat City Pampanga')">
           </div>
           <div class="car-info">
             <div class="title-row" style="display: flex; justify-content: space-between; align-items: flex-start;">

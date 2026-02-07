@@ -23,7 +23,7 @@ export class Products implements OnInit {
   private cdr = inject(ChangeDetectorRef);
 
   // --- State Management ---
-  isLoading: boolean = true; // Added this property for the spinner
+  isLoading: boolean = true; 
   selectedCategory: string = 'All';
   inventory: any[] = []; 
   isFilterMenuOpen: boolean = false;
@@ -51,6 +51,7 @@ export class Products implements OnInit {
     seats: '',
     ac: '',
     image: '',
+    altText: '', // SEO property
     gallery: [] as string[],
     equipment: [''], 
     description: '',
@@ -58,7 +59,7 @@ export class Products implements OnInit {
   };
 
   ngOnInit(): void {
-    this.loadCars(); // This now handles the isLoading state
+    this.loadCars();
     this.setInitialSEO();
   }
 
@@ -115,16 +116,16 @@ export class Products implements OnInit {
   }
 
   loadCars() {
-    this.isLoading = true; // Start the spinner
+    this.isLoading = true; 
     this.carService.getCars().subscribe({
       next: (data: any) => {
         this.inventory = data;
-        this.isLoading = false; // Stop spinner on success
+        this.isLoading = false; 
         this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('Database connection failed', err);
-        this.isLoading = false; // Stop spinner on error
+        this.isLoading = false; 
         this.cdr.detectChanges();
       }
     });
@@ -138,13 +139,27 @@ export class Products implements OnInit {
     }
   }
 
+  // --- AUTOMATED SEO NAMING LOGIC ---
+  generateSEONames() {
+    const baseName = `${this.newCar.make} ${this.newCar.model}`.trim();
+    if (baseName) {
+      // 1. Generate Alt Text for the <img> tag
+      this.newCar.altText = `${baseName} for sale in Mabalacat City Pampanga`;
+      
+      // 2. Generate clean Filename (kebab-case) for the database
+      this.mainFileName = `${baseName.toLowerCase().replace(/\s+/g, '-')}-for-sale-mabalacat-pampanga`;
+    }
+  }
+
   // --- File Upload Handling ---
   onFileSelected(event: any, type: 'main' | 'gallery') {
     const files = event.target.files;
     if (!files || files.length === 0) return;
 
     if (type === 'main') {
-      this.mainFileName = files[0].name;
+      // Run auto-naming
+      this.generateSEONames();
+      
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.newCar.image = e.target.result;
@@ -173,16 +188,21 @@ export class Products implements OnInit {
   }
 
   submitCar(event?: Event) {
-    if (event) {
-      event.preventDefault();
-    }
-
+    if (event) event.preventDefault();
     if (this.isSaving) return;
     this.isSaving = true;
 
+    // Final check to ensure Alt Text is set before saving
+    this.generateSEONames();
+
     const finalEquipment = this.newCar.equipment.filter((e: string) => e && e.trim() !== '');
     const fullGallery = [...this.newCar.gallery];
-    const initialData = { ...this.newCar, gallery: [], equipment: finalEquipment };
+    const initialData = { 
+      ...this.newCar, 
+      mainFileName: this.mainFileName, 
+      gallery: [], 
+      equipment: finalEquipment 
+    };
 
     if (this.isEditMode && this.currentEditId) {
       this.carService.updateCar(this.currentEditId, initialData).subscribe({
@@ -192,10 +212,7 @@ export class Products implements OnInit {
             error: () => this.triggerSuccess('Data updated, but gallery was too heavy.')
           });
         },
-        error: (err) => {
-          this.isSaving = false;
-          this.handleError(err);
-        }
+        error: (err) => this.handleError(err)
       });
     } else {
       this.carService.addCar(initialData).subscribe({
@@ -206,10 +223,7 @@ export class Products implements OnInit {
             error: () => this.triggerSuccess('Car added, but gallery failed.')
           });
         },
-        error: (err) => {
-          this.isSaving = false;
-          this.handleError(err);
-        }
+        error: (err) => this.handleError(err)
       });
     }
   }
@@ -254,7 +268,10 @@ export class Products implements OnInit {
     this.currentEditId = car._id;
     const loadedEquip = car.equipment && car.equipment.length > 0 ? [...car.equipment] : [''];
     this.newCar = { ...car, equipment: loadedEquip };
-    this.mainFileName = 'Existing Main Image';
+    
+    // Auto-populate naming based on existing data
+    this.generateSEONames();
+
     this.galleryFileNames = car.gallery ? car.gallery.map((_: any, i: number) => `Gallery Photo ${i + 1}`) : [];
     this.showAddModal = true;
     document.body.style.overflow = 'hidden';
@@ -267,7 +284,7 @@ export class Products implements OnInit {
     this.newCar = {
       make: '', model: '', year: '', type: '', price: '',
       engine: '', gearbox: '', fuel: '', distance: '',
-      seats: '', ac: '', image: '', gallery: [], equipment: [''],
+      seats: '', ac: '', image: '', altText: '', gallery: [], equipment: [''],
       description: '', isAvailable: true
     };
     this.cdr.detectChanges();
@@ -277,14 +294,23 @@ export class Products implements OnInit {
     if(confirm('Are you sure you want to remove this vehicle?')) {
       this.carService.deleteCar(id).subscribe({
         next: () => {
-          this.loadCars();
+          // 1. Instantly remove from the local UI list so it disappears immediately
+          this.inventory = this.inventory.filter(car => car._id !== id);
+          
+          // 2. Trigger a success popup
           this.triggerSuccess('Vehicle deleted successfully.');
+          
+          // 3. Force Angular to notice the array changed
+          this.cdr.detectChanges();
         },
         error: (err: any) => {
           this.successMessage = "Delete failed.";
           this.showSuccessPopup = true;
           this.cdr.detectChanges();
-          setTimeout(() => { this.showSuccessPopup = false; this.cdr.detectChanges(); }, 4000);
+          setTimeout(() => { 
+            this.showSuccessPopup = false; 
+            this.cdr.detectChanges(); 
+          }, 4000);
         }
       });
     }

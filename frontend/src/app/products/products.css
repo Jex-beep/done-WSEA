@@ -123,8 +123,18 @@
 
 /* Mobile Adjustment */
 @media (max-width: 768px) {
-  .header-banner h1 { font-size: 3.2rem; }
-  .header-banner:hover .divider { width: 150px; } /* Smaller expansion on mobile */
+  .blog-grid { grid-template-columns: 1fr; gap: 30px; }
+    /* 1. Header Banner: Scaled for Mobile */
+  .header-banner {
+    padding: 60px 20px 80px;
+    border-bottom-left-radius: 50% 40px; /* Toned down curve */
+    border-bottom-right-radius: 50% 40px;
+  }
+
+  .header-banner h1 {
+    font-size: 2.2rem; /* Toned down from 3.5rem */
+    letter-spacing: 1px;
+  }
 }
 
 /* 2. Category Filter Styling (The "Midnight Frame") */
@@ -177,6 +187,8 @@
   width: 20px;
   height: auto;
   opacity: 0.9;
+  /* Forces the icon to be black so it shows on the white button */
+  filter: brightness(0); 
   transition: 0.3s;
 }
 
@@ -192,8 +204,10 @@
 }
 
 .filter-btn.active .btn-icon {
+  /* Turns the black icon into white for the red background */
   filter: brightness(0) invert(1);
   transform: scale(1.1);
+  opacity: 1;
 }
 
 /* --- Hover State: Interactive Lift --- */
@@ -203,6 +217,12 @@
   color: #610000;
   transform: translateY(-5px);
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Stays black on hover */
+.filter-btn:hover:not(.active) .btn-icon {
+  filter: brightness(0);
+  opacity: 1;
 }
 
 /* --- Under-Glow Indicator --- */
@@ -218,7 +238,6 @@
   border-radius: 10px;
   box-shadow: 0 0 10px #610000;
 }
-
 /* ==========================================================================
    M&J QUALITY CARS - CINEMATIC FULL-BLEED GALLERY
    ========================================================================== */
@@ -696,8 +715,7 @@
     box-shadow: 0 0 8px #e31e24;
   }
 }
-/* This turns any black logo/icon into pure white */
-.btn-icon, 
+/* This turns any black logo/icon into pure white */ 
 .mobile-filter-trigger img, 
 .brand-logo {
   filter: brightness(0) invert(1); /* Forces black to white */
@@ -716,18 +734,7 @@
 .visible-logo {
   filter: drop-shadow(0 0 2px #fff);
 }
-  .blog-grid { grid-template-columns: 1fr; gap: 30px; }
-    /* 1. Header Banner: Scaled for Mobile */
-  .header-banner {
-    padding: 60px 20px 80px;
-    border-bottom-left-radius: 50% 40px; /* Toned down curve */
-    border-bottom-right-radius: 50% 40px;
-  }
 
-  .header-banner h1 {
-    font-size: 2.2rem; /* Toned down from 3.5rem */
-    letter-spacing: 1px;
-  }
 
 @media (max-width: 480px) {
   .product-grid { grid-template-columns: 1fr; }

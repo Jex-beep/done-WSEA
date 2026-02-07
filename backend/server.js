@@ -57,6 +57,7 @@ const CarSchema = new mongoose.Schema({
 });
 const Car = mongoose.model('Car', CarSchema);
 
+// ✅ FIXED: Added imageAlt and inlineImages fields
 const BlogSchema = new mongoose.Schema({
   title: String,
   category: { type: String, default: 'Guides' },
@@ -64,9 +65,14 @@ const BlogSchema = new mongoose.Schema({
   author: { type: String, default: 'M&J Admin' },
   authorImage: String,
   readTime: String,
-  image: String, 
+  image: String,
+  imageAlt: String,  // ← NEW: Featured image alt text for SEO
   description: String,
-  content: String
+  content: String,
+  inlineImages: [{   // ← NEW: Store alt text for inline Quill images
+    src: String,
+    alt: String
+  }]
 }, { collection: 'blogs' });
 const Blog = mongoose.model('Blog', BlogSchema);
 
@@ -134,19 +140,33 @@ app.delete('/api/cars/:id', async (req, res) => {
 
 app.post('/api/blogs', async (req, res) => {
   try {
+    console.log('📝 Received blog data:', req.body); // ← DEBUG LOG
+    console.log('📝 imageAlt received:', req.body.imageAlt); // ← DEBUG LOG
+    
     const newBlog = new Blog(req.body);
     const savedBlog = await newBlog.save();
+    
+    console.log('✅ Saved blog to DB:', savedBlog); // ← DEBUG LOG
+    console.log('✅ imageAlt in saved blog:', savedBlog.imageAlt); // ← DEBUG LOG
+    
     res.status(201).json(savedBlog);
   } catch (error) {
+    console.error('❌ Error saving blog:', error); // ← DEBUG LOG
     res.status(500).json({ message: "Error adding blog", error });
   }
 });
 
 app.patch('/api/blogs/:id', async (req, res) => {
   try {
+    console.log('📝 Updating blog:', req.params.id, req.body); // ← DEBUG LOG
+    
     const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
+    
+    console.log('✅ Updated blog:', updatedBlog); // ← DEBUG LOG
+    
     res.json(updatedBlog);
   } catch (error) {
+    console.error('❌ Error updating blog:', error); // ← DEBUG LOG
     res.status(500).json({ message: "Error updating blog", error });
   }
 });

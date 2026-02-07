@@ -250,15 +250,22 @@
   padding: 25px 30px 35px;
   flex-grow: 1;
 }
-
 .category {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 3px;
-  color: #8b0000; /* Signature Red */
-  margin-bottom: 15px;
-  display: block;
+  letter-spacing: 2px;
+  
+  /* Badge Styling */
+  background-color: #ffffff; /* White background */
+  color: #610000;            /* Dark MJ Red text for contrast */
+  padding: 4px 12px;         /* Creates the space inside the badge */
+  border-radius: 50px;       /* Makes it a pill shape */
+  
+  display: inline-flex;      /* Uses flex for better vertical alignment */
+  align-items: center;
+  margin-bottom: 0;
+  transition: all 0.3s ease;
 }
 
 .blog-title {
@@ -276,13 +283,21 @@
 
 .date {
   font-size: 0.8rem;
-  color: #555;
+  color: #bbbbbb;            /* Light grey for visibility on black */
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
+  display: inline-block;
+  margin-left: 15px;         /* Increased gap to account for badge padding */
+  vertical-align: middle;    /* Aligns date perfectly with the middle of the badge */
 }
 
-
+/* Optional: Subtle hover effect for the category badge */
+.category:hover {
+  background-color: #e31e24;
+  color: #ffffff;
+  cursor: pointer;
+}
 /* ==========================================================================
    4. ADMIN BUTTONS (HORIZONTAL & RIGHT-ALIGNED)
    ========================================================================== */
@@ -513,7 +528,85 @@
   color: #2ecc71;
   font-size: 11px;
 }
+/* ==========================================================================
+   5.1 SEO & ALT TEXT ENHANCEMENTS (NEW)
+   ========================================================================== */
 
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn { 
+  from { opacity: 0; transform: translateY(-5px); } 
+  to { opacity: 1; transform: translateY(0); } 
+}
+
+.hint { 
+  font-size: 0.8rem; 
+  color: #888; 
+  font-weight: 400; 
+  text-transform: none; 
+  margin-left: 5px;
+}
+
+.inline-alt-container {
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.03); /* Matched to your modal input style */
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.alt-header { 
+  font-weight: 800; 
+  font-size: 0.75rem; 
+  text-transform: uppercase; 
+  margin-bottom: 20px; 
+  color: #b71c1c; /* M&J Red to highlight SEO section */
+  letter-spacing: 1px;
+}
+
+.alt-field-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.alt-field-row:last-child { 
+  border-bottom: none; 
+  margin-bottom: 0; 
+}
+
+.alt-preview img {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.alt-input-wrap { flex: 1; }
+
+.alt-input-wrap label { 
+  font-size: 10px !important; /* Overriding global label size for compact look */
+  margin-bottom: 6px; 
+  display: block; 
+  color: #666;
+}
+
+.alt-input-wrap input { 
+  width: 100%; 
+  padding: 10px 14px !important; 
+  background: rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important; 
+  border-radius: 8px !important; 
+  color: #fff !important;
+  font-size: 13px !important;
+}
+
+.alt-input-wrap input:focus {
+  border-color: #b71c1c !important;
+}
 /* ==========================================================================
    6. QUILL EDITOR DARK THEME (FIXED)
    ========================================================================== */
