@@ -9,7 +9,7 @@ export class CarService {
   private http = inject(HttpClient);
   // URL to your Node.js backend
   // private apiUrl = 'http://localhost:3000/api/cars'; // OLD
-private apiUrl = 'https://skyblue-buffalo-277376.hostingersite.com/api/cars'; // NEW
+private apiUrl = 'https://mjqualitycars-backend-api.onrender.com/api/cars'; // NEW
 
   /**
    * Fetches the full inventory from MongoDB

@@ -23,10 +23,11 @@
           <h3 class="price-val">{{ car.price | currency:'PHP':'symbol-narrow':'1.0-0' }}</h3>
         </div>
 
-        <div class="main-car-image">
+        <div class="main-car-image" (click)="openZoom(mainDisplayImage || car.image)">
           <img [src]="formatImg(mainDisplayImage || car.image)" 
                [alt]="car.make" 
-               class="fade-in">
+               class="fade-in clickable-img">
+          <div class="zoom-badge">Click to Enlarge</div>
         </div>
 
         <div class="thumbnail-grid">
@@ -101,6 +102,13 @@
 
         <button class="owner-btn" routerLink="/contact">Inquire Now!</button>
       </div>
+    </div>
+  </div>
+
+  <div class="lightbox-overlay" *ngIf="zoomedImage" (click)="closeZoom()">
+    <div class="lightbox-content" (click)="$event.stopPropagation()">
+      <button class="close-lightbox" (click)="closeZoom()">✕</button>
+      <img [src]="formatImg(zoomedImage)" alt="Vehicle Full View">
     </div>
   </div>
 

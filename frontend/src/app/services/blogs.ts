@@ -9,7 +9,7 @@ export class BlogService {
   private http = inject(HttpClient);
   // URL to your Node.js backend - ensure the route exists in server.js
 // private apiUrl = 'http://localhost:3000/api/blogs'; // OLD
-private apiUrl = 'https://skyblue-buffalo-277376.hostingersite.com/api/blogs'; // NEW
+private apiUrl = 'https://mjqualitycars-backend-api.onrender.com/api/blogs'; // NEW
 
   getBlogs(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);

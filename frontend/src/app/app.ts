@@ -40,9 +40,14 @@ export class App implements OnInit {
       };
     }
 
-    // 3️⃣ Track route changes (Essential for Angular SPA)
+    // 3️⃣ Track route changes & RESET SCROLL POSITION
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
+        
+        // --- THE FIX: Force scroll to top on every page change ---
+        window.scrollTo(0, 0);
+
+        // Google Analytics tracking
         const gtag = (window as any).gtag;
         if (gtag) {
           gtag('config', trackingId, {

@@ -1,19 +1,119 @@
 /* ================= HEADER BANNER ================= */
+/* ==========================================================================
+   M&J QUALITY CARS - INTERACTIVE ELITE HEADER
+   ========================================================================== */
+
 .header-banner {
-  background-color: #000;
-  color: white;
+  position: relative;
+  background: 
+    radial-gradient(circle at 50% 0%, #2a2a2a 0%, #000000 85%),
+    url('https://www.transparenttextures.com/patterns/carbon-fibre.png'); 
+  background-blend-mode: overlay;
+  color: #ffffff;
   text-align: center;
-  padding: 80px 20px 100px;
-  border-bottom-left-radius: 50% 100px;
-  border-bottom-right-radius: 50% 100px;
-  margin-bottom: 0;
+  padding: 160px 20px 200px;
+  border-bottom-left-radius: 50% 120px;
+  border-bottom-right-radius: 50% 120px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  animation: bgSpotlight 10s ease-in-out infinite alternate;
+  
+  /* Transition for smooth hover recovery */
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  cursor: default;
 }
 
+/* --- HOVER EFFECT: Background Depth --- */
+.header-banner:hover {
+  background-color: #050505;
+  box-shadow: 0 35px 70px rgba(0,0,0,0.9);
+}
+
+/* --- 1. The Heading: Interactive Reflection --- */
 .header-banner h1 {
-  font-size: 3.5rem;
-  letter-spacing: 2px;
-  font-weight: 800;
+  position: relative;
+  z-index: 2;
+  font-size: 5.5rem;
+  font-weight: 900;
+  letter-spacing: -3px;
+  text-transform: uppercase;
   margin: 0;
+  line-height: 0.85;
+  color: #fff;
+  background: linear-gradient(120deg, #fff 30%, #666 45%, #fff 50%, #666 55%, #fff 70%);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textGlint 6s linear infinite;
+  filter: drop-shadow(0 15px 30px rgba(0,0,0,0.5));
+  
+  /* Hover Transition */
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.header-banner:hover h1 {
+  transform: scale(1.03) translateY(-5px);
+  filter: drop-shadow(0 20px 40px rgba(139, 0, 0, 0.3));
+  letter-spacing: 2px; /* Subtle "expansion" feel */
+}
+
+/* --- 2. The Badge: Reactive Glow --- */
+.header-banner .brand-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  color: #fff;
+  background: rgba(139, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  padding: 10px 28px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 25px;
+  position: relative;
+  z-index: 2;
+  animation: float 4s ease-in-out infinite;
+  transition: all 0.4s ease;
+}
+
+.header-banner:hover .brand-label {
+  background: rgba(139, 0, 0, 0.5); /* Deepen red on hover */
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(139, 0, 0, 0.4);
+}
+
+/* --- 3. The Divider: Interactive Expansion --- */
+.header-banner .divider {
+  width: 100px;
+  height: 3px;
+  background: #8b0000;
+  margin: 35px auto 0;
+  border-radius: 10px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 10px #8b0000;
+  animation: accentPulse 3s ease-in-out infinite;
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.header-banner:hover .divider {
+  width: 250px; /* Expands to underline the header more fully */
+  background: #ff0000; /* Brightens to vivid red */
+  box-shadow: 0 0 25px #ff0000;
+}
+
+/* --- KEYFRAMES (Same as previous but optimized) --- */
+@keyframes textGlint { 0% { background-position: -150% center; } 100% { background-position: 150% center; } }
+@keyframes bgSpotlight { 0% { background-position: 0% 0%; } 100% { background-position: 0% 20%; } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes accentPulse { 0%, 100% { transform: scaleX(1); opacity: 0.6; } 50% { transform: scaleX(1.1); opacity: 1; } }
+
+/* Mobile Adjustment */
+@media (max-width: 768px) {
+  .header-banner h1 { font-size: 3.2rem; }
+  .header-banner:hover .divider { width: 150px; } /* Smaller expansion on mobile */
 }
 
 /* ================= WRAPPER & CONTAINER ================= */

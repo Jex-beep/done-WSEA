@@ -1,21 +1,118 @@
 /* ==========================================================================
-   1. THE CURVED HEADER
+   M&J QUALITY CARS - INTERACTIVE ELITE HEADER
    ========================================================================== */
+
 .header-banner {
-  background-color: #000;
-  color: white;
+  position: relative;
+  background: 
+    radial-gradient(circle at 50% 0%, #2a2a2a 0%, #000000 85%),
+    url('https://www.transparenttextures.com/patterns/carbon-fibre.png'); 
+  background-blend-mode: overlay;
+  color: #ffffff;
   text-align: center;
-  padding: 80px 20px 100px;
-  border-bottom-left-radius: 50% 100px;
-  border-bottom-right-radius: 50% 100px;
-  margin-bottom: 0;
+  padding: 160px 20px 200px;
+  border-bottom-left-radius: 50% 120px;
+  border-bottom-right-radius: 50% 120px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  animation: bgSpotlight 10s ease-in-out infinite alternate;
+  
+  /* Transition for smooth hover recovery */
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  cursor: default;
 }
 
+/* --- HOVER EFFECT: Background Depth --- */
+.header-banner:hover {
+  background-color: #050505;
+  box-shadow: 0 35px 70px rgba(0,0,0,0.9);
+}
+
+/* --- 1. The Heading: Interactive Reflection --- */
 .header-banner h1 {
-  font-size: 3.5rem;
-  letter-spacing: 2px;
-  font-weight: 800;
+  position: relative;
+  z-index: 2;
+  font-size: 5.5rem;
+  font-weight: 900;
+  letter-spacing: -3px;
+  text-transform: uppercase;
   margin: 0;
+  line-height: 0.85;
+  color: #fff;
+  background: linear-gradient(120deg, #fff 30%, #666 45%, #fff 50%, #666 55%, #fff 70%);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textGlint 6s linear infinite;
+  filter: drop-shadow(0 15px 30px rgba(0,0,0,0.5));
+  
+  /* Hover Transition */
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.header-banner:hover h1 {
+  transform: scale(1.03) translateY(-5px);
+  filter: drop-shadow(0 20px 40px rgba(139, 0, 0, 0.3));
+  letter-spacing: 2px; /* Subtle "expansion" feel */
+}
+
+/* --- 2. The Badge: Reactive Glow --- */
+.header-banner .brand-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  color: #fff;
+  background: rgba(139, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  padding: 10px 28px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 25px;
+  position: relative;
+  z-index: 2;
+  animation: float 4s ease-in-out infinite;
+  transition: all 0.4s ease;
+}
+
+.header-banner:hover .brand-label {
+  background: rgba(139, 0, 0, 0.5); /* Deepen red on hover */
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(139, 0, 0, 0.4);
+}
+
+/* --- 3. The Divider: Interactive Expansion --- */
+.header-banner .divider {
+  width: 100px;
+  height: 3px;
+  background: #8b0000;
+  margin: 35px auto 0;
+  border-radius: 10px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 10px #8b0000;
+  animation: accentPulse 3s ease-in-out infinite;
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.header-banner:hover .divider {
+  width: 250px; /* Expands to underline the header more fully */
+  background: #ff0000; /* Brightens to vivid red */
+  box-shadow: 0 0 25px #ff0000;
+}
+
+/* --- KEYFRAMES (Same as previous but optimized) --- */
+@keyframes textGlint { 0% { background-position: -150% center; } 100% { background-position: 150% center; } }
+@keyframes bgSpotlight { 0% { background-position: 0% 0%; } 100% { background-position: 0% 20%; } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes accentPulse { 0%, 100% { transform: scaleX(1); opacity: 0.6; } 50% { transform: scaleX(1.1); opacity: 1; } }
+
+/* Mobile Adjustment */
+@media (max-width: 768px) {
+  .header-banner h1 { font-size: 3.2rem; }
+  .header-banner:hover .divider { width: 150px; } /* Smaller expansion on mobile */
 }
 
 /* ==========================================================================
@@ -28,17 +125,32 @@
   flex-direction: column;
 }
 
+/* ==========================================================================
+   M&J QUALITY CARS - LUXURY EDITORIAL BLOG
+   ========================================================================== */
+
 .blog-container {
-  max-width: 1300px;
-  margin: 60px auto 0;
-  padding: 0 30px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 80px 5% 100px;
+  background-color: #f4f4f7; /* Contrast against the dark cards */
 }
 
+/* ==========================================================================
+   2. CATEGORY FILTER STYLING (THE "ELITE COCKPIT")
+   ========================================================================== */
+/* --- 1. Global Visibility Reset --- */
+.mobile-filter-trigger, 
+.close-filters {
+  display: none !important; /* Forces these off on desktop */
+}
+
+/* --- 2. Desktop Elite Cockpit (Filter Bar) --- */
 .filter-container {
   display: flex;
   justify-content: center;
   position: relative;
-  margin: 50px 0; 
+  margin: 50px 0;
   z-index: 10;
   padding: 0 15px;
 }
@@ -49,14 +161,12 @@
   flex-wrap: wrap;
   justify-content: center;
   padding: 18px 35px;
+  /* Glassmorphism Effect */
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%); 
   border-radius: 100px;
-  border: 1.5px solid rgba(255, 255, 255, 0.4); 
-  box-shadow: 
-    0 15px 40px rgba(0, 0, 0, 0.08),
-    0 5px 10px rgba(0, 0, 0, 0.03);
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
 }
 
 .filter-btn {
@@ -74,120 +184,104 @@
   letter-spacing: 1.2px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  position: relative;
-}
-
-.filter-btn:hover {
-  transform: translateY(-3px) scale(1.05);
-  border-color: #b71c1c;
-  color: #b71c1c;
-  box-shadow: 0 8px 20px rgba(183, 28, 28, 0.15);
 }
 
 .filter-btn.active {
-  background: #b71c1c;
-  border-color: #b71c1c;
-  color: #ffffff;
-  box-shadow: 0 10px 25px rgba(183, 28, 28, 0.4);
-  transform: scale(1.08);
+  background: #8b0000 !important;
+  color: #ffffff !important;
+  border-color: #8b0000 !important;
+  box-shadow: 0 10px 20px rgba(139, 0, 0, 0.3);
+  transform: translateY(-2px);
 }
 
-@media (max-width: 768px) {
-  .category-filters {
-    padding: 12px 20px;
-    border-radius: 25px;
-    gap: 8px;
-  }
-  .filter-btn {
-    padding: 8px 16px;
-    font-size: 0.75rem;
-  }
-}
 
-/* ==========================================================================
-   3. THE GRID & CARDS
-   ========================================================================== */
+/* --- 2. THE GRID: Cinematic Gallery --- */
 .blog-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px 30px; 
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 50px 35px;
 }
 
+/* --- 3. THE BLOG CARD: Full-Bleed Luxury --- */
 .blog-card {
-  cursor: pointer;
-  position: relative;
-  background: #ffffff;
-  border-radius: 35px;
-  padding: 15px; 
-  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);
-  border: 1px solid rgba(0,0,0,0.03);
+  background: #0a0a0a;
+  border-radius: 24px;
+  padding: 0; /* Full-bleed image */
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
   display: flex;
   flex-direction: column;
 }
 
 .blog-card:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 30px 60px rgba(0,0,0,0.12), 0 10px 20px rgba(0,0,0,0.05);
+  transform: scale(1.03);
+  border-color: rgba(139, 0, 0, 0.5);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
 }
 
 .card-image {
   position: relative;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
-  border-radius: 25px; 
-  background-color: #000;
+  background-color: #111;
 }
 
 .card-image img {
   width: 100%;
-  aspect-ratio: 16 / 10;
+  height: 100%;
   object-fit: cover;
-  display: block;
-  transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1);
+  transition: transform 1.5s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
 .blog-card:hover .card-image img {
-  transform: scale(1.1);
+  transform: scale(1.1); /* Slow cinematic zoom */
+}
+
+/* Dramatic gradient overlay so text pops */
+.card-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,10,10,1) 0%, transparent 50%);
 }
 
 .card-content {
-  padding: 15px 10px 5px;
-}
-
-.blog-title {
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  font-size: 1.25rem;
-  font-weight: 900;
-  line-height: 1.3;
-  color: #111;
-  margin: 0 0 15px 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.blog-card:hover .blog-title {
-  color: #b71c1c; 
+  padding: 25px 30px 35px;
+  flex-grow: 1;
 }
 
 .category {
-  font-size: 0.65rem;
-  font-weight: 800;
+  font-size: 0.7rem;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 3px;
+  color: #8b0000; /* Signature Red */
+  margin-bottom: 15px;
+  display: block;
+}
+
+.blog-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #ffffff;
+  margin: 0 0 20px 0;
+  transition: color 0.3s ease;
+}
+
+.blog-card:hover .blog-title {
   color: #fff;
-  background: #000;
-  padding: 5px 12px;
-  border-radius: 6px;
 }
 
 .date {
   font-size: 0.8rem;
-  color: #888;
-  font-weight: 500;
+  color: #555;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
+
 
 /* ==========================================================================
    4. ADMIN BUTTONS (HORIZONTAL & RIGHT-ALIGNED)
@@ -585,24 +679,6 @@
   .blog-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 768px) {
-  .blog-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
-
-  .form-row { grid-template-columns: 1fr; }
-  .form-group.full { grid-column: span 1; }
-  .blog-editor-modal { padding: 25px; border-radius: 20px; }
-
-  .header-banner {
-    padding: 60px 20px 80px;
-    border-bottom-left-radius: 50% 40px;
-    border-bottom-right-radius: 50% 40px;
-  }
-  .header-banner h1 {
-    font-size: 2.2rem;
-    letter-spacing: 1px;
-  }
-}
-
 .file-name-display {
   display: flex;
   align-items: center;
@@ -732,4 +808,191 @@
   color: #888;
   font-style: italic;
   font-size: 1.1rem;
+}
+
+/* ==========================================================================
+   UNIFIED MOBILE OPTIMIZATION - M&J QUALITY CARS
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* 1. Global Container Adjustments */
+  .blog-container {
+    padding: 20px 15px 60px;
+    margin-top: 20px;
+  }
+
+  /* 2. Header & Banner Refinement */
+  .header-banner {
+    padding: 60px 20px 80px;
+    border-bottom-left-radius: 50% 40px; /* Toned down curve */
+    border-bottom-right-radius: 50% 40px;
+  }
+
+  .header-banner h1 {
+    font-size: 2.2rem; /* Toned down from 3.5rem */
+    letter-spacing: 1px;
+  }
+
+  /* 3. The "Cockpit" Filter Fix - Horizontal Scroll */
+  .category-filters {
+    display: none !important;
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -48%) scale(0.9) !important;
+    width: 85% !important;
+    max-width: 340px !important;
+    background: linear-gradient(145deg, #0f0f0f, #050505) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px !important;
+    z-index: 10001 !important;
+    flex-direction: column !important;
+    padding: 70px 20px 30px !important;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8) !important;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1) !important;
+    pointer-events: none;
+  }
+
+  /* Show ONLY when the variable is true - Smooth Fade & Scale */
+  .category-filters.mobile-open {
+    display: flex !important;
+    opacity: 1 !important;
+    transform: translate(-50%, -50%) scale(1) !important;
+    pointer-events: auto;
+  }
+
+  /* The Close Button inside the card - Minimalist & Clean */
+  .close-filters {
+    display: flex !important;
+    position: absolute !important;
+    top: 25px !important;
+    right: 25px !important;
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+  }
+  
+  .close-filters:active { background: #e8e8ed; }
+
+  /* The Trigger Button - Refined border and spacing */
+  .mobile-filter-trigger {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    background: #0a0a0a; /* Deep charcoal */
+    padding: 16px 28px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    width: 290px;
+    margin: 30px auto;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+  }
+  
+
+  .mobile-filter-trigger:active {
+    transform: scale(0.97);
+    background: #111;
+  }
+
+  .mobile-filter-trigger span {
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .mobile-filter-trigger strong {
+    color: #e31e24; /* Brand Red */
+    text-shadow: 0 0 10px rgba(227, 30, 36, 0.3);
+  }
+.close-filters:hover {
+    background: #e31e24;
+    border-color: #e31e24;
+  }
+
+  /* --- Filter Buttons (List Item Style) --- */
+  .filter-btn {
+    width: 100% !important;
+    margin: 4px 0 !important;
+    justify-content: flex-start !important;
+    padding: 16px 20px !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px;
+    border-radius: 12px !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    color: #888 !important;
+    transition: 0.3s ease;
+  }
+  .filter-btn.active {
+    background: rgba(227, 30, 36, 0.08) !important;
+    border-color: rgba(227, 30, 36, 0.3) !important;
+    color: #fff !important;
+    /* Red dot indicator */
+    position: relative;
+  }
+  .filter-btn.active::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    width: 4px;
+    height: 4px;
+    background: #e31e24;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #e31e24;
+  }
+  /* 4. Blog Grid & Cards */
+  .blog-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    max-width: 450px; /* Prevents cards from being too wide on tablets */
+    margin: 0 auto;
+  }
+
+  .blog-card {
+    border-radius: 20px;
+  }
+
+  .card-content {
+    padding: 20px;
+  }
+
+  .blog-title {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+
+  /* 5. Forms & Modals (Editor) */
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .form-group.full {
+    grid-column: span 1;
+  }
+
+  .blog-editor-modal {
+    padding: 20px;
+    border-radius: 20px;
+    width: 95%;
+    margin: 10px auto;
+  }
+
+  /* Disable heavy hover scale on touch devices to prevent "sticky" clicks */
+  .blog-card:hover {
+    transform: translateY(-5px);
+  }
 }

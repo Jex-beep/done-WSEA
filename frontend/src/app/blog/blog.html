@@ -19,11 +19,37 @@
   </div>
 
   <div class="filter-container">
-    <div class="category-filters">
-      <button class="filter-btn" [class.active]="selectedCategory === 'All'" (click)="filterBlogs('All')">All</button>
-      <button class="filter-btn" [class.active]="selectedCategory === 'Guides'" (click)="filterBlogs('Guides')">Guides</button>
-      <button class="filter-btn" [class.active]="selectedCategory === 'News'" (click)="filterBlogs('News')">News</button>
-      <button class="filter-btn" [class.active]="selectedCategory === 'Maintenance'" (click)="filterBlogs('Maintenance')">Maintenance</button>
+    <div class="mobile-filter-trigger" (click)="toggleFilterMenu()">
+        <span class="active-label">Category: <strong>{{selectedCategory}}</strong></span>
+        <span class="filter-icon">▼</span>
+    </div>
+
+    <div class="category-filters" [class.mobile-open]="isFilterMenuOpen">
+      <button class="close-filters" (click)="toggleFilterMenu()">✕</button>
+      
+      <button class="filter-btn" 
+              [class.active]="selectedCategory === 'All'" 
+              (click)="filterBlogs('All')">
+        All
+      </button>
+      
+      <button class="filter-btn" 
+              [class.active]="selectedCategory === 'Guides'" 
+              (click)="filterBlogs('Guides')">
+        Guides
+      </button>
+      
+      <button class="filter-btn" 
+              [class.active]="selectedCategory === 'News'" 
+              (click)="filterBlogs('News')">
+        News
+      </button>
+      
+      <button class="filter-btn" 
+              [class.active]="selectedCategory === 'Maintenance'" 
+              (click)="filterBlogs('Maintenance')">
+        Maintenance
+      </button>
     </div>
   </div>
 

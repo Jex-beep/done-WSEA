@@ -2,13 +2,12 @@ import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { Title, Meta } from '@angular/platform-browser';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router, NavigationEnd } from '@angular/router';
 import { Nav } from '../nav/nav';
 import { Footer } from '../footer/footer';
 import { BlogService } from '../services/blogs';
 import { AuthService } from '../services/auth';
 import { QuillModule } from 'ngx-quill';
-import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-blog',
@@ -23,10 +22,12 @@ export class Blog implements OnInit {
   private titleService = inject(Title);
   private metaService = inject(Meta);
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
 
   // --- State Management ---
-  isLoading: boolean = true; // Added for loading state
+  isLoading: boolean = true;
   selectedCategory: string = 'All';
+  isFilterMenuOpen: boolean = false; // Logic from Products
   blogs: any[] = [];
   showAddModal = false;
   isSaving = false;
@@ -36,7 +37,6 @@ export class Blog implements OnInit {
   showSuccessPopup: boolean = false;
   successMessage: string = '';
   
-  // Track filenames for the UI display
   mainFileName: string = '';
   authorFileName: string = '';
 
@@ -71,47 +71,83 @@ export class Blog implements OnInit {
     ]
   };
 
+  constructor() {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        (window as any).gtag('config', 'G-R5W1YYRC92', { page_path: event.urlAfterRedirects });
+        console.log('GA page view:', event.urlAfterRedirects);
+      }
+    });
+  }
+
   ngOnInit(): void {
     this.loadBlogs();
     this.setInitialSEO();
   }
 
+  // --- SEO & Meta Tags (Logic from Products) ---
   setInitialSEO() {
     this.titleService.setTitle('Automotive Blog & Guides | M&J Quality Used Cars');
     this.metaService.addTags([
       { name: 'description', content: 'Expert car buying guides and automotive news in Mabalacat City from M&J Quality Used Cars.' },
-      { name: 'keywords', content: 'used cars Mabalacat blog, Pampanga car guides, M&J automotive news, car maintenance Pampanga, Mabalacat used car dealer, automotive tips Philippines' },
-      { property: 'og:title', content: 'M&J Automotive Blog - Expert Insights' },
+      { name: 'keywords', content: 'used cars Mabalacat blog, Pampanga car guides, M&J automotive news, car maintenance Pampanga, car dealer pampanga' },
+      { name: 'robots', content: 'index, follow' },
+      { name: 'author', content: 'M&J Quality Used Cars' },
       { property: 'og:type', content: 'website' },
+      { property: 'og:site_name', content: 'M&J Quality Used Cars' },
+      { property: 'og:title', content: 'M&J Automotive Blog - Expert Insights' },
       { property: 'og:description', content: 'Providing the community with quality car advice and news.' },
       { property: 'og:image', content: '/assets/blog-thumbnail.jpg' },
       { property: 'og:url', content: 'https://mjqualityusedcars.com/blog' },
       { name: 'geo.region', content: 'PH-PAM' },
       { name: 'geo.placename', content: 'Mabalacat City' },
-      { name: 'author', content: 'M&J Quality Used Cars' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'robots', content: 'index, follow' },
+      { name: 'revisit-after', content: '1 day' },
+      { name: 'format-detection', content: 'telephone=no' },
       { name: 'theme-color', content: '#e31e24' }
     ]);
   }
 
+  updateSEO(category: string): void {
+    const description = `Read our latest ${category} articles and automotive guides in Mabalacat City at M&J Quality Used Cars.`;
+    this.metaService.updateTag({ name: 'description', content: description });
+    this.metaService.updateTag({ property: 'og:title', content: `M&J Blog - ${category} Insights` });
+    this.metaService.updateTag({ name: 'keywords', content: `used cars blog, ${category} pampanga, car maintenance tips, M&J blog` });
+  }
+
   loadBlogs() {
-    this.isLoading = true; // Start spinner
+    this.isLoading = true;
     this.blogService.getBlogs().subscribe({
       next: (data: any) => {
         this.blogs = data;
-        this.isLoading = false; // Stop spinner
+        this.isLoading = false;
         this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('Blog database connection failed', err);
-        this.isLoading = false; // Stop spinner on error
+        this.isLoading = false;
         this.cdr.detectChanges();
       }
     });
   }
 
-  // Handle Image selection and preview filename
+  // --- Mobile Navigation Logic (Direct Copy from Products) ---
+  toggleFilterMenu(): void {
+    this.isFilterMenuOpen = !this.isFilterMenuOpen;
+    document.body.style.overflow = this.isFilterMenuOpen ? 'hidden' : 'auto';
+    this.cdr.detectChanges();
+  }
+
+  filterBlogs(category: string): void {
+    this.selectedCategory = category;
+    this.isFilterMenuOpen = false;
+    document.body.style.overflow = 'auto';
+    window.scrollTo({ top: 300, behavior: 'smooth' });
+    this.updateSEO(category);
+    this.cdr.detectChanges();
+  }
+
+  // --- Image Handling ---
   onImageSelected(event: any, type: 'featured' | 'author') {
     const file = event.target.files[0];
     if (!file) return;
@@ -134,7 +170,6 @@ export class Blog implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  // Handle clearing specific files
   clearFile(type: 'author' | 'featured', input: HTMLInputElement) {
     input.value = ''; 
     if (type === 'author') {
@@ -147,54 +182,44 @@ export class Blog implements OnInit {
     this.cdr.detectChanges();
   }
 
+  // --- CRUD Operations ---
   submitBlog(event?: Event) {
     if (event) event.preventDefault();
     if (this.isSaving) return;
-    
     this.isSaving = true;
 
-    // Default date if left blank
     if (!this.newBlog.date) {
       this.newBlog.date = new Date().toISOString().split('T')[0];
     }
 
     const blogToSave = { ...this.newBlog }; 
-    
-    this.triggerSuccess(this.isEditMode ? 'Updating article...' : 'Publishing article...'); 
 
     if (this.isEditMode && this.currentEditId) {
       this.blogService.updateBlog(this.currentEditId, blogToSave).subscribe({
-        next: () => this.loadBlogs(),
-        error: (err) => {
-          console.error("❌ Update Failed", err);
-          this.handleError(err);
-        }
+        next: () => this.triggerSuccess('Article updated successfully!'),
+        error: (err) => this.handleError(err)
       });
     } else {
       this.blogService.addBlog(blogToSave).subscribe({
-        next: () => this.loadBlogs(),
-        error: (err) => {
-          console.error("❌ Save Failed", err);
-          this.handleError(err);
-        }
+        next: () => this.triggerSuccess('Article published successfully!'),
+        error: (err) => this.handleError(err)
       });
     }
   }
 
   triggerSuccess(msg: string) {
+    this.isSaving = false;
     this.successMessage = msg;
     this.showSuccessPopup = true;
     this.showAddModal = false; 
-    this.isSaving = false;
     document.body.style.overflow = 'auto';
-    
+    this.resetForm();
+    this.loadBlogs();
+    this.cdr.detectChanges();
     setTimeout(() => { 
       this.showSuccessPopup = false; 
       this.cdr.detectChanges(); 
     }, 3000);
-
-    this.resetForm();
-    this.cdr.detectChanges();
   }
 
   handleError(err: any) {
@@ -202,7 +227,10 @@ export class Blog implements OnInit {
     this.successMessage = "Error: Could not save article.";
     this.showSuccessPopup = true;
     this.cdr.detectChanges();
-    setTimeout(() => { this.showSuccessPopup = false; this.cdr.detectChanges(); }, 4000);
+    setTimeout(() => { 
+      this.showSuccessPopup = false; 
+      this.cdr.detectChanges(); 
+    }, 4000);
   }
 
   toggleAddModal() {
@@ -218,10 +246,8 @@ export class Blog implements OnInit {
     this.isEditMode = true;
     this.currentEditId = blog._id;
     this.newBlog = { ...blog };
-    
     this.mainFileName = blog.image ? 'Existing Featured Image' : '';
     this.authorFileName = blog.authorImage ? 'Existing Author Image' : '';
-    
     this.showAddModal = true;
     document.body.style.overflow = 'hidden';
     this.cdr.detectChanges();
@@ -249,23 +275,10 @@ export class Blog implements OnInit {
     }
   }
 
-  filterBlogs(category: string): void {
-    this.selectedCategory = category;
-    this.cdr.detectChanges();
-  }
-
   get availableBlogs() {
     if (this.selectedCategory === 'All') return this.blogs;
-    return this.blogs.filter(post => post.category.toLowerCase() === this.selectedCategory.toLowerCase());
+    return this.blogs.filter(post => 
+      post.category.toLowerCase() === this.selectedCategory.toLowerCase()
+    );
   }
-
-  // Added
-
-  constructor(private router: Router) {
-  this.router.events.subscribe(event => {
-    if (event instanceof NavigationEnd) {
-      (window as any).gtag('config', 'G-R5W1YYRC92', { page_path: event.urlAfterRedirects });
-      console.log('GA page view:', event.urlAfterRedirects);
-    }
-  });
-}}
+}
