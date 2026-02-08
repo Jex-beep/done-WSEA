@@ -111,10 +111,11 @@ app.patch('/api/cars/:id', async (req, res) => {
 
 app.get('/api/cars', async (req, res) => {
   try {
-    const cars = await Car.find();
+    // We add .sort({ _id: -1 }) to bring the newest cars to the top
+    const cars = await Car.find().sort({ _id: -1 }); 
     res.json(cars);
   } catch (err) {
-    res.status(500).json({ message: "Error fetching cars" });
+    res.status(500).json({ message: "Error fetching cars", error: err.message });
   }
 });
 
