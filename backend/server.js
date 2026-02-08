@@ -173,13 +173,14 @@ app.patch('/api/blogs/:id', async (req, res) => {
 
 app.get('/api/blogs', async (req, res) => {
   try {
-    const blogs = await Blog.find().sort({ createdAt: -1 });
+    // Using _id: -1 is the standard way to get the latest entries first
+    const blogs = await Blog.find().sort({ _id: -1 });
     res.json(blogs);
   } catch (err) {
-    res.status(500).json({ message: "Error fetching blogs" });
+    // Sending the error message back helps with debugging
+    res.status(500).json({ message: "Error fetching blogs", error: err.message });
   }
 });
-
 app.get('/api/blogs/:id', async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
