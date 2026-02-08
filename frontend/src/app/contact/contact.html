@@ -11,13 +11,48 @@
         <h2>Contact Information</h2>
         <p>Send us a message and our team will guide you personally.</p>
       </div>
+
       <div class="contact-links">
-        <a href="tel:09999990659" class="link-item"><i class="fas fa-phone-alt"></i><span>0999-999-0659</span></a>
-        <a href="mailto:jeremypunsalan@gmail.com" class="link-item"><i class="fas fa-envelope"></i><span>jeremypunsalan@gmail.com</span></a>
-        <div class="link-item"><i class="fas fa-map-marker-alt"></i><span>Sta. Ines, Mabalacat City</span></div>
+        <a href="tel:09999990659" class="link-item">
+          <i class="fas fa-phone-alt"></i><span>0999-999-0659</span>
+        </a>
+
+        <a href="mailto:jeremypunsalan@gmail.com" class="link-item">
+          <i class="fas fa-envelope"></i><span>jeremypunsalan@gmail.com</span>
+        </a>
+
+        <div class="link-item">
+          <i class="fas fa-map-marker-alt"></i><span>Sta. Ines, Mabalacat City</span>
+        </div>
       </div>
+
+      <!-- ✅ Click-to-load Google Map -->
       <div class="map-container">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d318.6251123491351!2d120.5776748995042!3d15.22309767438267!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sph!4v1768681463569!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        @if (!mapLoaded) {
+          <div class="map-placeholder">
+            <p class="map-title">View our location</p>
+
+            <button type="button" class="map-btn" (click)="mapLoaded = true">
+              Load map
+            </button>
+
+            <a
+              class="map-link"
+              href="https://maps.google.com/?q=15.22309767438267,120.5776748995042"
+              target="_blank"
+              rel="noopener">
+              Open in Google Maps
+            </a>
+          </div>
+        } @else {
+          <iframe
+            class="map-iframe"
+            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d318.6251123491351!2d120.5776748995042!3d15.22309767438267!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sph!4v1768681463569!5m2!1sen!2sph"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen>
+          </iframe>
+        }
       </div>
     </div>
 
@@ -27,21 +62,27 @@
           <label>Full Name</label>
           <input type="text" [(ngModel)]="form.name" placeholder="Juan Dela Cruz">
         </div>
+
         <div class="field">
           <label>Email</label>
           <input type="email" [(ngModel)]="form.email" placeholder="example@gmail.com">
         </div>
+
         <div class="field full">
           <label>Phone Number</label>
           <input type="text" [(ngModel)]="form.phone" placeholder="+63 912 345 6789">
         </div>
+
         <div class="field full">
           <label>General Inquiry</label>
           <textarea [(ngModel)]="form.message" placeholder="Write your message.."></textarea>
         </div>
       </div>
+
       <div class="actions">
-        <button (click)="send()" class="submit-btn" [disabled]="isSending">Send Message</button>
+        <button (click)="send()" class="submit-btn" [disabled]="isSending">
+          Send Message
+        </button>
       </div>
     </div>
   </div>

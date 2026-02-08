@@ -1,7 +1,7 @@
 <nav class="navbar">
   <div class="logo-container">
     <a routerLink="/" (click)="closeMenu()">
-      <img src="/MJlogo.png" alt="MJ Quality Used Cars - Premium Car Dealership" class="logo">
+      <img src="/MJlogo.webp" alt="MJ Quality Used Cars - Premium Car Dealership" class="logo">
     </a>
   </div>
 
@@ -19,11 +19,15 @@
     <li><a routerLink="/blog" routerLinkActive="active" (click)="closeMenu()">Blogs</a></li>
 
     @if (authService.isLoggedIn()) {
-      <li class="admin-only-item">
-        <a (click)="authService.logout(); closeMenu()" style="cursor: pointer; color: #ff4d4d; font-weight: bold;">
-          Logout Admin
-        </a>
-      </li>
-    }
+  <li class="admin-only-item">
+    <button
+      type="button"
+      class="logout-btn"
+      (click)="authService.logout(); closeMenu()">
+      Logout Admin
+    </button>
+  </li>
+}
+
   </ul>
 </nav>

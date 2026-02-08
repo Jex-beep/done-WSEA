@@ -29,6 +29,8 @@ export class Contact implements OnInit {
   popupTitle = '';
   popupMessage = '';
   isSuccess = true;
+  mapLoaded = false;
+
 
   constructor(
     private title: Title, 

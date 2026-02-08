@@ -1,4 +1,5 @@
 .main-footer {
+  overflow: hidden;
   background: #020202;
   color: #fff;
   padding: 100px 5% 20px;
@@ -79,8 +80,21 @@
   background: transparent;
 }
 
+/* Added for SEO Purposes */
+
+.logo-shield {
+  min-height: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .glitch-logo {
   height: 110px;
+  width: auto;
+  aspect-ratio: 1920 / 1080;
+  display: block;
+
   filter: grayscale(1) brightness(1.5);
   transition: 0.5s;
 }
@@ -228,8 +242,13 @@
     text-align: center;
   }
 
+  /* Added for SEO Purposes */
   .glitch-logo {
     height: 80px;
+    width: auto;
+    aspect-ratio: 1920 / 1080;
+    display: block;
+
   }
 
   .main-slogan {

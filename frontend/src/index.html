@@ -3,68 +3,10 @@
 <head>
   <meta charset="utf-8">
   <title>MJ Quality Used Cars | Affordable & Reliable Pre-Owned Vehicles Philippines</title>
+
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
- <link rel="icon" type="image/png" href="mjfavicon.png">
 
-  <meta name="title" content="MJ Quality Used Cars | Best Quality Pre-Owned Vehicles Philippines">
-  <meta name="description" content="Looking for quality used cars in the Philippines? MJ Quality Cars offers reliable, inspected, and affordable pre-owned vehicles. Best deals on your next car starts here!">
-  <meta name="keywords" content="used cars Philippines, MJ Quality Cars, affordable cars PH, car dealership Philippines, second hand cars, buy used cars PH, quality pre-owned vehicles">
-  <meta name="robots" content="index, follow">
-  <meta name="author" content="MJ Quality Cars">
-  <meta name="geo.region" content="PH"> <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.mjqualitycars.com/">
-  <meta property="og:site_name" content="MJ Quality Used Cars PH">
-  <meta property="og:title" content="MJ Quality Used Cars | Quality Meets Affordability in PH">
-  <meta property="og:description" content="Find your perfect ride at MJ Quality Cars. High-quality used vehicles at Philippine's most competitive prices.">
-  <meta property="og:image" content="https://www.mjqualitycars.com/MJlogo.png">
-  <meta property="og:locale" content="en_PH">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="MJ Quality Used Cars Philippines">
-  <meta name="twitter:description" content="Top-tier pre-owned vehicles and excellent service. Check our inventory now!">
-  <meta name="twitter:image" content="https://www.mjqualitycars.com/MJlogo.png">
-
-  <link rel="canonical" href="https://www.mjqualitycars.com/">
-  <meta name="rating" content="General">
-  <meta name="revisit-after" content="3 days"> <meta name="theme-color" content="#000000">
-
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "AutoDealer",
-      "name": "MJ Quality Used Cars",
-      "image": "https://www.mjqualitycars.com/MJlogo.png",
-      "url": "https://www.mjqualitycars.com/",
-      "telephone": "+639999990659", 
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "R D Policarpio",
-        "addressLocality": "Mabalacat",
-        "addressRegion": "Pampanga",
-        "postalCode": "2010",
-        "addressCountry": "PH"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "15°13'23.5" N",
-        "longitude": "120°34'39.2" E"
-      },
-      "priceRange": "₱₱₱",
-      "currenciesAccepted": "PHP"
-    }
-  </script>
-</head>
-<body>
-  <app-root></app-root>
-</body>
-</html><!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>MJ Quality Used Cars | Affordable & Reliable Pre-Owned Vehicles Philippines</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="mjfavicon.png">
 
   <!-- SEO Meta Tags -->
@@ -74,6 +16,12 @@
   <meta name="robots" content="index, follow">
   <meta name="author" content="MJ Quality Cars">
   <meta name="geo.region" content="PH">
+  <meta name="rating" content="General">
+  <meta name="revisit-after" content="3 days">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Canonical (fixes Lighthouse "no valid canonical") -->
+  <link rel="canonical" href="https://www.mjqualitycars.com/">
 
   <!-- Open Graph / Social Sharing -->
   <meta property="og:type" content="website">
@@ -89,11 +37,6 @@
   <meta name="twitter:title" content="MJ Quality Used Cars Philippines">
   <meta name="twitter:description" content="Top-tier pre-owned vehicles and excellent service. Check our inventory now!">
   <meta name="twitter:image" content="https://www.mjqualitycars.com/MJlogo.png">
-
-  <link rel="canonical" href="https://www.mjqualitycars.com/">
-  <meta name="rating" content="General">
-  <meta name="revisit-after" content="3 days">
-  <meta name="theme-color" content="#000000">
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -114,16 +57,33 @@
       },
       "geo": {
         "@type": "GeoCoordinates",
-        "latitude": "15.2232",
-        "longitude": "120.5776"
+        "latitude": 15.2232,
+        "longitude": 120.5776
       },
       "priceRange": "₱₱₱",
       "currenciesAccepted": "PHP"
     }
   </script>
 
-  <!-- Google Analytics 4 -->
+  <script>
+  (function () {
+    var preferredOrigin = "https://www.mjqualitycars.com";
+    var path = window.location.pathname || "/";
+    if (path.length > 1 && path.endsWith("/")) path = path.slice(0, -1);
+
+    var canonicalUrl = preferredOrigin + path;
+
+    var link = document.querySelector("link[rel='canonical']");
+    if (!link) {
+      link = document.createElement("link");
+      link.setAttribute("rel", "canonical");
+      document.head.appendChild(link);
+    }
+    link.setAttribute("href", canonicalUrl);
+  })();
+</script>
 </head>
+
 <body>
   <app-root></app-root>
 </body>

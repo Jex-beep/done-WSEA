@@ -1,5 +1,6 @@
 import { Component, signal, OnInit, inject } from '@angular/core';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -11,11 +12,12 @@ import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 export class App implements OnInit {
   protected readonly title = signal('mj-quality-cars');
   private router = inject(Router);
+  private doc = inject(DOCUMENT);
 
   ngOnInit() {
     const trackingId = 'G-R5W1YYRC92';
 
-    // 1️⃣ Dynamically load GA script (only if not already present)
+    // 1️⃣ Dynamically load GA script
     if (!document.getElementById('ga-script')) {
       const script = document.createElement('script');
       script.id = 'ga-script';
@@ -23,11 +25,8 @@ export class App implements OnInit {
       script.async = true;
       document.head.appendChild(script);
 
-      // 2️⃣ Initialize GA after script loads
       script.onload = () => {
         (window as any).dataLayer = (window as any).dataLayer || [];
-        
-        // Use the standard 'arguments' object to match Google's requirements
         (window as any).gtag = function() {
           (window as any).dataLayer.push(arguments);
         };
@@ -36,18 +35,18 @@ export class App implements OnInit {
         gtag('js', new Date());
         gtag('config', trackingId);
 
-        console.log('✅ GA initialized for MJ Quality Cars');
+        console.log('✅ GA initialized');
       };
     }
 
-    // 3️⃣ Track route changes & RESET SCROLL POSITION
+    // 2️⃣ Route tracking + scroll reset + canonical
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        
-        // --- THE FIX: Force scroll to top on every page change ---
+
+        // Scroll reset
         window.scrollTo(0, 0);
 
-        // Google Analytics tracking
+        // Google Analytics page view
         const gtag = (window as any).gtag;
         if (gtag) {
           gtag('config', trackingId, {
@@ -55,6 +54,21 @@ export class App implements OnInit {
           });
           console.log('🚀 GA Page View:', event.urlAfterRedirects);
         }
+
+        // ✅ Canonical URL update (SEO fix)
+        const base = 'https://www.mjqualitycars.com'; // <- your official domain
+        const path = event.urlAfterRedirects.split('?')[0];
+        const canonicalUrl = base + path;
+
+        let link = this.doc.querySelector("link[rel='canonical']") as HTMLLinkElement | null;
+
+        if (!link) {
+          link = this.doc.createElement('link');
+          link.rel = 'canonical';
+          this.doc.head.appendChild(link);
+        }
+
+        link.href = canonicalUrl;
       }
     });
   }

@@ -74,6 +74,45 @@
   transition: width 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
+/* BOTON */
+.nav-links .logout-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+
+  color: #ff4d4d;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.nav-links .logout-btn:hover {
+  color: #ffffff;
+  letter-spacing: 5px;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.nav-links .logout-btn::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 3px;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, #e30613, transparent);
+  transition: width 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.nav-links .logout-btn:hover::after {
+  width: 120%;
+}
 .nav-links a.active::after, .nav-links a:hover::after { width: 120%; }
 
 /* --- MOBILE DROPDOWN LOGIC --- */
@@ -127,4 +166,9 @@
     font-size: 1.5rem; /* Larger links for touch */
     letter-spacing: 6px;
   }
+
+  .nav-links .logout-btn {
+  font-size: 1.5rem;
+  letter-spacing: 6px;
+}
 }

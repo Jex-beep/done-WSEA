@@ -228,14 +228,18 @@
   text-align: justify !important;
 }
 
+/* Added for SEO Purposes */
 ::ng-deep .rich-text img {
   display: block !important;
-  width: 100% !important; 
-  max-width: 720px !important; 
-  height: auto !important;
-  min-height: 400px;
-  object-fit: cover; 
-  margin: 40px auto; 
+  width: 100% !important;
+  max-width: 720px !important;
+
+  /* CLS fix */
+  aspect-ratio: 16 / 9;     /* reserves correct space */
+  height: auto !important;  /* keeps responsive */
+  object-fit: cover;
+
+  margin: 40px auto;
   border-radius: 20px;
   box-shadow: 0 15px 45px rgba(0,0,0,0.08);
 }
@@ -258,8 +262,7 @@
   }
   
   ::ng-deep .rich-text img {
-    height: 300px !important; 
-    min-height: auto;
+    aspect-ratio: 16 / 9;
   }
 }
 

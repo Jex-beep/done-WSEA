@@ -1,24 +1,25 @@
 <IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
+RewriteEngine On
+RewriteBase /
 
-  # 1. FORCE HTTPS
-  RewriteCond %{HTTPS} off
-  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# Force www on main domain
+RewriteCond %{HTTP_HOST} ^mjqualitycars\.com$ [NC]
+RewriteRule ^ https://www.mjqualitycars.com%{REQUEST_URI} [L,R=301]
 
-  # 2. SKIP REWRITING FOR API
-  RewriteRule ^api/ - [L]
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # 3. SERVE EXISTING FILES
-  # If the file or directory exists, serve it directly and stop (L)
-  RewriteCond %{REQUEST_FILENAME} -f [OR]
-  RewriteCond %{REQUEST_FILENAME} -d
-  RewriteRule ^ - [L]
+# Skip API
+RewriteRule ^api/ - [L]
 
-  # 4. ANGULAR ROUTING 
-  # If it's not a real file/folder, let Angular handle the URL
-  RewriteRule . /index.html [L]
+# Serve real files
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Angular routing
+RewriteRule . /index.html [L]
 </IfModule>
 
-# 5. CUSTOM 404
 ErrorDocument 404 /index.html
