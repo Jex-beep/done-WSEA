@@ -20,11 +20,15 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
+  {
+    "glob": "**/*",
+    "input": "public"
+  },
+  "src/robots.txt",
+  "src/sitemap.xml",
+  "src/favicon.ico",
+  "src/.htaccess"
+],
             "styles": [
               "src/styles.css",
               "node_modules/quill/dist/quill.snow.css",

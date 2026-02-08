@@ -2,23 +2,23 @@
   RewriteEngine On
   RewriteBase /
 
-  # 1. FORCE HTTPS (Ensures secure connection for M&J Quality Cars)
+  # 1. FORCE HTTPS
   RewriteCond %{HTTPS} off
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # 2. SKIP REWRITING FOR API (In case you move your server.js here later)
+  # 2. SKIP REWRITING FOR API
   RewriteRule ^api/ - [L]
 
-  # 3. SERVE EXISTING FILES (CSS, JS, Images, etc.)
-  # If the file or folder exists, serve it directly
+  # 3. SERVE EXISTING FILES
+  # If the file or directory exists, serve it directly and stop (L)
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
   # 4. ANGULAR ROUTING 
-  # Everything else goes to index.html so Angular can show /products, /adminlogin, etc.
+  # If it's not a real file/folder, let Angular handle the URL
   RewriteRule . /index.html [L]
 </IfModule>
 
-# 5. CUSTOM 404 (Optional - tells the server to use Angular for 404s)
+# 5. CUSTOM 404
 ErrorDocument 404 /index.html
