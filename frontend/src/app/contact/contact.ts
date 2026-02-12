@@ -40,7 +40,7 @@ export class Contact implements OnInit {
   ) {}
 
   ngOnInit() {
-    emailjs.init('fdKiUJiJkms7lnJ1D');
+    emailjs.init('AMCkIUDHZFhPNauMe');
     this.updateContactSEO();
   }
 
@@ -81,7 +81,7 @@ export class Contact implements OnInit {
     };
 
     // 3. Send email in the background
-    emailjs.send('service_h64pn57', 'template_gdfdmqa', templateParams)
+    emailjs.send('service_vn7kwon', 'template_knp2c42', templateParams)
       .then((response) => {
         this.zone.run(() => {
           console.log('SUCCESS!', response.status, response.text);
