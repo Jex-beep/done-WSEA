@@ -1,44 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
   <!-- Homepage -->
   <url>
-    <loc>https://mjqualitycars.com/</loc>
+    <loc>https://www.mjqualitycars.com/</loc>
     <lastmod>2026-02-08</lastmod>
     <priority>1.0</priority>
   </url>
 
-<!-- About page -->
+  <!-- About page -->
   <url>
-    <loc>https://mjqualitycars.com/about</loc>
+    <loc>https://www.mjqualitycars.com/about</loc>
     <lastmod>2026-02-08</lastmod>
     <priority>0.8</priority>
   </url>
-
 
   <!-- Contact page -->
   <url>
-    <loc>https://mjqualitycars.com/contact</loc>
+    <loc>https://www.mjqualitycars.com/contact</loc>
     <lastmod>2026-02-08</lastmod>
     <priority>0.5</priority>
   </url>
 
-  <!-- Product page -->
+  <!-- Products page -->
   <url>
-    <loc>https://mjqualitycars.com/products</loc>
+    <loc>https://www.mjqualitycars.com/products</loc>
     <lastmod>2026-02-08</lastmod>
     <priority>0.5</priority>
   </url>
 
-<!-- Blog main page -->
+  <!-- Blog main page -->
   <url>
-    <loc>https://mjqualitycars.com/blog</loc>
+    <loc>https://www.mjqualitycars.com/blog</loc>
     <lastmod>2026-02-08</lastmod>
     <priority>0.8</priority>
+  </url>
+
+  <!-- Blog posts -->
+  <url>
+    <loc>https://www.mjqualitycars.com/blog/698729dbefbbe468740c7048</loc>
+    <lastmod>2026-02-07</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.mjqualitycars.com/blog/698824647366bb8ebd3ce019</loc>
+    <lastmod>2026-02-08</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.mjqualitycars.com/blog/698986dd3009db13a8ec57f0</loc>
+    <lastmod>2026-02-08</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.mjqualitycars.com/blog/69898ece3009db13a8ec5857</loc>
+    <lastmod>2026-02-09</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.mjqualitycars.com/blog/69898f033009db13a8ec5869</loc>
+    <lastmod>2026-02-09</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.mjqualitycars.com/blog/698991e93009db13a8ec58de</loc>
+    <lastmod>2026-02-09</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.mjqualitycars.com/blog/6989b51e3009db13a8ec5a0c</loc>
+    <lastmod>2026-02-09</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.mjqualitycars.com/blog/6989c14e3009db13a8ec5c02</loc>
+    <lastmod>2026-02-09</lastmod>
+    <priority>0.7</priority>
   </url>
 
 </urlset>
