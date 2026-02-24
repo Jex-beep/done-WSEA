@@ -12,7 +12,7 @@ export class ImageOptimizationService {
   // Max 1200px wide (HD) and 75% JPEG quality
   async compressImage(image: DataUrl): Promise<string> {
     const orientation = -1; // Default orientation
-    const quality = 75;     // 75% quality is the "sweet spot" for SEO vs. Visuals
+    const quality = 75;     // 75% quality
     const ratio = 100;      // Keep original ratio
     const maxWidth = 1200;  // Standard width for blog/product headers
 
