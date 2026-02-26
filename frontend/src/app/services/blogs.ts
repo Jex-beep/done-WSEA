@@ -7,16 +7,20 @@ import { Observable } from 'rxjs';
 })
 export class BlogService {
   private http = inject(HttpClient);
-  // URL to your Node.js backend - ensure the route exists in server.js
-// private apiUrl = 'http://localhost:3000/api/blogs'; // OLD
-private apiUrl = 'https://mjqualitycars-backend-api.onrender.com/api/blogs'; // NEW
+
+  private apiUrl = 'https://mjqualitycars-backend-api.onrender.com/api/blogs';
 
   getBlogs(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
   }
 
   getBlogById(id: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+    return this.http.get<any>(`${this.apiUrl}/${encodeURIComponent(id)}`);
+  }
+
+  // ✅ NEW: fetch by slug
+  getBlogBySlug(slug: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/slug/${encodeURIComponent(slug)}`);
   }
 
   addBlog(blogData: any): Observable<any> {
@@ -24,10 +28,10 @@ private apiUrl = 'https://mjqualitycars-backend-api.onrender.com/api/blogs'; // 
   }
 
   updateBlog(id: string, data: any): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${id}`, data);
+    return this.http.patch(`${this.apiUrl}/${encodeURIComponent(id)}`, data);
   }
 
   deleteBlog(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+    return this.http.delete<any>(`${this.apiUrl}/${encodeURIComponent(id)}`);
   }
 }
