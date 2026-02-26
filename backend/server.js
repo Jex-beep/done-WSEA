@@ -1,24 +1,25 @@
-require('dotenv').config(); // Essential: Loads variables from Hostinger Dashboard or .env file
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path');
 const bcrypt = require('bcrypt');
 
 const app = express();
 
-// --- CORS CONFIGURATION (Essential for Production) ---
+/* =========================================================
+   CORS
+========================================================= */
+
 const allowedOrigins = [
-  'http://localhost:4200', 
-  'https://mjqualitycars.com', 
+  'http://localhost:4200',
+  'https://mjqualitycars.com',
   'https://www.mjqualitycars.com'
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
+    if (!allowedOrigins.includes(origin)) {
       return callback(new Error('CORS policy violation'), false);
     }
     return callback(null, true);
@@ -26,25 +27,42 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json({ limit: '50mb' })); 
+app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// --- DATABASE CONNECTION ---
-// Ensure MONGODB_URI is set in your Hostinger Environment Variables
+/* =========================================================
+   DATABASE
+========================================================= */
+
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log("✅ MJ Quality Cars Database: ONLINE"))
-  .catch(err => console.log("❌ Connection Error: ", err));
+  .catch(err => console.log("❌ Connection Error:", err));
 
-// --- SCHEMAS ---
+/* =========================================================
+   SLUG HELPER
+========================================================= */
+
+function slugify(text = '') {
+  return String(text)
+    .toLowerCase()
+    .trim()
+    .replace(/['"]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+/* =========================================================
+   SCHEMAS
+========================================================= */
 
 const CarSchema = new mongoose.Schema({
   make: String,
   model: String,
   year: Number,
   type: String,
-  price: String, 
-  image: String, 
-  gallery: [String], 
+  price: String,
+  image: String,
+  gallery: [String],
   isAvailable: { type: Boolean, default: true },
   description: String,
   gearbox: String,
@@ -57,23 +75,35 @@ const CarSchema = new mongoose.Schema({
 });
 const Car = mongoose.model('Car', CarSchema);
 
-// ✅ FIXED: Added imageAlt and inlineImages fields
+/* ---------------- BLOG SCHEMA WITH SLUG ---------------- */
+
 const BlogSchema = new mongoose.Schema({
   title: String,
+  slug: { type: String, index: true }, // no unique constraint for now
+
   category: { type: String, default: 'Guides' },
   date: String,
   author: { type: String, default: 'M&J Admin' },
   authorImage: String,
   readTime: String,
   image: String,
-  imageAlt: String,  // ← NEW: Featured image alt text for SEO
+  imageAlt: String,
   description: String,
   content: String,
-  inlineImages: [{   // ← NEW: Store alt text for inline Quill images
+  inlineImages: [{
     src: String,
     alt: String
   }]
 }, { collection: 'blogs' });
+
+/* SIMPLE SLUG GENERATION */
+BlogSchema.pre('save', function (next) {
+  if (!this.slug && this.title) {
+    this.slug = slugify(this.title);
+  }
+  next();
+});
+
 const Blog = mongoose.model('Blog', BlogSchema);
 
 const AdminSchema = new mongoose.Schema({
@@ -82,49 +112,56 @@ const AdminSchema = new mongoose.Schema({
 });
 const Admin = mongoose.model('Admin', AdminSchema);
 
-// --- HEALTH CHECK ROUTE ---
-// Useful for verifying the backend is "awake" without needing the frontend
+/* =========================================================
+   HEALTH CHECK
+========================================================= */
+
 app.get('/', (req, res) => {
   res.send('🚀 M&J Quality Cars API is Running Successfully');
 });
 
-// --- API ROUTES: CARS ---
+/* =========================================================
+   CARS ROUTES
+========================================================= */
 
 app.post('/api/cars', async (req, res) => {
   try {
-    const newCar = new Car(req.body);
-    const savedCar = await newCar.save();
+    const savedCar = await new Car(req.body).save();
     res.status(201).json(savedCar);
   } catch (error) {
     res.status(500).json({ message: "Error adding car", error });
   }
 });
 
-app.patch('/api/cars/:id', async (req, res) => {
-  try {
-    const updatedCar = await Car.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
-    res.json(updatedCar);
-  } catch (error) {
-    res.status(500).json({ message: "Error updating car", error });
-  }
-});
-
 app.get('/api/cars', async (req, res) => {
   try {
-    // We add .sort({ _id: -1 }) to bring the newest cars to the top
-    const cars = await Car.find().sort({ _id: -1 }); 
+    const cars = await Car.find().sort({ _id: -1 });
     res.json(cars);
   } catch (err) {
-    res.status(500).json({ message: "Error fetching cars", error: err.message });
+    res.status(500).json({ message: "Error fetching cars" });
   }
 });
 
 app.get('/api/cars/:id', async (req, res) => {
   try {
     const car = await Car.findById(req.params.id);
+    if (!car) return res.status(404).json({ message: "Car not found" });
     res.json(car);
-  } catch (err) {
+  } catch {
     res.status(404).json({ message: "Car not found" });
+  }
+});
+
+app.patch('/api/cars/:id', async (req, res) => {
+  try {
+    const updatedCar = await Car.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
+    res.json(updatedCar);
+  } catch {
+    res.status(500).json({ message: "Error updating car" });
   }
 });
 
@@ -132,76 +169,128 @@ app.delete('/api/cars/:id', async (req, res) => {
   try {
     await Car.findByIdAndDelete(req.params.id);
     res.json({ message: "Vehicle removed successfully" });
-  } catch (error) {
+  } catch {
     res.status(500).json({ message: "Delete failed" });
   }
 });
 
-// --- API ROUTES: BLOGS ---
-
-app.post('/api/blogs', async (req, res) => {
-  try {
-    console.log('📝 Received blog data:', req.body); // ← DEBUG LOG
-    console.log('📝 imageAlt received:', req.body.imageAlt); // ← DEBUG LOG
-    
-    const newBlog = new Blog(req.body);
-    const savedBlog = await newBlog.save();
-    
-    console.log('✅ Saved blog to DB:', savedBlog); // ← DEBUG LOG
-    console.log('✅ imageAlt in saved blog:', savedBlog.imageAlt); // ← DEBUG LOG
-    
-    res.status(201).json(savedBlog);
-  } catch (error) {
-    console.error('❌ Error saving blog:', error); // ← DEBUG LOG
-    res.status(500).json({ message: "Error adding blog", error });
-  }
-});
-
-app.patch('/api/blogs/:id', async (req, res) => {
-  try {
-    console.log('📝 Updating blog:', req.params.id, req.body); // ← DEBUG LOG
-    
-    const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
-    
-    console.log('✅ Updated blog:', updatedBlog); // ← DEBUG LOG
-    
-    res.json(updatedBlog);
-  } catch (error) {
-    console.error('❌ Error updating blog:', error); // ← DEBUG LOG
-    res.status(500).json({ message: "Error updating blog", error });
-  }
-});
+/* =========================================================
+   BLOG ROUTES (ORDER MATTERS)
+========================================================= */
 
 app.get('/api/blogs', async (req, res) => {
   try {
-    // Using _id: -1 is the standard way to get the latest entries first
-    const blogs = await Blog.find().sort({ _id: -1 });
+    const blogs = await Blog.find(
+      {},
+      {
+        title: 1,
+        slug: 1,
+        category: 1,
+        date: 1,
+        author: 1,
+        readTime: 1,
+        description: 1
+      }
+    ).sort({ _id: -1 });
+
     res.json(blogs);
   } catch (err) {
-    // Sending the error message back helps with debugging
-    res.status(500).json({ message: "Error fetching blogs", error: err.message });
+    console.log(err);
+    res.status(500).json({ message: "Error fetching blogs" });
   }
 });
+
+/* 2️⃣ GET BLOG BY SLUG */
+app.get('/api/blogs/slug/:slug', async (req, res) => {
+  try {
+    const blog = await Blog.findOne({ slug: req.params.slug });
+    if (!blog) return res.status(404).json({ message: "Blog not found" });
+    res.json(blog);
+  } catch {
+    res.status(500).json({ message: "Error fetching blog by slug" });
+  }
+});
+
+/* 3️⃣ GET BLOG BY ID (must be LAST) */
 app.get('/api/blogs/:id', async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
     if (!blog) return res.status(404).json({ message: "Blog not found" });
     res.json(blog);
-  } catch (err) {
+  } catch {
     res.status(500).json({ message: "Error fetching blog details" });
   }
 });
 
+/* CREATE BLOG */
+app.post('/api/blogs', async (req, res) => {
+  try {
+    const savedBlog = await new Blog(req.body).save();
+    res.status(201).json(savedBlog);
+  } catch {
+    res.status(500).json({ message: "Error adding blog" });
+  }
+});
+
+/* UPDATE BLOG */
+app.patch('/api/blogs/:id', async (req, res) => {
+  try {
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
+    res.json(updatedBlog);
+  } catch {
+    res.status(500).json({ message: "Error updating blog" });
+  }
+});
+
+/* DELETE BLOG */
 app.delete('/api/blogs/:id', async (req, res) => {
   try {
     await Blog.findByIdAndDelete(req.params.id);
     res.json({ message: "Article removed successfully" });
-  } catch (error) {
+  } catch {
     res.status(500).json({ message: "Delete failed" });
   }
 });
 
-// --- AUTH ROUTES ---
+/* =========================================================
+   TEMP SLUG MIGRATION
+========================================================= */
+
+app.post('/api/blogs/migrate-slugs', async (req, res) => {
+  try {
+    const blogs = await Blog.find(
+      { $or: [{ slug: { $exists: false } }, { slug: '' }, { slug: null }] },
+      { _id: 1, title: 1 }
+    );
+
+    let updated = 0;
+
+    for (const b of blogs) {
+      if (!b.title) continue;
+
+      const newSlug = slugify(b.title);
+
+      await Blog.updateOne(
+        { _id: b._id },
+        { $set: { slug: newSlug } }
+      );
+
+      updated++;
+    }
+
+    res.json({ message: "Slug migration complete", updated });
+  } catch (err) {
+    res.status(500).json({ message: "Migration failed", error: err.message });
+  }
+});
+
+/* =========================================================
+   AUTH
+========================================================= */
 
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
@@ -213,13 +302,15 @@ app.post('/api/login', async (req, res) => {
     if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
 
     res.status(200).json({ message: "Login Successful", user: admin.username });
-  } catch (error) {
+  } catch {
     res.status(500).json({ message: "Server error during login" });
   }
 });
 
-// --- START SERVER ---
-// Hostinger uses process.env.PORT to assign your app a port dynamically
+/* =========================================================
+   START SERVER
+========================================================= */
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 MJ Quality Cars API running on Port: ${PORT}`);

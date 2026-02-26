@@ -59,7 +59,7 @@
     <div class="blog-container">
       <div class="blog-grid">
         @for (post of availableBlogs; track post._id) {
-          <article class="blog-card" [routerLink]="['/blog', post._id]">
+          <article class="blog-card" [routerLink]="['/blog', post.slug || post._id]">
             
             <div class="card-image">
               <!-- ✅ FIXED: Proper alt text binding with fallback -->
