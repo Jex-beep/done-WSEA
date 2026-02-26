@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class BlogService {
   private http = inject(HttpClient);
 
-  private apiUrl = 'https://mjqualitycars-backend-api.onrender.com/api/blogs';
+  private apiUrl = 'http://localhost:3000/api/blogs';
 
   getBlogs(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);

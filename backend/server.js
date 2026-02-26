@@ -179,6 +179,7 @@ app.delete('/api/cars/:id', async (req, res) => {
 ========================================================= */
 
 app.get('/api/blogs', async (req, res) => {
+  console.log("HIT /api/blogs ✅"); // add this
   try {
     const blogs = await Blog.find(
       {},
@@ -189,7 +190,10 @@ app.get('/api/blogs', async (req, res) => {
         date: 1,
         author: 1,
         readTime: 1,
-        description: 1
+        description: 1,
+        image: 1,        // make sure this exists
+        imageAlt: 1,     // make sure this exists
+        authorImage: 1   // optional
       }
     ).sort({ _id: -1 });
 
