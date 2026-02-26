@@ -8,85 +8,86 @@
   <!-- Homepage -->
   <url>
     <loc>https://www.mjqualitycars.com/</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-09</lastmod>
     <priority>1.0</priority>
   </url>
 
   <!-- About page -->
   <url>
     <loc>https://www.mjqualitycars.com/about</loc>
-    <lastmod>2026-02-08</lastmod>
+    <lastmod>2026-02-09</lastmod>
     <priority>0.8</priority>
   </url>
 
   <!-- Contact page -->
   <url>
     <loc>https://www.mjqualitycars.com/contact</loc>
-    <lastmod>2026-02-08</lastmod>
-    <priority>0.5</priority>
+    <lastmod>2026-02-09</lastmod>
+    <priority>0.6</priority>
   </url>
 
   <!-- Products page -->
   <url>
     <loc>https://www.mjqualitycars.com/products</loc>
-    <lastmod>2026-02-08</lastmod>
-    <priority>0.5</priority>
+    <lastmod>2026-02-09</lastmod>
+    <priority>0.7</priority>
   </url>
 
   <!-- Blog main page -->
   <url>
     <loc>https://www.mjqualitycars.com/blog</loc>
+    <lastmod>2026-02-09</lastmod>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Blog posts (SLUGS) -->
+
+  <url>
+    <loc>https://www.mjqualitycars.com/blog/choosing-a-reliable-second-hand-car-in-mabalacat-city-a-hands-on-guide</loc>
+    <lastmod>2026-02-07</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.mjqualitycars.com/blog/fuel-saving-cars-for-daily-commuters-making-smart-choices</loc>
     <lastmod>2026-02-08</lastmod>
     <priority>0.8</priority>
   </url>
 
-  <!-- Blog posts -->
   <url>
-    <loc>https://www.mjqualitycars.com/blog/698729dbefbbe468740c7048</loc>
-    <lastmod>2026-02-07</lastmod>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://www.mjqualitycars.com/blog/698824647366bb8ebd3ce019</loc>
+    <loc>https://www.mjqualitycars.com/blog/a-local-guide-to-buying-used-cars-in-mabalacat-city</loc>
     <lastmod>2026-02-08</lastmod>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.mjqualitycars.com/blog/698986dd3009db13a8ec57f0</loc>
-    <lastmod>2026-02-08</lastmod>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://www.mjqualitycars.com/blog/69898ece3009db13a8ec5857</loc>
+    <loc>https://www.mjqualitycars.com/blog/how-to-choose-a-trusted-used-cars-dealer-in-mabalacat-city-pampanga</loc>
     <lastmod>2026-02-09</lastmod>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.mjqualitycars.com/blog/69898f033009db13a8ec5869</loc>
+    <loc>https://www.mjqualitycars.com/blog/being-budget-friendly-economic-cars-to-pick-for-your-first-car</loc>
     <lastmod>2026-02-09</lastmod>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.mjqualitycars.com/blog/698991e93009db13a8ec58de</loc>
+    <loc>https://www.mjqualitycars.com/blog/the-best-place-to-buy-used-cars-in-mabalacat-city</loc>
     <lastmod>2026-02-09</lastmod>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.mjqualitycars.com/blog/6989b51e3009db13a8ec5a0c</loc>
+    <loc>https://www.mjqualitycars.com/blog/my-experience-as-a-student-getting-a-used-car-for-daily-driving-in-the-philippines</loc>
     <lastmod>2026-02-09</lastmod>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.mjqualitycars.com/blog/6989c14e3009db13a8ec5c02</loc>
+    <loc>https://www.mjqualitycars.com/blog/best-second-hand-cars-affordable-reliable-picks-used-cars-in-pampanga</loc>
     <lastmod>2026-02-09</lastmod>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
 
 </urlset>

@@ -5,7 +5,7 @@ import { Title, Meta, DomSanitizer } from '@angular/platform-browser';
 import { BlogService } from '../../services/blogs';
 import { Nav } from '../../nav/nav';
 import { Footer } from '../../footer/footer';
-import { Observable, tap, map, switchMap, of, catchError } from 'rxjs';
+import { Observable, tap, map, of, catchError } from 'rxjs';
 
 @Component({
   selector: 'app-blog-detail',
@@ -33,13 +33,10 @@ export class BlogDetail implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // We keep route param name as "id" (since your route is blog/:id)
+    // ✅ Your route param is blog/:slug so we read "slug"
     const value = this.route.snapshot.paramMap.get('slug');
-
     if (!value) return;
 
-    // If param looks like Mongo ID → fetch by ID then redirect to slug
-    // Else → treat as slug and fetch by slug
     this.blog$ = (this.isMongoId(value)
       ? this.blogService.getBlogById(value).pipe(
           map((res) => (res?.data ? res.data : res)),
@@ -49,7 +46,6 @@ export class BlogDetail implements OnInit, OnDestroy {
               this.router.navigateByUrl(`/blog/${encodeURIComponent(blog.slug)}`, { replaceUrl: true });
             }
           }),
-          // After redirect, still return blog so page can render immediately if needed
           map((blog) => blog)
         )
       : this.blogService.getBlogBySlug(value).pipe(
@@ -73,8 +69,6 @@ export class BlogDetail implements OnInit, OnDestroy {
       }),
       catchError((err) => {
         console.error('Blog detail load error:', err);
-        // Optional: route to error page
-        // this.router.navigateByUrl('/error');
         return of(null);
       })
     );
@@ -97,10 +91,10 @@ export class BlogDetail implements OnInit, OnDestroy {
     this.metaService.updateTag({ property: 'og:title', content: blog.title });
     this.metaService.updateTag({ property: 'og:image', content: blog.image || '' });
 
-    // ✅ OG URL should be canonical slug URL if possible
     const BASE_URL = 'https://www.mjqualitycars.com';
     const slug = blog.slug ? encodeURIComponent(blog.slug) : '';
     const canonicalUrl = slug ? `${BASE_URL}/blog/${slug}` : window.location.href;
+
     this.metaService.updateTag({ property: 'og:url', content: canonicalUrl });
 
     this.metaService.updateTag({ name: 'geo.region', content: 'PH-PAM' });
@@ -112,26 +106,30 @@ export class BlogDetail implements OnInit, OnDestroy {
     if (existing) existing.remove();
 
     const BASE_URL = 'https://www.mjqualitycars.com';
-    const BUSINESS_NAME = 'MJ Quality Used Cars';
+    const BUSINESS_NAME = 'M&J Quality Used Cars';
     const LOGO_URL = `${BASE_URL}/MJlogo.webp`;
 
-    // ✅ Canonical post URL uses slug
     const postUrl = `${BASE_URL}/blog/${encodeURIComponent(slug)}`;
 
     const description =
       blog?.description ||
       (blog?.content ? String(blog.content).replace(/<[^>]*>/g, '').slice(0, 160) : '');
 
+    const publishedDate = blog?.date ? new Date(blog.date).toISOString() : undefined;
+
     const schema = {
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
       headline: blog?.title || 'Blog Post',
       description,
-      mainEntityOfPage: postUrl,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': postUrl,
+      },
       url: postUrl,
-      datePublished: blog?.date,
-      dateModified: blog?.date,
-      image: [LOGO_URL],
+      datePublished: publishedDate,
+      dateModified: publishedDate, // ✅ same because no updatedAt
+      image: blog?.image ? [blog.image] : [LOGO_URL],
       author: blog?.author
         ? { '@type': 'Person', name: blog.author }
         : { '@type': 'Organization', name: BUSINESS_NAME },
