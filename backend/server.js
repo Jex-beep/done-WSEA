@@ -3,8 +3,27 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET is not set');
+}
 
 const app = express();
+
+/* Requires a valid admin token on write routes */
+function requireAuth(req, res, next) {
+  const header = req.headers.authorization || '';
+  const token = header.startsWith('Bearer ') ? header.slice(7) : null;
+  if (!token) return res.status(401).json({ message: 'Authentication required' });
+  try {
+    req.admin = jwt.verify(token, JWT_SECRET);
+    next();
+  } catch {
+    res.status(401).json({ message: 'Invalid or expired token' });
+  }
+}
 
 /* =========================================================
    CORS
@@ -124,7 +143,7 @@ app.get('/', (req, res) => {
    CARS ROUTES
 ========================================================= */
 
-app.post('/api/cars', async (req, res) => {
+app.post('/api/cars', requireAuth, async (req, res) => {
   try {
     const savedCar = await new Car(req.body).save();
     res.status(201).json(savedCar);
@@ -152,7 +171,7 @@ app.get('/api/cars/:id', async (req, res) => {
   }
 });
 
-app.patch('/api/cars/:id', async (req, res) => {
+app.patch('/api/cars/:id', requireAuth, async (req, res) => {
   try {
     const updatedCar = await Car.findByIdAndUpdate(
       req.params.id,
@@ -165,7 +184,7 @@ app.patch('/api/cars/:id', async (req, res) => {
   }
 });
 
-app.delete('/api/cars/:id', async (req, res) => {
+app.delete('/api/cars/:id', requireAuth, async (req, res) => {
   try {
     await Car.findByIdAndDelete(req.params.id);
     res.json({ message: "Vehicle removed successfully" });
@@ -227,7 +246,7 @@ app.get('/api/blogs/:id', async (req, res) => {
 });
 
 /* CREATE BLOG */
-app.post('/api/blogs', async (req, res) => {
+app.post('/api/blogs', requireAuth, async (req, res) => {
   try {
     const savedBlog = await new Blog(req.body).save();
     res.status(201).json(savedBlog);
@@ -237,7 +256,7 @@ app.post('/api/blogs', async (req, res) => {
 });
 
 /* UPDATE BLOG */
-app.patch('/api/blogs/:id', async (req, res) => {
+app.patch('/api/blogs/:id', requireAuth, async (req, res) => {
   try {
     const updatedBlog = await Blog.findByIdAndUpdate(
       req.params.id,
@@ -251,7 +270,7 @@ app.patch('/api/blogs/:id', async (req, res) => {
 });
 
 /* DELETE BLOG */
-app.delete('/api/blogs/:id', async (req, res) => {
+app.delete('/api/blogs/:id', requireAuth, async (req, res) => {
   try {
     await Blog.findByIdAndDelete(req.params.id);
     res.json({ message: "Article removed successfully" });
@@ -264,7 +283,7 @@ app.delete('/api/blogs/:id', async (req, res) => {
    TEMP SLUG MIGRATION
 ========================================================= */
 
-app.post('/api/blogs/migrate-slugs', async (req, res) => {
+app.post('/api/blogs/migrate-slugs', requireAuth, async (req, res) => {
   try {
     const blogs = await Blog.find(
       { $or: [{ slug: { $exists: false } }, { slug: '' }, { slug: null }] },
@@ -305,7 +324,8 @@ app.post('/api/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, admin.password);
     if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
 
-    res.status(200).json({ message: "Login Successful", user: admin.username });
+    const token = jwt.sign({ sub: String(admin._id), username: admin.username }, JWT_SECRET, { expiresIn: '8h' });
+    res.status(200).json({ message: "Login Successful", user: admin.username, token });
   } catch {
     res.status(500).json({ message: "Server error during login" });
   }

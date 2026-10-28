@@ -51,6 +51,9 @@ export class AuthService {
       tap({
         next: (response: any) => {
           console.log('✅ Login Successful:', response.user);
+          if (typeof window !== 'undefined' && window.localStorage && response.token) {
+            localStorage.setItem('adminToken', response.token);
+          }
           this.isLoggedIn.set(true);
         },
         error: (err) => {
@@ -65,6 +68,17 @@ export class AuthService {
    * Clears the session and updates the UI instantly.
    */
   logout() {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.removeItem('adminToken');
+    }
     this.isLoggedIn.set(false);
+  }
+
+  /** JWT sent on write requests by the auth interceptor. */
+  get token(): string | null {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return localStorage.getItem('adminToken');
+    }
+    return null;
   }
 }

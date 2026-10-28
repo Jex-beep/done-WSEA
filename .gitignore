@@ -4,3 +4,12 @@ node_modules
 
 # Local Netlify folder
 .netlify
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Angular/Vite build cache and archives
+frontend/mj-quality-cars/
+*.zip

@@ -1,8 +1,8 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
-import { Title, Meta } from '@angular/platform-browser';
-import { RouterLink } from '@angular/router';
+import { Title, Meta, MetaDefinition } from '@angular/platform-browser';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Nav } from '../nav/nav';
 import { Footer } from '../footer/footer';
 import { CarService } from '../services/car';
@@ -21,6 +21,13 @@ export class Products implements OnInit {
   private titleService = inject(Title);
   private metaService = inject(Meta);
   private cdr = inject(ChangeDetectorRef);
+  private route = inject(ActivatedRoute);
+
+  private static readonly CATEGORIES = ['Sedan', 'Pickup', 'Coupe', 'Suv', 'Micro', 'Motor'];
+
+  private static normalizeType(value: string): string {
+    return String(value || '').toLowerCase().replace(/[^a-z]/g, '');
+  }
 
   // --- State Management ---
   isLoading: boolean = true; 
@@ -61,6 +68,17 @@ export class Products implements OnInit {
   ngOnInit(): void {
     this.loadCars();
     this.setInitialSEO();
+
+    // Home page category tiles link here as /products?type=Sedan
+    this.route.queryParamMap.subscribe(params => {
+      const wanted = Products.normalizeType(params.get('type') || '');
+      const match = Products.CATEGORIES.find(c => Products.normalizeType(c) === wanted);
+      if (match) {
+        this.selectedCategory = match;
+        this.updateSEO(match);
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   // --- Equipment Management ---
@@ -87,7 +105,7 @@ export class Products implements OnInit {
   // --- SEO & Meta Tags ---
   setInitialSEO() {
     this.titleService.setTitle('Our Inventory | M&J Quality Used Cars Mabalacat');
-    this.metaService.addTags([
+    const tags: MetaDefinition[] = [
       { name: 'description', content: 'Browse our premium selection of quality used cars in Mabalacat, Pampanga. High-resolution gallery and full vehicle specs.' },
       { name: 'keywords', content: 'used cars Mabalacat, second hand cars Pampanga, M&J Quality Used Cars, buy car Pampanga, quality cars Mabalacat City, affordable used cars PH, car dealer pampanga, toyota mabalacat, honda mabalacat' },
       { name: 'robots', content: 'index, follow' },
@@ -97,7 +115,7 @@ export class Products implements OnInit {
       { property: 'og:title', content: 'M&J Quality Used Cars - Admin Managed Inventory' },
       { property: 'og:description', content: 'Check out our latest inspected used vehicles in Mabalacat City. Sedans, SUVs, Pickups, and Motors available.' },
       { property: 'og:image', content: '/bluecar.png' },
-      { property: 'og:url', content: 'https://mjqualityusedcars.com/products' },
+      { property: 'og:url', content: 'https://www.mjqualitycars.com/products' },
       { name: 'geo.region', content: 'PH-PAM' },
       { name: 'geo.placename', content: 'Mabalacat City' },
       { name: 'geo.position', content: '15.2215;120.5744' },
@@ -105,7 +123,8 @@ export class Products implements OnInit {
       { name: 'revisit-after', content: '1 day' },
       { name: 'format-detection', content: 'telephone=no' },
       { name: 'theme-color', content: '#e31e24' }
-    ]);
+    ];
+    tags.forEach(tag => this.metaService.updateTag(tag));
   }
 
   updateSEO(category: string): void {
@@ -344,7 +363,7 @@ export class Products implements OnInit {
   get availableCars() {
     if (this.selectedCategory === 'All') return this.inventory.filter(car => car.isAvailable);
     return this.inventory.filter(car => 
-      car.isAvailable && car.type.toLowerCase() === this.selectedCategory.toLowerCase()
+      car.isAvailable && Products.normalizeType(car.type) === Products.normalizeType(this.selectedCategory)
     );
   }
 }
