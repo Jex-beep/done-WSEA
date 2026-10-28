@@ -1,8 +1,2 @@
 User-agent: *
-Allow: /
-
-Disallow: /admin
-Disallow: /adminlogin
-Disallow: /cms
-
-Sitemap: https://www.mjqualitycars.com/sitemap.xml
+Disallow: /

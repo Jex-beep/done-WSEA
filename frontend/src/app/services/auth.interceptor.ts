@@ -2,15 +2,14 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { AuthService } from './auth';
-
-const API_HOST = 'mjqualitycars-backend-api.onrender.com';
+import { API_BASE } from '../api-config';
 
 /** Attaches the admin JWT to API calls and logs out when the server rejects it. */
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
   const token = auth.token;
 
-  if (!token || !req.url.includes(API_HOST)) {
+  if (!token || !req.url.startsWith(API_BASE)) {
     return next(req);
   }
 

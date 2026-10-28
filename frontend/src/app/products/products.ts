@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { Title, Meta, MetaDefinition } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { SITE } from '../site-info';
 import { Nav } from '../nav/nav';
 import { Footer } from '../footer/footer';
 import { CarService } from '../services/car';
@@ -22,6 +23,7 @@ export class Products implements OnInit {
   private metaService = inject(Meta);
   private cdr = inject(ChangeDetectorRef);
   private route = inject(ActivatedRoute);
+  site = SITE;
 
   private static readonly CATEGORIES = ['Sedan', 'Pickup', 'Coupe', 'Suv', 'Micro', 'Motor'];
 
@@ -108,14 +110,14 @@ export class Products implements OnInit {
     const tags: MetaDefinition[] = [
       { name: 'description', content: 'Browse our premium selection of quality used cars in Mabalacat, Pampanga. High-resolution gallery and full vehicle specs.' },
       { name: 'keywords', content: 'used cars Mabalacat, second hand cars Pampanga, M&J Quality Used Cars, buy car Pampanga, quality cars Mabalacat City, affordable used cars PH, car dealer pampanga, toyota mabalacat, honda mabalacat' },
-      { name: 'robots', content: 'index, follow' },
+      { name: 'robots', content: 'noindex, nofollow' },
       { name: 'author', content: 'M&J Quality Used Cars' },
       { property: 'og:type', content: 'website' },
       { property: 'og:site_name', content: 'M&J Quality Used Cars' },
       { property: 'og:title', content: 'M&J Quality Used Cars - Admin Managed Inventory' },
       { property: 'og:description', content: 'Check out our latest inspected used vehicles in Mabalacat City. Sedans, SUVs, Pickups, and Motors available.' },
       { property: 'og:image', content: '/bluecar.png' },
-      { property: 'og:url', content: 'https://www.mjqualitycars.com/products' },
+      { property: 'og:url', content: window.location.origin + '/products' },
       { name: 'geo.region', content: 'PH-PAM' },
       { name: 'geo.placename', content: 'Mabalacat City' },
       { name: 'geo.position', content: '15.2215;120.5744' },

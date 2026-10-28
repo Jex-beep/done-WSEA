@@ -55,7 +55,7 @@ export class About implements OnInit, OnDestroy {
     if (existing) existing.remove();
 
     // ✅ no trailing slash
-    const BASE_URL = 'https://www.mjqualitycars.com';
+    const BASE_URL = window.location.origin;
     const BUSINESS_NAME = 'M&J Quality Used Cars';
 
     const aboutPageSchema = {

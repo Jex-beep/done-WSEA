@@ -2,83 +2,75 @@
 
 @if (showSuccessPopup) {
   <div class="success-toast-overlay">
-    <div class="success-toast">
+    <div class="success-toast" role="status">
       <div class="success-icon"></div>
       <div class="success-text">
         <h3>Success!</h3>
         <p>{{ successMessage }}</p>
       </div>
-      <button class="success-close" (click)="showSuccessPopup = false">✕</button>
+      <button type="button" class="success-close" aria-label="Dismiss" (click)="showSuccessPopup = false">✕</button>
     </div>
   </div>
 }
 
 <section class="products-page">
-  <div class="header-banner">
-    <h1>WE OFFER</h1>
-  </div>
+  <header class="page-head">
+    <h1>Our inventory</h1>
+    <p>Inspected pre-owned vehicles, priced honestly.</p>
+    <div class="rule"></div>
+  </header>
 
-  <div class="filter-container">
-    <div class="mobile-filter-trigger" (click)="toggleFilterMenu()">
-        <span class="active-label">Category: <strong>{{selectedCategory}}</strong></span>
-        <span class="filter-icon">▼</span>
-    </div>
-
-    <div class="category-filters" [class.mobile-open]="isFilterMenuOpen">
-      <button class="close-filters" (click)="toggleFilterMenu()">✕</button>
-      <button class="filter-btn" [class.active]="selectedCategory === 'All'" (click)="filterCars('All')">All vehicles</button>
-      <button class="filter-btn" [class.active]="selectedCategory === 'Sedan'" (click)="filterCars('Sedan')"><img src="/sedan.png" alt="Sedan" class="btn-icon"> Sedan</button>
-      <button class="filter-btn" [class.active]="selectedCategory === 'Pickup'" (click)="filterCars('Pickup')"><img src="/pickup.png" alt="Pickup" class="btn-icon"> Pickup</button>
-      <button class="filter-btn" [class.active]="selectedCategory === 'Coupe'" (click)="filterCars('Coupe')"><img src="/coupe.png" alt="Coupe" class="btn-icon"> Coupe</button>
-      <button class="filter-btn" [class.active]="selectedCategory === 'Suv'" (click)="filterCars('Suv')"><img src="/suv.png" alt="SUV" class="btn-icon"> Suv</button>
-      <button class="filter-btn" [class.active]="selectedCategory === 'Micro'" (click)="filterCars('Micro')"><img src="/micro.png" alt="Micro" class="btn-icon"> Micro</button>
-      <button class="filter-btn" [class.active]="selectedCategory === 'Motor'" (click)="filterCars('Motor')"><img src="/motor.png" alt="Motorcycle" class="btn-icon"> Motor</button>
+  <div class="filter-bar">
+    <div class="category-filters" role="group" aria-label="Filter by vehicle type">
+      <button type="button" class="filter-btn" [class.active]="selectedCategory === 'All'" [attr.aria-pressed]="selectedCategory === 'All'" (click)="filterCars('All')">All vehicles</button>
+      <button type="button" class="filter-btn" [class.active]="selectedCategory === 'Sedan'" [attr.aria-pressed]="selectedCategory === 'Sedan'" (click)="filterCars('Sedan')"><img src="/sedan.png" alt="" class="btn-icon"> Sedan</button>
+      <button type="button" class="filter-btn" [class.active]="selectedCategory === 'Pickup'" [attr.aria-pressed]="selectedCategory === 'Pickup'" (click)="filterCars('Pickup')"><img src="/pickup.png" alt="" class="btn-icon"> Pickup</button>
+      <button type="button" class="filter-btn" [class.active]="selectedCategory === 'Coupe'" [attr.aria-pressed]="selectedCategory === 'Coupe'" (click)="filterCars('Coupe')"><img src="/coupe.png" alt="" class="btn-icon"> Coupe</button>
+      <button type="button" class="filter-btn" [class.active]="selectedCategory === 'Suv'" [attr.aria-pressed]="selectedCategory === 'Suv'" (click)="filterCars('Suv')"><img src="/suv.png" alt="" class="btn-icon"> SUV</button>
+      <button type="button" class="filter-btn" [class.active]="selectedCategory === 'Micro'" [attr.aria-pressed]="selectedCategory === 'Micro'" (click)="filterCars('Micro')"><img src="/micro.png" alt="" class="btn-icon"> Micro</button>
+      <button type="button" class="filter-btn" [class.active]="selectedCategory === 'Motor'" [attr.aria-pressed]="selectedCategory === 'Motor'" (click)="filterCars('Motor')"><img src="/motor.png" alt="" class="btn-icon"> Motor</button>
     </div>
   </div>
 
   @if (isLoading) {
     <ng-container *ngTemplateOutlet="loadingOrError"></ng-container>
   } @else {
+    <p class="result-count" aria-live="polite">{{ availableCars.length }} {{ availableCars.length === 1 ? 'vehicle' : 'vehicles' }}</p>
+
     <div class="product-grid">
       @for (car of availableCars; track car._id) {
-        <div class="car-card">
-          <div class="image-container">
-            <img [src]="car.image" [alt]="car.altText || (car.make + ' ' + car.model + ' for sale in Mabalacat City Pampanga')">
-          </div>
+        <article class="car-card">
+          <a class="image-container" [routerLink]="['/products', car._id]">
+            <img [src]="car.image" [alt]="car.altText || (car.make + ' ' + car.model + ' for sale in Mabalacat City Pampanga')" loading="lazy">
+          </a>
           <div class="car-info">
-            <div class="title-row" style="display: flex; justify-content: space-between; align-items: flex-start;">
-              <div>
-                <h3>{{ car.make }}</h3>
-                <p class="car-year" style="margin: 0; font-size: 0.9rem; color: #666;">{{ car.year }}</p>
-              </div>
-              <span class="price">{{ car.price | currency:'PHP':'symbol-narrow':'1.0-0' }}</span>
-            </div>
-            <p class="car-type">{{ car.type }}</p>
-            
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; gap: 10px;">
-              <button class="view-details" [routerLink]="['/products', car._id]">
-                View Details
-              </button>
+            <h3><a [routerLink]="['/products', car._id]">{{ car.make }} {{ car.model }}</a></h3>
+            <p class="car-meta">{{ car.year }} · {{ car.type }}</p>
+            <span class="price">{{ car.price | currency:'PHP':'symbol-narrow':'1.0-0' }}</span>
+
+            <div class="card-actions">
+              <a class="view-details" [routerLink]="['/products', car._id]">View details</a>
 
               @if (authService.isLoggedIn()) {
                 <div class="admin-btns">
-                  <button (click)="openEditModal(car)" class="btn-edit" title="Edit">✎</button>
-                  <button (click)="onDelete(car._id)" class="btn-delete" title="Delete">🗑</button>
+                  <button type="button" (click)="openEditModal(car)" class="btn-edit" aria-label="Edit listing" title="Edit">✎</button>
+                  <button type="button" (click)="onDelete(car._id)" class="btn-delete" aria-label="Delete listing" title="Delete">🗑</button>
                 </div>
               }
             </div>
           </div>
-        </div>
-      } @empty { 
+        </article>
+      } @empty {
         <div class="no-results">
-          <p>Currently no {{ selectedCategory === 'Motor' ? 'Motorcycles' : selectedCategory + 's' }} available. Please check back later!</p>
+          <p>No {{ selectedCategory === 'All' ? 'vehicles' : (selectedCategory === 'Motor' ? 'motorcycles' : selectedCategory.toLowerCase() + 's') }} in stock right now.</p>
+          <a routerLink="/contact" class="link-btn">Tell us what you're looking for</a>
         </div>
       }
     </div>
   }
 
   @if (authService.isLoggedIn()) {
-    <button class="floating-add" (click)="toggleAddModal()">
+    <button type="button" class="floating-add" aria-label="Add a vehicle" (click)="toggleAddModal()">
       +
     </button>
   }
@@ -107,7 +99,7 @@
           <div class="form-group"><label>Make</label><input [(ngModel)]="newCar.make" name="make" placeholder="e.g. Toyota" required></div>
           <div class="form-group"><label>Model</label><input [(ngModel)]="newCar.model" name="model" placeholder="e.g. Vios" required></div>
           <div class="form-group"><label>Year</label><input type="number" [(ngModel)]="newCar.year" name="year" placeholder="2024" required></div>
-          
+
           <div class="form-group">
             <label>Type</label>
             <select [(ngModel)]="newCar.type" name="type" required>
@@ -120,19 +112,19 @@
               <option value="Motor">Motor</option>
             </select>
           </div>
-          
+
           <div class="form-group">
             <label>Price</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               [value]="newCar.price ? '₱ ' + (newCar.price | number:'1.0-0') : ''"
-              (input)="formatPrice($event)" 
-              placeholder="₱ 0" 
+              (input)="formatPrice($event)"
+              placeholder="₱ 0"
               required
             >
           </div>
           <div class="form-group"><label>Engine</label><input [(ngModel)]="newCar.engine" name="engine" placeholder="e.g. 1.5L"></div>
-          
+
           <div class="form-group">
             <label>Gearbox</label>
             <select [(ngModel)]="newCar.gearbox" name="gearbox">
@@ -150,14 +142,14 @@
               <option value="Gas">Gas</option>
             </select>
           </div>
-          
+
           <div class="form-group">
             <label>Mileage (Numbers only)</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               [value]="newCar.distance ? (newCar.distance | number:'1.0-0') : ''"
-              (input)="formatMileage($event)" 
-              placeholder="0" 
+              (input)="formatMileage($event)"
+              placeholder="0"
               required
             >
           </div>
@@ -177,7 +169,7 @@
             <div class="upload-area">
               <input type="file" (change)="onFileSelected($event, 'main')" accept="image/*" class="file-input-hidden" #mainFile>
               <button type="button" class="upload-btn" (click)="mainFile.click()">📁 Select Main Photo</button>
-              
+
               <div class="filename-list" *ngIf="mainFileName">
                 <div class="filename-item main-file-badge">
                   <span>🖼️ {{ mainFileName }}</span>
@@ -192,7 +184,7 @@
             <div class="upload-area">
               <input type="file" (change)="onFileSelected($event, 'gallery')" accept="image/*" multiple class="file-input-hidden" #galleryFile>
               <button type="button" class="upload-btn" (click)="galleryFile.click()">📸 Add Gallery Photos</button>
-              
+
               <div class="filename-list" *ngIf="galleryFileNames.length > 0">
                 <div *ngFor="let name of galleryFileNames; let i = index" class="filename-item">
                   <span>📄 {{ name }}</span>
@@ -208,25 +200,25 @@
             <label>Vehicle Equipment (Max 6)</label>
             <div class="equipment-list">
               <div *ngFor="let item of newCar.equipment; let i = index; trackBy: trackByFn" class="equipment-item">
-                <input 
-                  type="text" 
-                  [(ngModel)]="newCar.equipment[i]" 
-                  name="equip-{{i}}" 
+                <input
+                  type="text"
+                  [(ngModel)]="newCar.equipment[i]"
+                  name="equip-{{i}}"
                   placeholder="e.g. Reverse Camera">
                 <button type="button" class="remove-equip" (click)="removeEquipment(i)" *ngIf="newCar.equipment.length > 1">×</button>
               </div>
             </div>
-            
-            <button 
-              type="button" 
-              class="add-equip-btn" 
-              (click)="addEquipment()" 
+
+            <button
+              type="button"
+              class="add-equip-btn"
+              (click)="addEquipment()"
               *ngIf="newCar.equipment.length < 6">
               + Add Equipment ({{newCar.equipment.length}}/6)
             </button>
           </div>
         </div>
-        
+
         <button type="submit" class="submit-modal-btn">
           {{ isEditMode ? 'UPDATE VEHICLE LISTING' : 'ADD VEHICLE' }}
         </button>
@@ -238,18 +230,18 @@
 <div class="contact-banner">
   <div class="contact-content">
     <div class="text-side">
-      <h2>Ready to Find Your Car?</h2>
-      <h1>Contact Us Today!</h1>
+      <h2>Ready to find your car?</h2>
+      <h1>Contact us today</h1>
       <div class="benefit-bar">
-        <span>✓ Quality Inspected</span>
-        <span>✓ Best Price</span>
-        <span>✓ Fast Approval</span>
+        <span>✓ Quality inspected</span>
+        <span>✓ Honest pricing</span>
+        <span>✓ Fast approval</span>
       </div>
-      <p class="phone-number">+999-999-0659</p>
-      <button class="contact-btn" routerLink="/contact">Contact Us Now!</button>
+      <p class="phone-number">{{ site.phone }}</p>
+      <button type="button" class="contact-btn" routerLink="/contact">Contact us now</button>
     </div>
     <div class="image-side">
-      <img src="/bluecar.png" alt="Featured Blue Car" class="cta-car">
+      <img src="/bluecar.png" alt="Featured blue car" class="cta-car" loading="lazy">
     </div>
   </div>
 </div>
@@ -257,16 +249,13 @@
 <app-footer></app-footer>
 
 <ng-template #loadingOrError>
-  <div class="loading-state">
-    <div class="loading-content">
-      <div class="spinner-box">
-        <div class="circle-core"></div>
+  <div class="product-grid" aria-busy="true" aria-label="Loading vehicles">
+    @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+      <div class="skeleton-card">
+        <div class="skeleton-img"></div>
+        <div class="skeleton-line w60"></div>
+        <div class="skeleton-line w35"></div>
       </div>
-      <h2>Fetching Vehicle Details</h2>
-      <p>Connecting to M&J Quality Cars Showroom...</p>
-      <button class="cancel-btn" routerLink="/products">
-        <span>×</span> Cancel & Go Back
-      </button>
-    </div>
+    }
   </div>
 </ng-template>

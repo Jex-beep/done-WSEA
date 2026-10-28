@@ -29,7 +29,7 @@ export class Error implements OnInit {
     // 4. Social Media Meta Tags (Open Graph & Twitter)
     this.metaService.updateTag({ property: 'og:title', content: 'Oops! Wrong Turn - MJ Quality Cars' });
     this.metaService.updateTag({ property: 'og:description', content: 'We couldn’t find that page, but we can help you find your next car.' });
-    this.metaService.updateTag({ property: 'og:image', content: 'https://www.mjqualitycars.com/404.png' });
+    this.metaService.updateTag({ property: 'og:image', content: window.location.origin + '/404.png' });
     this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
   }
 }

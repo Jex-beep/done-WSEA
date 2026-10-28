@@ -114,6 +114,19 @@ Each step is a separate commit so any one can be reverted.
 - Any reference site the client likes.
 - Is a separate admin area acceptable, or should editing stay inline?
 
-## 8. Out of scope
+## 8. Portfolio policy: placeholders for personal information
+
+This project is a portfolio piece. The business owner no longer wants the site, so:
+
+- Real personal details (owner name, phone, email, street address, social links) are NOT shown. All of them live in one file, `src/app/site-info.ts`, as placeholders. Footer, contact page and structured data read from it.
+- The footer says "Portfolio project. Contact details are placeholders."
+- The contact form must not send real email to the owner. It currently uses the owner's EmailJS account; for the portfolio copy it should either run in demo mode (no send, show a success message) or use the portfolio owner's own EmailJS keys.
+- `index.html` structured data and canonical should not name the old domain or real phone number; use the portfolio URL and placeholder values.
+- The portfolio copy carries `noindex` so it does not pose as a live dealer in search results.
+- Admin: visitors should not get a live admin that edits the shared database. Keep `/adminlogin` out of the nav and use a demo database or read-only demo.
+
+Corrections to section 1 after reading the code: the stray `<head>` was only in `products.html` (title and meta were already set through `Title` / `Meta` services), and `index.html` already had a correct viewport and canonical. The live bugs were the wrong-domain `og:url`, duplicate tags on revisit, and the home category links not filtering (fixed in step 1).
+
+## 9. Out of scope
 
 Backend changes, hosting or domain migration, new features such as financing calculators or online reservations.

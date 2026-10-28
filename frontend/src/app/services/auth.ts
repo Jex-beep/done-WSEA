@@ -2,14 +2,14 @@ import { Injectable, signal, effect, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { API_BASE } from '../api-config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private http = inject(HttpClient);
-  // The official endpoint for your Buffalo backend
-  private apiUrl = 'https://mjqualitycars-backend-api.onrender.com/api/login';
+  private apiUrl = `${API_BASE}/api/login`;
 
   /**
    * Initial check: safely access localStorage only when running in the browser.

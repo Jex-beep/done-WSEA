@@ -125,7 +125,7 @@ export class Blog implements OnInit {
     this.metaService.addTags([
       { name: 'description', content: description },
       { name: 'keywords', content: 'used cars Mabalacat City, second hand cars Pampanga, M&J Quality Cars blog, car dealer Sta. Ines, car maintenance tips Philippines, buy used cars Mabalacat, automotive guides Pampanga' },
-      { name: 'robots', content: 'index, follow' },
+      { name: 'robots', content: 'noindex, nofollow' },
       { name: 'author', content: 'M&J Quality Used Cars' },
       // Local SEO / Geo Tags
       { name: 'geo.region', content: 'PH-PAM' },
@@ -137,7 +137,7 @@ export class Blog implements OnInit {
       { property: 'og:title', content: siteTitle },
       { property: 'og:description', content: description },
       { property: 'og:image', content: '/assets/blog-thumbnail.jpg' },
-      { property: 'og:url', content: 'https://mjqualityusedcars.com/blog' },
+      { property: 'og:url', content: window.location.origin + '/blog' },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'theme-color', content: '#e31e24' }
     ]);

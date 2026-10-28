@@ -1,4 +1,8 @@
-/* --- Global Base & Viewport Protection --- */
+/* ==========================================================================
+   Products page: flat, minimal (see DESIGN_PLAN.md)
+   Admin modal, toast and upload styles are kept at the bottom.
+   ========================================================================== */
+
 :host {
   display: block;
   overflow-x: hidden;
@@ -6,464 +10,289 @@
 }
 
 .products-page {
-  background-color: #fcfcfc;
-  padding-bottom: 50px;
+  background: var(--surface);
+  padding: 48px 0 var(--space-8);
   width: 100%;
 }
-/* ==========================================================================
-   M&J QUALITY CARS - INTERACTIVE ELITE HEADER
-   ========================================================================== */
 
-.header-banner {
-  position: relative;
-  background: 
-    radial-gradient(circle at 50% 0%, #2a2a2a 0%, #000000 85%),
-    url('https://www.transparenttextures.com/patterns/carbon-fibre.png'); 
-  background-blend-mode: overlay;
-  color: #ffffff;
-  text-align: center;
-  padding: 160px 20px 200px;
-  border-bottom-left-radius: 50% 120px;
-  border-bottom-right-radius: 50% 120px;
-  overflow: hidden;
-  box-shadow: 0 25px 50px rgba(0,0,0,0.8);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  animation: bgSpotlight 10s ease-in-out infinite alternate;
-  
-  /* Transition for smooth hover recovery */
-  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-  cursor: default;
+/* --- Page header --- */
+.page-head,
+.filter-bar,
+.result-count,
+.product-grid {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: max(5%, 24px);
+  padding-right: max(5%, 24px);
+  box-sizing: border-box;
 }
 
-/* --- HOVER EFFECT: Background Depth --- */
-.header-banner:hover {
-  background-color: #050505;
-  box-shadow: 0 35px 70px rgba(0,0,0,0.9);
+.page-head h1 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
 }
 
-/* --- 1. The Heading: Interactive Reflection --- */
-.header-banner h1 {
-  position: relative;
-  z-index: 2;
-  font-size: 5.5rem;
-  font-weight: 900;
-  letter-spacing: -3px;
-  text-transform: uppercase;
+.page-head p {
   margin: 0;
-  line-height: 0.85;
-  color: #fff;
-  background: linear-gradient(120deg, #fff 30%, #666 45%, #fff 50%, #666 55%, #fff 70%);
-  background-size: 300% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: textGlint 6s linear infinite;
-  filter: drop-shadow(0 15px 30px rgba(0,0,0,0.5));
-  
-  /* Hover Transition */
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: var(--muted);
 }
 
-.header-banner:hover h1 {
-  transform: scale(1.03) translateY(-5px);
-  filter: drop-shadow(0 20px 40px rgba(139, 0, 0, 0.3));
-  letter-spacing: 2px; /* Subtle "expansion" feel */
-}
-
-/* --- 2. The Badge: Reactive Glow --- */
-.header-banner .brand-label {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 6px;
-  color: #fff;
-  background: rgba(139, 0, 0, 0.25);
-  backdrop-filter: blur(12px);
-  padding: 10px 28px;
-  border-radius: 50px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 25px;
-  position: relative;
-  z-index: 2;
-  animation: float 4s ease-in-out infinite;
-  transition: all 0.4s ease;
-}
-
-.header-banner:hover .brand-label {
-  background: rgba(139, 0, 0, 0.5); /* Deepen red on hover */
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 20px rgba(139, 0, 0, 0.4);
-}
-
-/* --- 3. The Divider: Interactive Expansion --- */
-.header-banner .divider {
-  width: 100px;
+.page-head .rule {
+  width: 48px;
   height: 3px;
-  background: #8b0000;
-  margin: 35px auto 0;
-  border-radius: 10px;
-  position: relative;
-  z-index: 2;
-  box-shadow: 0 0 10px #8b0000;
-  animation: accentPulse 3s ease-in-out infinite;
-  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  margin-top: var(--space-4);
+  background: var(--brand);
 }
 
-.header-banner:hover .divider {
-  width: 250px; /* Expands to underline the header more fully */
-  background: #ff0000; /* Brightens to vivid red */
-  box-shadow: 0 0 25px #ff0000;
-}
-
-/* --- KEYFRAMES (Same as previous but optimized) --- */
-@keyframes textGlint { 0% { background-position: -150% center; } 100% { background-position: 150% center; } }
-@keyframes bgSpotlight { 0% { background-position: 0% 0%; } 100% { background-position: 0% 20%; } }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-@keyframes accentPulse { 0%, 100% { transform: scaleX(1); opacity: 0.6; } 50% { transform: scaleX(1.1); opacity: 1; } }
-
-/* Mobile Adjustment */
-@media (max-width: 768px) {
-  .blog-grid { grid-template-columns: 1fr; gap: 30px; }
-    /* 1. Header Banner: Scaled for Mobile */
-  .header-banner {
-    padding: 60px 20px 80px;
-    border-bottom-left-radius: 50% 40px; /* Toned down curve */
-    border-bottom-right-radius: 50% 40px;
-  }
-
-  .header-banner h1 {
-    font-size: 2.2rem; /* Toned down from 3.5rem */
-    letter-spacing: 1px;
-  }
-}
-
-/* 2. Category Filter Styling (The "Midnight Frame") */
-.filter-container {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  margin: 50px 0;
-  z-index: 10;
-  padding: 0 15px;
+/* --- Filter chips --- */
+.filter-bar {
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-4);
 }
 
 .category-filters {
   display: flex;
-  gap: 14px;
+  gap: var(--space-2);
   flex-wrap: wrap;
-  justify-content: center;
-  padding: 18px 35px;
-  /* Glassmorphism effect */
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px) saturate(180%);
-  border-radius: 100px;
-  border: 1.5px solid rgba(0, 0, 0, 0.12);
-  /* Depth shadow */
-  box-shadow: 
-    0 15px 40px rgba(0, 0, 0, 0.08),
-    0 5px 10px rgba(0, 0, 0, 0.03);
 }
 
 .filter-btn {
-  background: #ffffff;
-  border: 1.5px solid #d1d1d1;
-  padding: 12px 26px;
-  border-radius: 50px;
-  font-weight: 800;
-  font-size: 0.85rem;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
-  color: #222;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 16px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  white-space: nowrap;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  position: relative;
+  transition: background var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+
+.filter-btn:hover:not(.active) {
+  border-color: var(--ink);
+}
+
+.filter-btn.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #ffffff;
 }
 
 .btn-icon {
   width: 20px;
   height: auto;
-  opacity: 0.9;
-  /* Forces the icon to be black so it shows on the white button */
-  filter: brightness(0); 
-  transition: 0.3s;
-}
-
-/* --- Active State: Deep MJ Crimson --- */
-.filter-btn.active {
-  background-color: #610000;
-  border-color: #4a0000;
-  color: #ffffff;
-  box-shadow: 
-    0 8px 25px rgba(97, 0, 0, 0.4),
-    inset 0 2px 5px rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
+  filter: brightness(0);
 }
 
 .filter-btn.active .btn-icon {
-  /* Turns the black icon into white for the red background */
   filter: brightness(0) invert(1);
-  transform: scale(1.1);
-  opacity: 1;
 }
 
-/* --- Hover State: Interactive Lift --- */
-.filter-btn:hover:not(.active) {
-  background-color: #fdfdfd;
-  border-color: #610000;
-  color: #610000;
-  transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+.result-count {
+  margin-bottom: var(--space-3);
+  color: var(--muted);
+  font-size: var(--text-sm);
 }
 
-/* Stays black on hover */
-.filter-btn:hover:not(.active) .btn-icon {
-  filter: brightness(0);
-  opacity: 1;
-}
-
-/* --- Under-Glow Indicator --- */
-.filter-btn.active::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 12px;
-  height: 4px;
-  background: #610000;
-  border-radius: 10px;
-  box-shadow: 0 0 10px #610000;
-}
-/* ==========================================================================
-   M&J QUALITY CARS - CINEMATIC FULL-BLEED GALLERY
-   ========================================================================== */
-
+/* --- Car grid and cards --- */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 40px;
-  padding: 80px 8%;
-  background-color: #ffffff;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-5);
 }
 
-/* --- THE CAR CARD: Premium Pedestal --- */
 .car-card {
-  background: #0a0a0a; /* Pure deep black for better contrast */
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 0; /* Removed padding to let image reach edges */
-  position: relative;
-  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), 
-              box-shadow 0.4s ease, 
-              border-color 0.4s ease;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: box-shadow var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out);
 }
 
 .car-card:hover {
-  transform: scale(1.03);
-  border-color: rgba(139, 0, 0, 0.8);
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
-  z-index: 5;
+  box-shadow: var(--shadow-card);
+  transform: translateY(-2px);
 }
 
-/* --- Image Container: Full-Bleed Studio View --- */
 .image-container {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10;
+  display: block;
+  aspect-ratio: 4 / 3;
+  background: var(--surface-alt);
   overflow: hidden;
-  background: #111;
-  /* Top radius only to match card */
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
 }
 
 .image-container img {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* This makes the photo fill all available space */
-  object-position: center;
-  transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1);
+  object-fit: cover;
 }
 
-/* Professional Micro-interaction: Slow cinematic zoom on hover */
-.car-card:hover .image-container img {
-  transform: scale(1.08);
-}
-
-/* Dramatic Dark Gradient Overlay for Typography Clarity */
-.image-container::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 40%;
-  background: linear-gradient(to top, rgba(10,10,10,1), transparent);
-  pointer-events: none;
-}
-
-/* --- Typography & Info Section --- */
 .car-info {
-  padding: 20px 24px 24px; /* Increased padding for executive feel */
-  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+  padding: var(--space-4);
 }
 
 .car-info h3 {
-  font-size: 1.7rem;
-  color: #ffffff;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: -0.5px;
   margin: 0;
-  line-height: 1.1;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: 1.25;
 }
 
-.car-type {
-  color: #8b0000;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  font-weight: 800;
-  margin: 12px 0 20px;
-  display: block;
+.car-info h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.car-info h3 a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--brand);
+  text-underline-offset: 4px;
+}
+
+.car-meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--text-sm);
 }
 
 .price {
-  color: #ffffff;
-  font-size: 1.6rem;
-  font-weight: 900;
-  letter-spacing: -1px;
-  margin-bottom: 25px;
-  display: block;
+  margin-top: auto;
+  padding-top: var(--space-2);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
-/* ==========================================================================
-   M&J QUALITY CARS - EXECUTIVE CTA BUTTON
-   ========================================================================== */
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
 
 .view-details {
-  width: 100%;
-  position: relative;
-  background: rgba(255, 255, 255, 0.03); /* Subtle glass base */
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 16px;
+  background: var(--ink);
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 18px;
-  border-radius: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-  z-index: 1;
-  /* Premium Shadow */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background var(--dur-fast) var(--ease-out);
 }
-
-/* 1. The "Liquid Fill" Effect (Slides in from the left) */
-.view-details::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, #8b0000 0%, #ff0000 100%);
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  z-index: -1;
-}
-
-/* 2. The "Metallic Glint" (A white sweep that runs across) */
-.view-details::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transform: skewX(-25deg);
-  transition: 0.8s;
-}
-
-/* --- INTERACTION STATES --- */
 
 .view-details:hover {
-  color: #fff;
-  border-color: #ff0000;
-  letter-spacing: 4px; /* Professional expansion */
-  transform: translateY(-3px);
-  box-shadow: 0 12px 25px rgba(139, 0, 0, 0.4);
+  background: var(--brand-dark);
 }
 
-.view-details:hover::before {
-  left: 0; /* Fills button with Brand Red */
+/* --- Empty state --- */
+.no-results {
+  grid-column: 1 / -1;
+  padding: var(--space-7) var(--space-5);
+  background: var(--surface-alt);
+  border-radius: var(--radius-md);
+  text-align: center;
 }
 
-.view-details:hover::after {
-  left: 150%; /* Sends the metallic glint flying across */
-  transition: 0.6s;
+.no-results p {
+  margin: 0 0 var(--space-4);
+  color: var(--muted);
 }
 
-/* 3. Subtle Pulse Animation when card is hovered */
-.car-card:hover .view-details {
-  animation: buttonSuggest 2s infinite ease-in-out;
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 20px;
+  background: var(--brand);
+  color: var(--on-brand);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background var(--dur-fast) var(--ease-out);
 }
 
-@keyframes buttonSuggest {
-  0%, 100% { border-color: rgba(255, 255, 255, 0.15); }
-  50% { border-color: rgba(139, 0, 0, 0.5); }
+.link-btn:hover {
+  background: var(--brand-dark);
 }
 
-/* Active / Click State */
-.view-details:active {
-  transform: translateY(0) scale(0.97);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-/* --- Mobile Viewport Fixes --- */
-@media (max-width: 768px) {
-  .product-grid {
-    padding: 40px 20px;
-    gap: 30px;
-  }
-  
-  .car-info {
-    padding: 15px 18px 20px;
-  }
-
-  .car-info h3 {
-    font-size: 1.4rem;
-  }
+/* --- Loading skeleton --- */
+.skeleton-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  padding-bottom: var(--space-3);
 }
 
-/* 4. Brand Section Styling */
+.skeleton-img,
+.skeleton-line {
+  background: linear-gradient(90deg, var(--surface-alt) 25%, #ececef 37%, var(--surface-alt) 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+.skeleton-img {
+  aspect-ratio: 4 / 3;
+}
+
+.skeleton-line {
+  height: 14px;
+  margin: var(--space-3) var(--space-4) 0;
+  border-radius: 4px;
+}
+
+.skeleton-line.w60 { width: 60%; }
+.skeleton-line.w35 { width: 35%; }
+
+@keyframes shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* --- Brand logos --- */
 .brand-logos {
   display: flex;
-  justify-content: space-around;
   align-items: center;
-  padding: 60px 10%;
-  opacity: 0.7;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: var(--space-6);
+  max-width: 1200px;
+  margin: var(--space-8) auto 0;
+  padding: 0 max(5%, 24px);
+  box-sizing: border-box;
 }
 
 .brand-logos img {
-  height: 40px;
+  height: 32px;
+  width: auto;
   filter: grayscale(1);
-  transition: 0.3s;
+  opacity: 0.7;
+  transition: filter var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
 }
 
 .brand-logos img:hover {
@@ -471,288 +300,119 @@
   opacity: 1;
 }
 
-/* 5. Contact Banner Section */
+/* --- Contact banner --- */
 .contact-banner {
-  background-color: #610000;
-  color: white;
+  background: var(--ink);
+  color: #ffffff;
   width: 100%;
   overflow: hidden;
-  position: relative;
-  /* Ensure the banner itself stretches and centers its inner content */
-  display: flex;
-  justify-content: center; 
-  align-items: center;
 }
 
 .contact-content {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-6);
   align-items: center;
-  justify-content: space-between;
   max-width: 1200px;
   margin: 0 auto;
-  min-height: 380px;
-}
-
-.text-side {
-  flex: 1.2;
-  padding: 40px 0;
+  padding: var(--space-7) max(5%, 24px);
+  box-sizing: border-box;
 }
 
 .text-side h2 {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 2px;
-  opacity: 0.9;
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: #a1a1aa;
 }
 
 .text-side h1 {
-  font-size: 2.2rem;
-  font-weight: 800;
-  margin-bottom: 12px;
-  line-height: 1.1;
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  line-height: 1.15;
 }
 
 .benefit-bar {
   display: flex;
-  gap: 15px;
-  margin-bottom: 15px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: rgba(255,255,255,0.8);
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  color: #d4d4d8;
+  font-size: var(--text-sm);
 }
 
 .phone-number {
-  font-size: 2rem;
-  font-weight: 800;
-  margin-bottom: 10px;
-  display: block;
-}
-
-.description {
-  max-width: 400px;
-  font-size: 0.95rem;
-  line-height: 1.4;
-  margin-bottom: 20px;
-  opacity: 0.8;
+  margin: 0 0 var(--space-5);
+  font-size: var(--text-xl);
+  font-weight: 600;
 }
 
 .contact-btn {
-  background-color: #000;
-  color: white;
-  border: none;
-  padding: 12px 30px;
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: 0.9rem;
+  min-height: 44px;
+  padding: 12px 24px;
+  background: var(--brand);
+  color: var(--on-brand);
+  border: 0;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background var(--dur-fast) var(--ease-out);
 }
 
-.image-side {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-self: flex-end;
+.contact-btn:hover {
+  background: var(--brand-dark);
 }
 
-.cta-car {
-  width: 110%;
-  height: auto;
-  transform: translateX(15%);
+.image-side img {
   display: block;
-  filter: drop-shadow(-10px 0 15px rgba(0,0,0,0.2));
-}
-.mobile-filter-trigger, .close-filters{
-  display: none !important;
+  width: 100%;
+  height: auto;
 }
 
-/* --- MOBILE RESPONSIVE FIXES --- */
-
-/* --- CONSOLIDATED MOBILE FIXES --- */
-
-@media (max-width: 992px) {
-  .contact-banner { padding: 0 1%; }
-  .contact-content { flex-direction: column; text-align: center; padding-top: 30px; min-height: auto; }
-  .text-side { padding: 0 0 15px 0; width: 100%; }
-  .text-side h2 { font-size: 1.1rem; margin-bottom: 0px; }
-  .text-side h1 { font-size: 1.7rem; margin-bottom: 8px; }
-  .benefit-bar { justify-content: center; gap: 10px; font-size: 0.75rem; margin-bottom: 12px; }
-  .phone-number { font-size: 1.5rem; margin-bottom: 8px; }
-  .description { font-size: 0.85rem; line-height: 1.3; margin: 0 auto 15px; max-width: 300px; }
-  .contact-btn { padding: 10px 25px; font-size: 0.85rem; }
-  .image-side { height: 160px; width: 100%; justify-content: center; margin-top: 10px; overflow: hidden; }
-  .cta-car { width: 80%; max-width: 320px; transform: none; margin-top: 10px; }
-
-  .brand-logos { display: flex; justify-content: center; align-items: center; padding: 60px 10%; gap: 40px; background-color: #fcfcfc; overflow: hidden; }
-  .brand-logos img { height: 45px; width: auto; filter: grayscale(1); opacity: 0.6; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
-  .brand-logos img:hover { filter: grayscale(0); opacity: 1; transform: translateY(-5px) scale(1.1); }
-  
-  /* Initial State for Filter Logic */
-  .mobile-filter-trigger { display: none; }
-  .close-filters { display: none; }
-}
-
-/* --- FIXED CENTERED POPUP CSS --- */
-
-@media (max-width: 768px) {
-  /* --- The Trigger Button (Refined Luxury) --- */
-  .mobile-filter-trigger {
-    display: flex !important;
-    justify-content: space-between;
-    align-items: center;
-    background: #0a0a0a; /* Deep charcoal */
-    padding: 16px 28px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 100px;
-    width: 290px;
-    margin: 30px auto;
-    cursor: pointer;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    transition: all 0.3s ease;
+@media (max-width: 900px) {
+  .contact-content {
+    grid-template-columns: 1fr;
+    text-align: center;
   }
 
-  .mobile-filter-trigger:active {
-    transform: scale(0.97);
-    background: #111;
-  }
-
-  .mobile-filter-trigger span {
-    color: #fff;
-    font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  .mobile-filter-trigger strong {
-    color: #e31e24; /* Brand Red */
-    text-shadow: 0 0 10px rgba(227, 30, 36, 0.3);
-  }
-
-  /* --- The Filter Card (Centred Overlay) --- */
-  .category-filters {
-    display: none !important;
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -48%) scale(0.9) !important;
-    width: 85% !important;
-    max-width: 340px !important;
-    background: linear-gradient(145deg, #0f0f0f, #050505) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 24px !important;
-    z-index: 10001 !important;
-    flex-direction: column !important;
-    padding: 70px 20px 30px !important;
-    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8) !important;
-    opacity: 0;
-    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1) !important;
-    pointer-events: none;
-  }
-
-  .category-filters.mobile-open {
-    display: flex !important;
-    opacity: 1 !important;
-    transform: translate(-50%, -50%) scale(1) !important;
-    pointer-events: auto;
-  }
-
-  /* --- Close Button (Minimalist Red) --- */
-  .close-filters {
-    display: flex !important;
-    position: absolute !important;
-    top: 25px !important;
-    right: 25px !important;
-    width: 32px;
-    height: 32px;
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    align-items: center;
+  .benefit-bar {
     justify-content: center;
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
   }
 
-  .close-filters:hover {
-    background: #e31e24;
-    border-color: #e31e24;
-  }
-
-  /* --- Filter Buttons (List Item Style) --- */
-  .filter-btn {
-    width: 100% !important;
-    margin: 4px 0 !important;
-    justify-content: flex-start !important;
-    padding: 16px 20px !important;
-    font-size: 0.9rem !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.5px;
-    border-radius: 12px !important;
-    background: transparent !important;
-    border: 1px solid transparent !important;
-    color: #888 !important;
-    transition: 0.3s ease;
-  }
-
-  .filter-btn.active {
-    background: rgba(227, 30, 36, 0.08) !important;
-    border-color: rgba(227, 30, 36, 0.3) !important;
-    color: #fff !important;
-    /* Red dot indicator */
-    position: relative;
-  }
-
-  .filter-btn.active::before {
-    content: '';
-    position: absolute;
-    left: 8px;
-    width: 4px;
-    height: 4px;
-    background: #e31e24;
-    border-radius: 50%;
-    box-shadow: 0 0 8px #e31e24;
+  .image-side {
+    max-width: 360px;
+    margin: 0 auto;
   }
 }
-/* This turns any black logo/icon into pure white */ 
-.mobile-filter-trigger img, 
-.brand-logo {
-  filter: brightness(0) invert(1); /* Forces black to white */
-  opacity: 0.9; /* Slightly soft white to look premium */
-  transition: filter 0.3s ease;
-}
 
-/* Optional: Make icons glow slightly when active */
-.filter-btn.active .btn-icon {
-  filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.4));
-  opacity: 1;
+/* --- Phones: chips scroll sideways, one card per row --- */
+@media (max-width: 768px) {
+  .category-filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: var(--space-2);
+    margin-right: calc(-1 * max(5%, 24px));
+    padding-right: max(5%, 24px);
+    scrollbar-width: thin;
+  }
 }
-
-/* If you have specific brand logos that should remain colored but visible, 
-   use a subtle white drop-shadow instead: */
-.visible-logo {
-  filter: drop-shadow(0 0 2px #fff);
-}
-
 
 @media (max-width: 480px) {
-  .product-grid { grid-template-columns: 1fr; }
-  .phone-number { font-size: 1.6rem; }
-  .brand-logos { gap: 8px; padding: 20px 10px; }
-  .brand-logos img { max-height: 18px; }
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-/* ================================== MJ ELITE ADMIN UI ================================== */
+/* ================================== ADMIN UI (unchanged look) ================================== */
 
-/* Global Reset & Smooth Font Rendering */
 .modal-container *, .floating-add * {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* --- HEADER TEXT STYLE --- */
 .modal-header-text h2 {
   color: #ffffff;
   font-weight: 800;
@@ -762,6 +422,7 @@
   padding: 0;
   font-size: 1.5rem;
 }
+
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -770,14 +431,15 @@
   margin-bottom: 16px;
   position: relative;
 }
+
 .modal-header-text h2 span {
   color: #e31e24;
 }
-/* --- HEADER TEXT STYLE --- */
+
 .modal-header-text {
   flex: 1;
 }
-/* --- THE FLOATING ADD BUTTON --- */
+
 .floating-add {
   position: fixed;
   bottom: 25px;
@@ -800,7 +462,6 @@
 
 .floating-add:active { transform: scale(0.9); }
 
-/* --- MODAL OVERLAY --- */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0;
@@ -810,26 +471,23 @@
   z-index: 99999;
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* Mobile: Tray sticks to bottom */
+  align-items: flex-end;
 }
 
-/* --- THE MODAL CONTAINER (The "Tray") --- */
 .modal-container {
-  background: #0d0d0d;
   background: linear-gradient(to bottom, #141414, #0d0d0d);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-top: 4px solid #e31e24;
   width: 100%;
   max-width: 800px;
-  max-height: 92vh; /* Optimal for mobile thumb reach */
+  max-height: 92vh;
   overflow-y: auto;
   padding: 25px 20px 40px 20px;
   position: relative;
-  border-radius: 25px 25px 0 0; /* Pro mobile app look */
+  border-radius: 25px 25px 0 0;
   box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.6);
 }
 
-/* Mobile Top Handle Decorator */
 .modal-container::before {
   content: "";
   width: 40px;
@@ -842,7 +500,6 @@
   transform: translateX(-50%);
 }
 
-/* --- THE X (CLOSE) BUTTON --- */
 .close-modal {
   position: relative;
   top: 0;
@@ -862,16 +519,13 @@
   flex-shrink: 0;
   padding: 0;
 }
-.close-modal:active {
-  background: #e31e24;
-  border-color: #e31e24;
-}
+
+.close-modal:active,
 .close-modal:hover { background: #e31e24; border-color: #e31e24; }
 
-/* --- FORM GRID & GROUPS --- */
 .form-grid {
   display: flex;
-  flex-direction: column; /* Stacked for Mobile first */
+  flex-direction: column;
   gap: 22px;
   margin-top: 20px;
 }
@@ -886,8 +540,7 @@
   display: inline-block;
 }
 
-/* --- PREMIUM INPUTS --- */
-.form-group input, 
+.form-group input,
 .form-group select,
 .form-group textarea {
   background: #181818;
@@ -895,7 +548,7 @@
   border-radius: 12px;
   padding: 16px;
   color: #fff;
-  font-size: 16px; /* Essential: Prevents iOS auto-zoom */
+  font-size: 16px;
   width: 100%;
   transition: border-color 0.3s ease;
 }
@@ -906,7 +559,6 @@
   background: #1c1c1c;
 }
 
-/* --- CLEAN UPLOAD AREA --- */
 .upload-area {
   background: rgba(255, 255, 255, 0.02);
   border: 1.5px dashed #333;
@@ -931,7 +583,6 @@
 
 .upload-btn:hover { background: #e31e24; }
 
-/* --- ACTION BUTTON --- */
 .submit-modal-btn {
   width: 100%;
   background: #e31e24;
@@ -947,62 +598,43 @@
   box-shadow: 0 10px 20px rgba(227, 30, 36, 0.3);
   cursor: pointer;
 }
-/* This removes the "Choose File" text and the second button */
+
 .file-input-hidden {
   display: none !important;
 }
 
-/* Optional: Style the status text so it's not black */
 .file-status {
   color: #ffffff;
   font-size: 0.85rem;
   margin-top: 10px;
 }
 
-/* ================================== ADMIN BUTTON STYLES ================================== */
+/* Edit / delete buttons on cards */
 .admin-btns {
   display: flex;
-  gap: 10px;
-  margin-left: 10px;
+  gap: 8px;
 }
 
 .admin-btns button {
-  width: 44px !important;    /* Industry standard for mobile touch */
-  height: 44px !important;   /* Makes them perfectly square */
-  border-radius: 12px !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 8px !important;
   border: none !important;
   display: flex !important;
   align-items: center;
   justify-content: center;
   font-size: 1.2rem !important;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 
-/* Specific button colors */
-.btn-edit {
-  background: #f39c12 !important; /* Premium Amber */
-  color: white !important;
-}
+.btn-edit { background: #f39c12 !important; color: white !important; }
+.btn-delete { background: #e74c3c !important; color: white !important; }
 
-.btn-delete {
-  background: #e74c3c !important; /* Alert Red */
-  color: white !important;
-}
+.admin-btns button:hover { transform: translateY(-2px); }
+.admin-btns button:active { transform: scale(0.94); }
 
-/* Hover/Tap Effects */
-.admin-btns button:hover {
-  transform: translateY(-3px) scale(1.1);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-}
-
-.admin-btns button:active {
-  transform: scale(0.9);
-}
-
-/* ================================== SUCCESS TOAST POPUP ================================== */
-
+/* Success toast */
 .success-toast-overlay {
   position: fixed;
   top: 30px;
@@ -1010,14 +642,14 @@
   right: 0;
   display: flex;
   justify-content: center;
-  z-index: 1000000; /* Higher than modal */
+  z-index: 1000000;
   pointer-events: none;
 }
 
 .success-toast {
   pointer-events: auto;
   background: #111;
-  border-left: 5px solid #2ecc71; /* Green success bar */
+  border-left: 5px solid #2ecc71;
   padding: 16px 24px;
   border-radius: 16px;
   display: flex;
@@ -1062,7 +694,7 @@
 .success-close {
   background: transparent;
   border: none;
-  color: #555;
+  color: #888;
   cursor: pointer;
   margin-left: auto;
   font-size: 1.2rem;
@@ -1072,7 +704,8 @@
   from { transform: translateY(-100px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
-/* --- DYNAMIC EQUIPMENT STYLES --- */
+
+/* Equipment list */
 .equipment-list {
   display: flex;
   flex-direction: column;
@@ -1116,11 +749,12 @@
   transition: 0.3s;
 }
 
-/* ==========================================================================
-   MASTER FILENAME BADGE - UNIFIED STYLES
-   ========================================================================== */
+.add-equip-btn:hover {
+  border-color: #e31e24;
+  color: #fff;
+}
 
-/* 1. Container for the badge lists */
+/* Uploaded filename badges */
 .upload-area .filename-list {
   display: block !important;
   width: 100% !important;
@@ -1129,13 +763,11 @@
   padding: 0 !important;
 }
 
-/* 2. Unified Base Style for ALL badges (Main & Gallery) */
 .filename-item {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
   width: 100% !important;
-  /* Matching the dark premium theme */
   background: rgba(255, 255, 255, 0.07) !important;
   border: 1px solid #333 !important;
   padding: 12px 16px !important;
@@ -1145,9 +777,8 @@
   animation: fadeIn 0.3s ease;
 }
 
-/* 3. Unified Text Style */
 .filename-item span {
-  color: #ffffff !important; /* Pure white for both */
+  color: #ffffff !important;
   font-size: 0.9rem !important;
   font-weight: 500 !important;
   white-space: nowrap;
@@ -1156,13 +787,10 @@
   max-width: 85%;
 }
 
-/* 4. Removed the Amber color difference - Now they look identical */
 .main-file-badge {
-  /* Inherits from .filename-item above */
   margin-top: 10px;
 }
 
-/* 5. The Remove (X) Button Style */
 .remove-file {
   background: transparent !important;
   border: none !important;
@@ -1175,86 +803,9 @@
 }
 
 .remove-file:hover {
-  color: #e74c3c !important; /* Turns red on hover */
+  color: #e74c3c !important;
   transform: scale(1.2);
 }
-
-/* ==========================================================================
-   ADMIN ACTION BUTTONS
-   ========================================================================== */
-
-.admin-btns {
-  display: flex;
-  gap: 10px;
-}
-
-.admin-btns button {
-  width: 44px !important;
-  height: 44px !important;
-  border-radius: 12px !important;
-  border: none !important;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem !important;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.btn-edit { background: #f39c12 !important; color: white !important; }
-.btn-delete { background: #e74c3c !important; color: white !important; }
-
-.admin-btns button:hover {
-  transform: translateY(-3px) scale(1.1);
-}
-
-/* ==========================================================================
-   EQUIPMENT & EXTRAS
-   ========================================================================== */
-
-.equipment-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.equipment-item {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.remove-equip {
-  background: #e74c3c;
-  color: white;
-  border: none;
-  width: 35px;
-  height: 35px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.add-equip-btn {
-  background: transparent;
-  border: 1.5px dashed #444;
-  color: #aaa;
-  padding: 10px;
-  width: 100%;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.add-equip-btn:hover {
-  border-color: #e31e24;
-  color: #fff;
-}
-
-/* ==========================================================================
-   RESPONSIVE & ANIMATIONS
-   ========================================================================== */
 
 @media (min-width: 769px) {
   .modal-overlay { align-items: center; }
@@ -1274,109 +825,4 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* --- Loading State Overlay --- */
-.loading-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 60vh; /* Adjust based on your layout */
-  background-color: transparent; /* Or #000 if you want a dark loader */
-  color: #333;
-  text-align: center;
-  padding: 40px;
-}
-
-.spinner-box {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto;
-  border: 4px solid rgba(227, 30, 36, 0.1); /* Light M&J Red */
-  border-radius: 50%;
-  border-top-color: #e31e24; /* M&J Signature Red */
-  animation: spin 1s ease-in-out infinite;
-  position: relative;
-}
-
-.circle-core {
-  width: 12px;
-  height: 12px;
-  background-color: #e31e24;
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 15px rgba(227, 30, 36, 0.5);
-}
-
-@keyframes spin { 
-  to { transform: rotate(360deg); } 
-}
-
-.loading-content h2 {
-  font-size: 1.5rem;
-  margin-top: 20px;
-  color: #1a1a1a;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.loading-content p {
-  color: #666;
-  font-size: 0.9rem;
-  margin-bottom: 20px;
-}
-
-.cancel-btn {
-  background: #f5f5f5;
-  border: 1px solid #ddd;
-  color: #666;
-  padding: 8px 20px;
-  border-radius: 50px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: all 0.3s ease;
-}
-
-.cancel-btn:hover {
-  background: #e31e24;
-  color: #fff;
-  border-color: #e31e24;
-}
-
-/* --- Smooth Entrance for Car Cards --- */
-.car-card {
-  /* ... keep your existing styles ... */
-  animation: cardEntrance 0.5s ease-out forwards;
-}
-
-@keyframes cardEntrance {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* --- No Results State --- */
-.no-results {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 60px 20px;
-  background: #f9f9f9;
-  border-radius: 12px;
-  border: 2px dashed #eee;
-  margin: 20px 0;
-}
-
-.no-results p {
-  color: #888;
-  font-style: italic;
-  font-size: 1.1rem;
 }

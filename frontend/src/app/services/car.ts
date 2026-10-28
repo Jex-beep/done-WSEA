@@ -1,15 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { API_BASE } from '../api-config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarService {
   private http = inject(HttpClient);
-  // URL to your Node.js backend
-  // private apiUrl = 'http://localhost:3000/api/cars'; // OLD
-private apiUrl = 'https://mjqualitycars-backend-api.onrender.com/api/cars'; // NEW
+  private apiUrl = `${API_BASE}/api/cars`;
 
   /**
    * Fetches the full inventory from MongoDB

@@ -56,7 +56,7 @@ export class App implements OnInit {
         }
 
         // ✅ Canonical URL update (SEO fix)
-        const base = 'https://www.mjqualitycars.com'; // <- your official domain
+        const base = this.doc.location.origin; // the address the site is actually served from
         const path = event.urlAfterRedirects.split('?')[0];
         const canonicalUrl = base + path;
 

@@ -87,7 +87,7 @@ export class ProductDetail implements OnInit {
     this.metaService.updateTag({ name: 'description', content: fullDesc });
     this.metaService.updateTag({ name: 'keywords', content: `${car.make}, ${car.model}, ${car.year}, used cars Mabalacat, premium cars Philippines, M&J Quality Cars` });
     this.metaService.updateTag({ name: 'author', content: 'M&J Quality Cars' });
-    this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
+    this.metaService.updateTag({ name: 'robots', content: 'noindex, nofollow' });
 
     // Open Graph / Facebook Meta Tags
     this.metaService.updateTag({ property: 'og:title', content: `${carTitle} - M&J Quality Cars` });

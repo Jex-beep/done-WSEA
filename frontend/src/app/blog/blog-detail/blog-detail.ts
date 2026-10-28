@@ -91,7 +91,7 @@ export class BlogDetail implements OnInit, OnDestroy {
     this.metaService.updateTag({ property: 'og:title', content: blog.title });
     this.metaService.updateTag({ property: 'og:image', content: blog.image || '' });
 
-    const BASE_URL = 'https://www.mjqualitycars.com';
+    const BASE_URL = window.location.origin;
     const slug = blog.slug ? encodeURIComponent(blog.slug) : '';
     const canonicalUrl = slug ? `${BASE_URL}/blog/${slug}` : window.location.href;
 
@@ -105,7 +105,7 @@ export class BlogDetail implements OnInit, OnDestroy {
     const existing = document.getElementById(this.schemaId);
     if (existing) existing.remove();
 
-    const BASE_URL = 'https://www.mjqualitycars.com';
+    const BASE_URL = window.location.origin;
     const BUSINESS_NAME = 'M&J Quality Used Cars';
     const LOGO_URL = `${BASE_URL}/MJlogo.webp`;
 
