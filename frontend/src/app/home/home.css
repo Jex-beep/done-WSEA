@@ -24,7 +24,8 @@
   border: 1px solid transparent;
   font-weight: 600;
   text-decoration: none;
-  transition: background-color var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast);
+  transition: background-color var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast),
+              transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
   font-size: var(--text-sm);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -37,6 +38,17 @@
 
 .btn-primary:hover {
   background: var(--brand-dark);
+  box-shadow: 0 8px 18px -8px rgba(165, 15, 29, 0.6);
+}
+
+/* Small lift on hover, a quick press on click. */
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.985);
+  transition-duration: 80ms;
 }
 
 .btn-ghost {
@@ -98,6 +110,84 @@
 .hero .accent {
   color: var(--brand-on-dark);
   font-style: italic;
+}
+
+/* Load sequence: label, headline, lead, buttons, then the car, each a beat apart.
+   --d is the per-element delay. Only opacity and transform animate. */
+.hero-text > * {
+  animation: hero-rise var(--dur-slow) var(--ease-out) var(--d, 0ms) both;
+}
+
+.hero-text > .eyebrow { --d: 60ms; }
+.hero-text > h1 { --d: 160ms; }
+.hero-text > .hero-lead { --d: 300ms; }
+.hero-text > .hero-actions { --d: 440ms; }
+
+.hero-car {
+  animation: hero-drift 800ms var(--ease-out) 240ms both;
+}
+
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes hero-drift {
+  from { opacity: 0; transform: translateX(36px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Light streak that sweeps across the headline every few seconds. The band sits
+   off-screen (left) at rest, so without animation the headline looks static.
+   Only wrapped in @supports because the text fill is transparent: browsers
+   without background-clip:text would otherwise show an invisible headline. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero h1,
+  .hero .accent {
+    background-repeat: no-repeat;
+    background-size: 250% 100%, 100% 100%;
+    background-position: 100% 0, 0 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* The headline rises in with the rest of the sequence, then starts shining
+     once it has settled. */
+  .hero h1 {
+    animation:
+      hero-rise var(--dur-slow) var(--ease-out) var(--d) both,
+      headline-shine 6s ease-in-out 1.8s infinite;
+    background-image:
+      linear-gradient(105deg, transparent 40%, rgba(255, 233, 196, 0.95) 50%, transparent 60%),
+      linear-gradient(#ffffff, #ffffff);
+  }
+
+  .hero .accent {
+    animation: headline-shine 6s ease-in-out 1.8s infinite;
+    background-image:
+      linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.95) 50%, transparent 60%),
+      linear-gradient(var(--brand-on-dark), var(--brand-on-dark));
+  }
+}
+
+@keyframes headline-shine {
+  0% { background-position: 100% 0, 0 0; }
+  45%, 100% { background-position: 0% 0, 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-text > *,
+  .hero h1,
+  .hero .accent,
+  .hero-car {
+    animation: none;
+  }
+
+  .btn:hover,
+  .btn:active {
+    transform: none;
+  }
 }
 
 .hero-lead {

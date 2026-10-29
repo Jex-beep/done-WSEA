@@ -19,10 +19,10 @@
 
   <section class="block" aria-labelledby="browse-title">
     <div class="wrap">
-      <h2 id="browse-title" class="block-title">Browse by type</h2>
+      <h2 id="browse-title" class="block-title" appReveal>Browse by type</h2>
       <ul class="type-grid">
-        @for (cat of categories; track cat.type) {
-          <li>
+        @for (cat of categories; track cat.type; let i = $index) {
+          <li [appReveal]="i * 60">
             <a class="type-tile" routerLink="/products" [queryParams]="{ type: cat.type }">
               <img [src]="cat.icon" alt="" width="64" height="40" loading="lazy">
               <span>{{ cat.label }}</span>
@@ -36,7 +36,7 @@
   <section class="block block-alt" aria-labelledby="latest-title">
     <div class="wrap">
       <div class="block-head">
-        <h2 id="latest-title" class="block-title">Latest arrivals</h2>
+        <h2 id="latest-title" class="block-title" appReveal>Latest arrivals</h2>
         <a class="text-link" routerLink="/products">View all inventory →</a>
       </div>
 
@@ -52,8 +52,8 @@
         </div>
       } @else if (latest().length > 0) {
         <div class="car-grid">
-          @for (car of latest(); track car._id) {
-            <article class="car-card">
+          @for (car of latest(); track car._id; let i = $index) {
+            <article class="car-card" [appReveal]="i * 80">
               <a class="car-photo" [routerLink]="['/products', car._id]">
                 <img [src]="car.image" [alt]="car.altText || (car.make + ' ' + car.model + ' for sale in Mabalacat City')" loading="lazy">
               </a>
@@ -73,19 +73,19 @@
 
   <section class="block" aria-labelledby="trust-title">
     <div class="wrap">
-      <h2 id="trust-title" class="block-title">Why buy here</h2>
+      <h2 id="trust-title" class="block-title" appReveal>Why buy here</h2>
       <div class="trust-grid">
-        <div class="trust-item">
+        <div class="trust-item" appReveal="0">
           <img src="/comfort-icon.webp" alt="" width="48" height="48" loading="lazy">
           <h3>Quality you can trust</h3>
           <p>Every vehicle is carefully inspected to meet our standards before it reaches you.</p>
         </div>
-        <div class="trust-item">
+        <div class="trust-item" appReveal="100">
           <img src="/savings-icon.webp" alt="" width="48" height="48" loading="lazy">
           <h3>Transparent pricing</h3>
           <p>No hidden fees, no surprises. Just honest prices you can rely on.</p>
         </div>
-        <div class="trust-item">
+        <div class="trust-item" appReveal="200">
           <img src="/availability-icon.webp" alt="" width="48" height="48" loading="lazy">
           <h3>Support beyond the sale</h3>
           <p>Our service doesn't end when you drive off. We're happy to help afterwards too.</p>
@@ -96,16 +96,16 @@
 
   <section class="block block-alt" aria-labelledby="inspect-title">
     <div class="wrap">
-      <h2 id="inspect-title" class="block-title">How we inspect</h2>
+      <h2 id="inspect-title" class="block-title" appReveal>How we inspect</h2>
       <div class="inspect-grid">
-        <figure class="inspect-item">
+        <figure class="inspect-item" appReveal="0">
           <img src="/wheel-inspection.webp" alt="Wheel and tire inspection at M&J" loading="lazy">
           <figcaption>
             <h3>Vehicle component check</h3>
             <p>We check essential parts to make sure every vehicle meets our quality standards.</p>
           </figcaption>
         </figure>
-        <figure class="inspect-item">
+        <figure class="inspect-item" appReveal="120">
           <img src="/engine-inspection.webp" alt="Engine performance check at M&J" loading="lazy">
           <figcaption>
             <h3>Engine performance check</h3>
@@ -119,11 +119,11 @@
 
   <section class="cta" aria-labelledby="cta-title">
     <div class="wrap cta-inner">
-      <div>
+      <div appReveal>
         <h2 id="cta-title">Found something you like?</h2>
         <p>Call or message us to schedule a viewing. {{ site.hours }}.</p>
       </div>
-      <div class="cta-actions">
+      <div class="cta-actions" appReveal="140">
         <a class="btn btn-primary" [href]="site.phoneHref">Call {{ site.phone }}</a>
         <a class="btn btn-ghost" routerLink="/contact">Send a message</a>
       </div>

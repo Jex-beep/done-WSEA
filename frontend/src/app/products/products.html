@@ -38,8 +38,8 @@
     <p class="result-count" aria-live="polite">{{ availableCars.length }} {{ availableCars.length === 1 ? 'vehicle' : 'vehicles' }}</p>
 
     <div class="product-grid">
-      @for (car of availableCars; track car._id) {
-        <article class="car-card">
+      @for (car of availableCars; track car._id; let i = $index) {
+        <article class="car-card" [appReveal]="(i % 6) * 70">
           <a class="image-container" [routerLink]="['/products', car._id]">
             <img [src]="car.image" [alt]="car.altText || (car.make + ' ' + car.model + ' for sale in Mabalacat City Pampanga')" loading="lazy">
           </a>

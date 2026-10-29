@@ -26,7 +26,8 @@
   border: 1px solid transparent;
   font-weight: 600;
   text-decoration: none;
-  transition: background-color var(--dur-fast), border-color var(--dur-fast);
+  transition: background-color var(--dur-fast), border-color var(--dur-fast),
+              transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
   font-size: var(--text-sm);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -39,6 +40,24 @@
 
 .btn-primary:hover {
   background: var(--brand-dark);
+  box-shadow: 0 8px 18px -8px rgba(165, 15, 29, 0.6);
+}
+
+/* Small lift on hover, a quick press on click. */
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.985);
+  transition-duration: 80ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover,
+  .btn:active {
+    transform: none;
+  }
 }
 
 .btn-outline {

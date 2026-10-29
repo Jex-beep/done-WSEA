@@ -5,10 +5,11 @@ import { Nav } from '../nav/nav';
 import { Footer } from '../footer/footer';
 import { CarService } from '../services/car';
 import { SITE } from '../site-info';
+import { Reveal } from '../reveal';
 
 @Component({
   selector: 'app-home',
-  imports: [Nav, Footer, RouterLink, CurrencyPipe],
+  imports: [Nav, Footer, RouterLink, CurrencyPipe, Reveal],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

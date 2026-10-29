@@ -43,6 +43,7 @@
   /* Motion */
   --dur-fast: 150ms;
   --dur-base: 300ms;
+  --dur-slow: 600ms;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
   /* Breakpoints (reference only; CSS cannot use variables in @media):
@@ -67,6 +68,30 @@ body {
 
 main {
   margin-top: 90px;
+}
+
+/* Scroll reveal. The appReveal directive adds .reveal (hidden) when it starts,
+   then .reveal-in when the element scrolls into view, and removes both again
+   once the animation ends. Only opacity and transform move. */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+
+.reveal {
+  opacity: 0;
+}
+
+.reveal-in {
+  animation: reveal-up var(--dur-slow) var(--ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-in {
+    opacity: 1;
+    animation: none;
+  }
 }
 
 /* Visible keyboard focus everywhere (WCAG 2.4.7 / 2.4.11) */

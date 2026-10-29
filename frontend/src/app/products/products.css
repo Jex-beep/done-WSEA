@@ -204,7 +204,9 @@
   font-size: var(--text-sm);
   font-weight: 600;
   text-decoration: none;
-  transition: background var(--dur-fast) var(--ease-out);
+  transition: background var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out);
   font-size: var(--text-sm);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -212,6 +214,20 @@
 
 .view-details:hover {
   background: var(--brand-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px -8px rgba(165, 15, 29, 0.6);
+}
+
+.view-details:active {
+  transform: translateY(0) scale(0.985);
+  transition-duration: 80ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .view-details:hover,
+  .view-details:active {
+    transform: none;
+  }
 }
 
 /* --- Empty state --- */

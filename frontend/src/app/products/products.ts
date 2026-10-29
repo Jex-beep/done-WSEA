@@ -8,11 +8,12 @@ import { Nav } from '../nav/nav';
 import { Footer } from '../footer/footer';
 import { CarService } from '../services/car';
 import { AuthService } from '../services/auth';
+import { Reveal } from '../reveal';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, Nav, Footer, RouterLink, FormsModule],
+  imports: [CommonModule, Nav, Footer, RouterLink, FormsModule, Reveal],
   templateUrl: './products.html',
   styleUrl: './products.css'
 })

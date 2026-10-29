@@ -243,14 +243,29 @@
   color: var(--on-brand);
   font-weight: 600;
   cursor: pointer;
-  transition: background-color var(--dur-fast);
+  transition: background-color var(--dur-fast),
+              transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
   font-size: var(--text-sm);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.submit-btn:hover {
+.submit-btn:hover:not(:disabled) {
   background: var(--brand-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px -8px rgba(165, 15, 29, 0.6);
+}
+
+.submit-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.985);
+  transition-duration: 80ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .submit-btn:hover,
+  .submit-btn:active {
+    transform: none;
+  }
 }
 
 .submit-btn:disabled {
