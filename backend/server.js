@@ -31,8 +31,7 @@ function requireAuth(req, res, next) {
 
 const allowedOrigins = [
   'http://localhost:4200',
-  'https://mjqualitycars.com',
-  'https://www.mjqualitycars.com'
+  'https://mjqualitycars.vercel.app'
 ];
 
 app.use(cors({
