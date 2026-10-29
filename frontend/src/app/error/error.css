@@ -1,0 +1,67 @@
+.error-page {
+  background-color: #0c0c0c; /* Deep black */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  padding: 20px;
+}
+
+.error-container {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  padding: 50px;
+  border-radius: 20px;
+  border: 1px solid rgba(227, 30, 36, 0.2); /* Subtle red border */
+  max-width: 600px;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+}
+
+.error-image {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 15px rgba(227, 30, 36, 0.4)); /* Red glow for your PNG */
+}
+
+.error-code {
+  font-size: 5rem;
+  margin: 0;
+  color: #e31e24; /* MJ Red */
+  font-weight: 900;
+  letter-spacing: -2px;
+}
+
+.error-title {
+  color: #ffffff;
+  font-size: 1.8rem;
+  margin-top: 0;
+  text-transform: uppercase;
+}
+
+.error-message {
+  color: #cccccc;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.btn-home {
+  display: inline-block;
+  background-color: #e31e24;
+  color: #ffffff;
+  padding: 15px 35px;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.btn-home:hover {
+  background-color: transparent;
+  border-color: #e31e24;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(227, 30, 36, 0.3);
+}

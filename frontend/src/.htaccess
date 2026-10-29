@@ -1,0 +1,25 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# Force www on main domain
+RewriteCond %{HTTP_HOST} ^mjqualitycars\.com$ [NC]
+RewriteRule ^ https://www.mjqualitycars.com%{REQUEST_URI} [L,R=301]
+
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Skip API
+RewriteRule ^api/ - [L]
+
+# Serve real files
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Angular routing
+RewriteRule . /index.html [L]
+</IfModule>
+
+ErrorDocument 404 /index.html

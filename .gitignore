@@ -1,0 +1,16 @@
+node_modules
+/dist/
+/.netlify/
+
+# Local Netlify folder
+.netlify
+
+# Secrets
+.env
+.env.*
+!.env.example
+.claude/
+
+# Angular/Vite build cache and archives
+frontend/mj-quality-cars/
+*.zip

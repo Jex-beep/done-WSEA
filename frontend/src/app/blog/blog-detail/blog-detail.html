@@ -1,0 +1,48 @@
+<app-nav></app-nav>
+
+<article class="blog-detail-view" *ngIf="blog$ | async as blog; else loadingOrError">
+  <header class="author-header">
+    <img [src]="blog.authorImage || '/assets/default-author.png'" alt="Author" class="author-avatar">
+    <div class="author-info">
+      <h4 class="author-name">{{ blog.author }}</h4>
+      <p class="author-role">Author</p>
+    </div>
+  </header>
+
+  <h1 class="detail-title">{{ blog.title }}</h1>
+
+  <div class="detail-meta">
+    <span><i class="far fa-clock"></i> {{ blog.readTime }}</span>
+    <span class="meta-dot"></span>
+    <span>{{ blog.date }}</span>
+  </div>
+
+  <div class="back-nav-container">
+    <a routerLink="/blog" class="back-btn">
+      <i class="fas fa-arrow-left"></i> Back to Gallery
+    </a>
+  </div>
+
+  <div class="main-layout">
+    <div class="post-body">
+      <div class="rich-text" [innerHTML]="blog.content"></div>
+    </div>
+  </div>
+</article>
+
+<ng-template #loadingOrError>
+  <div class="loading-state">
+    <div class="loading-content">
+      <div class="spinner-box">
+        <div class="circle-core"></div>
+      </div>
+      <h2>Fetching Article</h2>
+      <p>Connecting to M&J Quality Cars Database...</p>
+      <button class="cancel-btn" routerLink="/blog">
+        <span>×</span> Cancel & Go Back
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<app-footer></app-footer>

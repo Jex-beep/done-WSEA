@@ -1,0 +1,38 @@
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="/MJlogo.webp" alt="{{ site.name }} logo" class="footer-logo" decoding="async" loading="lazy">
+      <p>{{ site.tagline }}</p>
+    </div>
+
+    <nav class="footer-col" aria-label="Footer">
+      <h2 class="footer-heading">Explore</h2>
+      <ul>
+        <li><a routerLink="/">Home</a></li>
+        <li><a routerLink="/about">About</a></li>
+        <li><a routerLink="/products">Products</a></li>
+        <li><a routerLink="/blog">Blogs</a></li>
+        <li><a routerLink="/contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="footer-col">
+      <h2 class="footer-heading">Visit us</h2>
+      <ul class="contact-list">
+        <li>{{ site.address }}</li>
+        <li><a [href]="site.phoneHref">{{ site.phone }}</a></li>
+        <li><a [href]="'mailto:' + site.email">{{ site.email }}</a></li>
+        <li>{{ site.hours }}</li>
+      </ul>
+      <div class="social">
+        <a [href]="site.facebook" aria-label="Facebook">Facebook</a>
+        <a [href]="site.instagram" aria-label="Instagram">Instagram</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <span>&copy; {{ year }} {{ site.name }}</span>
+    <span>Portfolio project. Contact details are placeholders.</span>
+  </div>
+</footer>

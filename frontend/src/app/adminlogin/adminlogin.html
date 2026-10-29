@@ -1,0 +1,51 @@
+<app-nav></app-nav>
+<div class="login-page">
+  <div class="login-container">
+    <div class="login-header">
+      <img src="/MJlogo.png" alt="M&J Logo" class="login-logo">
+      <h1 class="login-title">Staff Portal</h1>
+      <p class="login-subtitle">Secure management access only</p>
+    </div>
+
+    <form (submit)="onLogin()">
+      <div class="form-field">
+        <label>Admin ID</label>
+        <input 
+          type="text" 
+          [(ngModel)]="loginData.username" 
+          name="username" 
+          placeholder="Enter username" 
+          required>
+      </div>
+
+      <div class="form-field">
+        <label>Security Key</label>
+        <div class="password-wrapper">
+          <input 
+            [type]="showPassword ? 'text' : 'password'" 
+            [(ngModel)]="loginData.password" 
+            name="password" 
+            placeholder="••••••••" 
+            required>
+          <button type="button" class="toggle-btn" (click)="togglePasswordVisibility()">
+            {{ showPassword ? 'HIDE' : 'SHOW' }}
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-login" [disabled]="isLoading">
+        {{ isLoading ? 'VERIFYING...' : 'LOGIN TO DASHBOARD' }}
+      </button>
+
+      @if (errorMessage) {
+        <div class="login-alert">
+          {{ errorMessage }}
+        </div>
+      }
+    </form>
+    
+    <div class="login-footer">
+      <a routerLink="/">← Back to showroom</a>
+    </div>
+  </div>
+</div>

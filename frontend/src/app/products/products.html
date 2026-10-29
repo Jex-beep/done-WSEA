@@ -1,0 +1,261 @@
+<app-nav></app-nav>
+
+@if (showSuccessPopup) {
+  <div class="success-toast-overlay">
+    <div class="success-toast" role="status">
+      <div class="success-icon"></div>
+      <div class="success-text">
+        <h3>Success!</h3>
+        <p>{{ successMessage }}</p>
+      </div>
+      <button type="button" class="success-close" aria-label="Dismiss" (click)="showSuccessPopup = false">✕</button>
+    </div>
+  </div>
+}
+
+<section class="products-page">
+  <header class="page-head">
+    <h1>Our inventory</h1>
+    <p>Inspected pre-owned vehicles, priced honestly.</p>
+    <div class="rule"></div>
+  </header>
+
+  <div class="filter-bar">
+    <div class="category-filters" role="group" aria-label="Filter by vehicle type">
+      <button type="button" class="filter-btn" [class.active]="selectedCategory === 'All'" [attr.aria-pressed]="selectedCategory === 'All'" (click)="filterCars('All')">All vehicles</button>
+      <button type="button" class="filter-btn" [class.active]="selectedCategory === 'Sedan'" [attr.aria-pressed]="selectedCategory === 'Sedan'" (click)="filterCars('Sedan')"><img src="/sedan.png" alt="" class="btn-icon"> Sedan</button>
+      <button type="button" class="filter-btn" [class.active]="selectedCategory === 'Pickup'" [attr.aria-pressed]="selectedCategory === 'Pickup'" (click)="filterCars('Pickup')"><img src="/pickup.png" alt="" class="btn-icon"> Pickup</button>
+      <button type="button" class="filter-btn" [class.active]="selectedCategory === 'Coupe'" [attr.aria-pressed]="selectedCategory === 'Coupe'" (click)="filterCars('Coupe')"><img src="/coupe.png" alt="" class="btn-icon"> Coupe</button>
+      <button type="button" class="filter-btn" [class.active]="selectedCategory === 'Suv'" [attr.aria-pressed]="selectedCategory === 'Suv'" (click)="filterCars('Suv')"><img src="/suv.png" alt="" class="btn-icon"> SUV</button>
+      <button type="button" class="filter-btn" [class.active]="selectedCategory === 'Micro'" [attr.aria-pressed]="selectedCategory === 'Micro'" (click)="filterCars('Micro')"><img src="/micro.png" alt="" class="btn-icon"> Micro</button>
+      <button type="button" class="filter-btn" [class.active]="selectedCategory === 'Motor'" [attr.aria-pressed]="selectedCategory === 'Motor'" (click)="filterCars('Motor')"><img src="/motor.png" alt="" class="btn-icon"> Motor</button>
+    </div>
+  </div>
+
+  @if (isLoading) {
+    <ng-container *ngTemplateOutlet="loadingOrError"></ng-container>
+  } @else {
+    <p class="result-count" aria-live="polite">{{ availableCars.length }} {{ availableCars.length === 1 ? 'vehicle' : 'vehicles' }}</p>
+
+    <div class="product-grid">
+      @for (car of availableCars; track car._id) {
+        <article class="car-card">
+          <a class="image-container" [routerLink]="['/products', car._id]">
+            <img [src]="car.image" [alt]="car.altText || (car.make + ' ' + car.model + ' for sale in Mabalacat City Pampanga')" loading="lazy">
+          </a>
+          <div class="car-info">
+            <h3><a [routerLink]="['/products', car._id]">{{ car.make }} {{ car.model }}</a></h3>
+            <p class="car-meta">{{ car.year }} · {{ car.type }}</p>
+            <span class="price">{{ car.price | currency:'PHP':'symbol-narrow':'1.0-0' }}</span>
+
+            <div class="card-actions">
+              <a class="view-details" [routerLink]="['/products', car._id]">View details</a>
+
+              @if (authService.isLoggedIn()) {
+                <div class="admin-btns">
+                  <button type="button" (click)="openEditModal(car)" class="btn-edit" aria-label="Edit listing" title="Edit">✎</button>
+                  <button type="button" (click)="onDelete(car._id)" class="btn-delete" aria-label="Delete listing" title="Delete">🗑</button>
+                </div>
+              }
+            </div>
+          </div>
+        </article>
+      } @empty {
+        <div class="no-results">
+          <p>No {{ selectedCategory === 'All' ? 'vehicles' : (selectedCategory === 'Motor' ? 'motorcycles' : selectedCategory.toLowerCase() + 's') }} in stock right now.</p>
+          <a routerLink="/contact" class="link-btn">Tell us what you're looking for</a>
+        </div>
+      }
+    </div>
+  }
+
+  @if (authService.isLoggedIn()) {
+    <button type="button" class="floating-add" aria-label="Add a vehicle" (click)="toggleAddModal()">
+      +
+    </button>
+  }
+
+  <div class="brand-logos">
+    <img src="/toyota.png" alt="Toyota">
+    <img src="/hyundai.png" alt="Hyundai">
+    <img src="/ford.png" alt="Ford">
+    <img src="/honda.png" alt="Honda">
+    <img src="/bmw.png" alt="BMW">
+  </div>
+</section>
+
+@if (showAddModal) {
+  <div class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div class="modal-header-text">
+          <h2>{{ isEditMode ? 'Edit Vehicle' : 'Add New' }} <span>Listing</span></h2>
+        </div>
+        <button class="close-modal" (click)="toggleAddModal()">✕</button>
+      </div>
+
+      <form (submit)="submitCar()" class="modal-form">
+        <div class="form-grid">
+          <div class="form-group"><label>Make</label><input [(ngModel)]="newCar.make" name="make" placeholder="e.g. Toyota" required></div>
+          <div class="form-group"><label>Model</label><input [(ngModel)]="newCar.model" name="model" placeholder="e.g. Vios" required></div>
+          <div class="form-group"><label>Year</label><input type="number" [(ngModel)]="newCar.year" name="year" placeholder="2024" required></div>
+
+          <div class="form-group">
+            <label>Type</label>
+            <select [(ngModel)]="newCar.type" name="type" required>
+              <option value="" disabled selected>Select Category</option>
+              <option value="Sedan">Sedan</option>
+              <option value="Pickup">Pickup</option>
+              <option value="Coupe">Coupe</option>
+              <option value="Suv">SUV</option>
+              <option value="Micro">Micro</option>
+              <option value="Motor">Motor</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Price</label>
+            <input
+              type="text"
+              [value]="newCar.price ? '₱ ' + (newCar.price | number:'1.0-0') : ''"
+              (input)="formatPrice($event)"
+              placeholder="₱ 0"
+              required
+            >
+          </div>
+          <div class="form-group"><label>Engine</label><input [(ngModel)]="newCar.engine" name="engine" placeholder="e.g. 1.5L"></div>
+
+          <div class="form-group">
+            <label>Gearbox</label>
+            <select [(ngModel)]="newCar.gearbox" name="gearbox">
+              <option value="" disabled selected>Select Gearbox</option>
+              <option value="Manual">Manual</option>
+              <option value="Automatic">Automatic</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Fuel</label>
+            <select [(ngModel)]="newCar.fuel" name="fuel">
+              <option value="" disabled selected>Select Fuel</option>
+              <option value="Diesel">Diesel</option>
+              <option value="Gas">Gas</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Mileage (Numbers only)</label>
+            <input
+              type="text"
+              [value]="newCar.distance ? (newCar.distance | number:'1.0-0') : ''"
+              (input)="formatMileage($event)"
+              placeholder="0"
+              required
+            >
+          </div>
+          <div class="form-group"><label>Seats</label><input type="number" [(ngModel)]="newCar.seats" name="seats" placeholder="5"></div>
+
+          <div class="form-group">
+            <label>A/C Status</label>
+            <select [(ngModel)]="newCar.ac" name="ac">
+              <option value="" disabled selected>Select A/C Status</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+            <label>Main Image (Listing Cover)</label>
+            <div class="upload-area">
+              <input type="file" (change)="onFileSelected($event, 'main')" accept="image/*" class="file-input-hidden" #mainFile>
+              <button type="button" class="upload-btn" (click)="mainFile.click()">📁 Select Main Photo</button>
+
+              <div class="filename-list" *ngIf="mainFileName">
+                <div class="filename-item main-file-badge">
+                  <span>🖼️ {{ mainFileName }}</span>
+                  <button type="button" class="remove-file" (click)="mainFileName = ''; newCar.image = ''">✕</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group full gallery-section">
+            <label>Gallery Images (Interior/Exterior/Engine)</label>
+            <div class="upload-area">
+              <input type="file" (change)="onFileSelected($event, 'gallery')" accept="image/*" multiple class="file-input-hidden" #galleryFile>
+              <button type="button" class="upload-btn" (click)="galleryFile.click()">📸 Add Gallery Photos</button>
+
+              <div class="filename-list" *ngIf="galleryFileNames.length > 0">
+                <div *ngFor="let name of galleryFileNames; let i = index" class="filename-item">
+                  <span>📄 {{ name }}</span>
+                  <button type="button" class="remove-file" (click)="removeGalleryImage(i)">✕</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group full"><label>Description</label><textarea [(ngModel)]="newCar.description" name="description" rows="3" placeholder="Additional details..."></textarea></div>
+
+          <div class="form-group full">
+            <label>Vehicle Equipment (Max 6)</label>
+            <div class="equipment-list">
+              <div *ngFor="let item of newCar.equipment; let i = index; trackBy: trackByFn" class="equipment-item">
+                <input
+                  type="text"
+                  [(ngModel)]="newCar.equipment[i]"
+                  name="equip-{{i}}"
+                  placeholder="e.g. Reverse Camera">
+                <button type="button" class="remove-equip" (click)="removeEquipment(i)" *ngIf="newCar.equipment.length > 1">×</button>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="add-equip-btn"
+              (click)="addEquipment()"
+              *ngIf="newCar.equipment.length < 6">
+              + Add Equipment ({{newCar.equipment.length}}/6)
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-modal-btn">
+          {{ isEditMode ? 'UPDATE VEHICLE LISTING' : 'ADD VEHICLE' }}
+        </button>
+      </form>
+    </div>
+  </div>
+}
+
+<div class="contact-banner">
+  <div class="contact-content">
+    <div class="text-side">
+      <h2>Ready to find your car?</h2>
+      <h1>Contact us today</h1>
+      <div class="benefit-bar">
+        <span>✓ Quality inspected</span>
+        <span>✓ Honest pricing</span>
+        <span>✓ Fast approval</span>
+      </div>
+      <p class="phone-number">{{ site.phone }}</p>
+      <button type="button" class="contact-btn" routerLink="/contact">Contact us now</button>
+    </div>
+    <div class="image-side">
+      <img src="/bluecar.png" alt="Featured blue car" class="cta-car" loading="lazy">
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
+
+<ng-template #loadingOrError>
+  <div class="product-grid" aria-busy="true" aria-label="Loading vehicles">
+    @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+      <div class="skeleton-card">
+        <div class="skeleton-img"></div>
+        <div class="skeleton-line w60"></div>
+        <div class="skeleton-line w35"></div>
+      </div>
+    }
+  </div>
+</ng-template>

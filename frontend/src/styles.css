@@ -1,0 +1,83 @@
+/* ==========================================================
+   Design tokens (step 1 of DESIGN_PLAN.md)
+   Components should read these instead of hardcoding values.
+   ========================================================== */
+:root {
+  /* Color */
+  --ink: #0b0b0c;
+  --surface: #ffffff;
+  --surface-alt: #f4f4f5;
+  --line: #e4e4e7;
+  --muted: #5b5b63;
+  --brand: #e30613;
+  --brand-dark: #b8000d; /* use for small red text on white */
+  --on-brand: #ffffff;
+
+  /* Type */
+  --font-body: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: var(--font-body);
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-2xl: clamp(1.75rem, 3vw, 2.5rem);
+  --text-3xl: clamp(2.25rem, 5vw, 3.5rem);
+
+  /* Space */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+  --space-9: 96px;
+
+  /* Shape */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --shadow-card: 0 1px 2px rgba(11, 11, 12, 0.06), 0 4px 12px rgba(11, 11, 12, 0.06);
+
+  /* Motion */
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Breakpoints (reference only; CSS cannot use variables in @media):
+     480px, 768px, 1100px */
+}
+
+/* Remove default browser spacing */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* Prevents accidental side-scrolling */
+  padding-top: 45px;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+}
+
+main {
+  margin-top: 90px;
+}
+
+/* Visible keyboard focus everywhere (WCAG 2.4.7 / 2.4.11) */
+:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Respect users who ask for less motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

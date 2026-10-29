@@ -1,0 +1,371 @@
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms'; 
+import { Title, Meta, MetaDefinition } from '@angular/platform-browser';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { SITE } from '../site-info';
+import { Nav } from '../nav/nav';
+import { Footer } from '../footer/footer';
+import { CarService } from '../services/car';
+import { AuthService } from '../services/auth';
+
+@Component({
+  selector: 'app-products',
+  standalone: true,
+  imports: [CommonModule, Nav, Footer, RouterLink, FormsModule],
+  templateUrl: './products.html',
+  styleUrl: './products.css'
+})
+export class Products implements OnInit {
+  public authService = inject(AuthService);
+  private carService = inject(CarService);
+  private titleService = inject(Title);
+  private metaService = inject(Meta);
+  private cdr = inject(ChangeDetectorRef);
+  private route = inject(ActivatedRoute);
+  site = SITE;
+
+  private static readonly CATEGORIES = ['Sedan', 'Pickup', 'Coupe', 'Suv', 'Micro', 'Motor'];
+
+  private static normalizeType(value: string): string {
+    return String(value || '').toLowerCase().replace(/[^a-z]/g, '');
+  }
+
+  // --- State Management ---
+  isLoading: boolean = true; 
+  selectedCategory: string = 'All';
+  inventory: any[] = []; 
+  isFilterMenuOpen: boolean = false;
+  showAddModal = false;
+  isSaving = false; 
+  isEditMode = false;
+  currentEditId: string | null = null;
+
+  showSuccessPopup: boolean = false;
+  successMessage: string = '';
+
+  mainFileName: string = '';
+  galleryFileNames: string[] = [];
+
+  newCar: any = {
+    make: '',
+    model: '',
+    year: '',
+    type: '', 
+    price: '',
+    engine: '',
+    gearbox: '',
+    fuel: '',
+    distance: '',
+    seats: '',
+    ac: '',
+    image: '',
+    altText: '', // SEO property
+    gallery: [] as string[],
+    equipment: [''], 
+    description: '',
+    isAvailable: true
+  };
+
+  ngOnInit(): void {
+    this.loadCars();
+    this.setInitialSEO();
+
+    // Home page category tiles link here as /products?type=Sedan
+    this.route.queryParamMap.subscribe(params => {
+      const wanted = Products.normalizeType(params.get('type') || '');
+      const match = Products.CATEGORIES.find(c => Products.normalizeType(c) === wanted);
+      if (match) {
+        this.selectedCategory = match;
+        this.updateSEO(match);
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  // --- Equipment Management ---
+  addEquipment() {
+    if (this.newCar.equipment.length < 6) {
+      this.newCar.equipment.push('');
+      this.cdr.detectChanges();
+    }
+  }
+
+  removeEquipment(index: number) {
+    if (this.newCar.equipment.length > 1) {
+      this.newCar.equipment.splice(index, 1);
+    } else {
+      this.newCar.equipment[0] = '';
+    }
+    this.cdr.detectChanges();
+  }
+
+  trackByFn(index: any, item: any) {
+    return index;
+  }
+
+  // --- SEO & Meta Tags ---
+  setInitialSEO() {
+    this.titleService.setTitle('Our Inventory | M&J Quality Used Cars Mabalacat');
+    const tags: MetaDefinition[] = [
+      { name: 'description', content: 'Browse our premium selection of quality used cars in Mabalacat, Pampanga. High-resolution gallery and full vehicle specs.' },
+      { name: 'keywords', content: 'used cars Mabalacat, second hand cars Pampanga, M&J Quality Used Cars, buy car Pampanga, quality cars Mabalacat City, affordable used cars PH, car dealer pampanga, toyota mabalacat, honda mabalacat' },
+      { name: 'robots', content: 'noindex, nofollow' },
+      { name: 'author', content: 'M&J Quality Used Cars' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:site_name', content: 'M&J Quality Used Cars' },
+      { property: 'og:title', content: 'M&J Quality Used Cars - Admin Managed Inventory' },
+      { property: 'og:description', content: 'Check out our latest inspected used vehicles in Mabalacat City. Sedans, SUVs, Pickups, and Motors available.' },
+      { property: 'og:image', content: '/bluecar.png' },
+      { property: 'og:url', content: window.location.origin + '/products' },
+      { name: 'geo.region', content: 'PH-PAM' },
+      { name: 'geo.placename', content: 'Mabalacat City' },
+      { name: 'geo.position', content: '15.2215;120.5744' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'revisit-after', content: '1 day' },
+      { name: 'format-detection', content: 'telephone=no' },
+      { name: 'theme-color', content: '#e31e24' }
+    ];
+    tags.forEach(tag => this.metaService.updateTag(tag));
+  }
+
+  updateSEO(category: string): void {
+    const description = `Find the best deals on used ${category}s in Mabalacat City at M&J Quality Used Cars. Fast approval and quality checked.`;
+    this.metaService.updateTag({ name: 'description', content: description });
+    this.metaService.updateTag({ property: 'og:title', content: `M&J Quality Used Cars - ${category} Inventory` });
+    this.metaService.updateTag({ name: 'keywords', content: `used ${category} Mabalacat, second hand ${category} Pampanga, M&J ${category} stock` });
+  }
+
+  loadCars() {
+    this.isLoading = true; 
+    this.carService.getCars().subscribe({
+      next: (data: any) => {
+        this.inventory = data;
+        this.isLoading = false; 
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('Database connection failed', err);
+        this.isLoading = false; 
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  formatPrice(event: any) {
+    let value = event.target.value.replace(/\D/g, ''); 
+    this.newCar.price = value; 
+    if (value) {
+      event.target.value = '₱ ' + new Intl.NumberFormat('en-PH').format(parseInt(value));
+    }
+  }
+
+  // --- AUTOMATED SEO NAMING LOGIC ---
+  generateSEONames() {
+    const baseName = `${this.newCar.make} ${this.newCar.model}`.trim();
+    if (baseName) {
+      // 1. Generate Alt Text for the <img> tag
+      this.newCar.altText = `${baseName} for sale in Mabalacat City Pampanga`;
+      
+      // 2. Generate clean Filename (kebab-case) for the database
+      this.mainFileName = `${baseName.toLowerCase().replace(/\s+/g, '-')}-for-sale-mabalacat-pampanga`;
+    }
+  }
+
+  // --- File Upload Handling ---
+  onFileSelected(event: any, type: 'main' | 'gallery') {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    if (type === 'main') {
+      // Run auto-naming
+      this.generateSEONames();
+      
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.newCar.image = e.target.result;
+        this.cdr.detectChanges();
+      };
+      reader.readAsDataURL(files[0]);
+    } else {
+      Array.from(files).forEach((file: any) => {
+        this.galleryFileNames.push(file.name);
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.newCar.gallery.push(e.target.result);
+          this.cdr.detectChanges();
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+    event.target.value = ''; 
+    this.cdr.detectChanges();
+  }
+
+  removeGalleryImage(index: number) {
+    this.newCar.gallery.splice(index, 1);
+    this.galleryFileNames.splice(index, 1);
+    this.cdr.detectChanges();
+  }
+
+  submitCar(event?: Event) {
+    if (event) event.preventDefault();
+    if (this.isSaving) return;
+    this.isSaving = true;
+
+    // Final check to ensure Alt Text is set before saving
+    this.generateSEONames();
+
+    const finalEquipment = this.newCar.equipment.filter((e: string) => e && e.trim() !== '');
+    const fullGallery = [...this.newCar.gallery];
+    const initialData = { 
+      ...this.newCar, 
+      mainFileName: this.mainFileName, 
+      gallery: [], 
+      equipment: finalEquipment 
+    };
+
+    if (this.isEditMode && this.currentEditId) {
+      this.carService.updateCar(this.currentEditId, initialData).subscribe({
+        next: () => {
+          this.carService.updateCar(this.currentEditId!, { gallery: fullGallery }).subscribe({
+            next: () => this.triggerSuccess('Listing updated successfully!'),
+            error: () => this.triggerSuccess('Data updated, but gallery was too heavy.')
+          });
+        },
+        error: (err) => this.handleError(err)
+      });
+    } else {
+      this.carService.addCar(initialData).subscribe({
+        next: (res: any) => {
+          const carId = res.id || res._id; 
+          this.carService.updateCar(carId, { gallery: fullGallery }).subscribe({
+            next: () => this.triggerSuccess('Car added successfully!'),
+            error: () => this.triggerSuccess('Car added, but gallery failed.')
+          });
+        },
+        error: (err) => this.handleError(err)
+      });
+    }
+  }
+
+  triggerSuccess(msg: string) {
+    this.isSaving = false;
+    this.successMessage = msg;
+    this.showSuccessPopup = true;
+    this.showAddModal = false;
+    document.body.style.overflow = 'auto';
+    this.resetForm();
+    this.loadCars();
+    this.cdr.detectChanges();
+    setTimeout(() => {
+      this.showSuccessPopup = false;
+      this.cdr.detectChanges();
+    }, 4000);
+  }
+
+  handleError(err: any) {
+    this.isSaving = false;
+    this.successMessage = "Error: Could not save vehicle.";
+    this.showSuccessPopup = true;
+    this.cdr.detectChanges();
+    setTimeout(() => {
+        this.showSuccessPopup = false;
+        this.cdr.detectChanges();
+    }, 4000);
+  }
+
+  toggleAddModal() {
+    this.showAddModal = !this.showAddModal;
+    this.isEditMode = false;
+    this.currentEditId = null;
+    document.body.style.overflow = this.showAddModal ? 'hidden' : 'auto';
+    if (!this.showAddModal) this.resetForm();
+    this.cdr.detectChanges();
+  }
+
+  openEditModal(car: any) {
+    this.isEditMode = true;
+    this.currentEditId = car._id;
+    const loadedEquip = car.equipment && car.equipment.length > 0 ? [...car.equipment] : [''];
+    this.newCar = { ...car, equipment: loadedEquip };
+    
+    // Auto-populate naming based on existing data
+    this.generateSEONames();
+
+    this.galleryFileNames = car.gallery ? car.gallery.map((_: any, i: number) => `Gallery Photo ${i + 1}`) : [];
+    this.showAddModal = true;
+    document.body.style.overflow = 'hidden';
+    this.cdr.detectChanges();
+  }
+
+  resetForm() {
+    this.mainFileName = '';
+    this.galleryFileNames = [];
+    this.newCar = {
+      make: '', model: '', year: '', type: '', price: '',
+      engine: '', gearbox: '', fuel: '', distance: '',
+      seats: '', ac: '', image: '', altText: '', gallery: [], equipment: [''],
+      description: '', isAvailable: true
+    };
+    this.cdr.detectChanges();
+  }
+
+  onDelete(id: string) {
+    if(confirm('Are you sure you want to remove this vehicle?')) {
+      this.carService.deleteCar(id).subscribe({
+        next: () => {
+          // 1. Instantly remove from the local UI list so it disappears immediately
+          this.inventory = this.inventory.filter(car => car._id !== id);
+          
+          // 2. Trigger a success popup
+          this.triggerSuccess('Vehicle deleted successfully.');
+          
+          // 3. Force Angular to notice the array changed
+          this.cdr.detectChanges();
+        },
+        error: (err: any) => {
+          this.successMessage = "Delete failed.";
+          this.showSuccessPopup = true;
+          this.cdr.detectChanges();
+          setTimeout(() => { 
+            this.showSuccessPopup = false; 
+            this.cdr.detectChanges(); 
+          }, 4000);
+        }
+      });
+    }
+  }
+
+  toggleFilterMenu(): void {
+    this.isFilterMenuOpen = !this.isFilterMenuOpen;
+    document.body.style.overflow = this.isFilterMenuOpen ? 'hidden' : 'auto';
+    this.cdr.detectChanges();
+  }
+
+  filterCars(category: string): void {
+    this.selectedCategory = category;
+    this.isFilterMenuOpen = false;
+    document.body.style.overflow = 'auto';
+    window.scrollTo({ top: 300, behavior: 'smooth' });
+    this.updateSEO(category);
+    this.cdr.detectChanges();
+  }
+
+  formatMileage(event: any) {
+    let value = event.target.value.replace(/\D/g, ''); 
+    this.newCar.distance = value; 
+    if (value) {
+      event.target.value = new Intl.NumberFormat('en-PH').format(parseInt(value));
+    } else {
+      event.target.value = '';
+    }
+  }
+
+  get availableCars() {
+    if (this.selectedCategory === 'All') return this.inventory.filter(car => car.isAvailable);
+    return this.inventory.filter(car => 
+      car.isAvailable && Products.normalizeType(car.type) === Products.normalizeType(this.selectedCategory)
+    );
+  }
+}
