@@ -43,7 +43,7 @@
 
 .page-head .rule {
   width: 48px;
-  height: 3px;
+  height: 2px;
   margin-top: var(--space-4);
   background: var(--brand);
 }
@@ -176,6 +176,7 @@
 }
 
 .price {
+  font-family: var(--font-display);
   margin-top: auto;
   padding-top: var(--space-2);
   font-size: var(--text-xl);
@@ -204,6 +205,9 @@
   font-weight: 600;
   text-decoration: none;
   transition: background var(--dur-fast) var(--ease-out);
+  font-size: var(--text-sm);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .view-details:hover {
@@ -410,7 +414,7 @@
 .modal-container *, .floating-add * {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-body);
 }
 
 .modal-header-text h2 {

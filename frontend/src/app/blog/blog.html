@@ -14,39 +14,33 @@
 }
 
 <section class="blog-page">
-  <div class="header-banner">
-    <h1>OUR BLOGS</h1>
-  </div>
+  <header class="page-header">
+    <h1>Blog</h1>
+    <p>Buying guides, maintenance tips and news from the showroom.</p>
+  </header>
 
   <div class="filter-container">
-    <div class="mobile-filter-trigger" (click)="toggleFilterMenu()">
-        <span class="active-label">Category: <strong>{{selectedCategory}}</strong></span>
-        <span class="filter-icon">▼</span>
-    </div>
-
-    <div class="category-filters" [class.mobile-open]="isFilterMenuOpen">
-      <button class="close-filters" (click)="toggleFilterMenu()">✕</button>
-      
+    <div class="category-filters" role="group" aria-label="Filter posts by category">
       <button class="filter-btn" 
-              [class.active]="selectedCategory === 'All'" 
+              [class.active]="selectedCategory === 'All'" [attr.aria-pressed]="selectedCategory === 'All'" 
               (click)="filterBlogs('All')">
         All
       </button>
       
       <button class="filter-btn" 
-              [class.active]="selectedCategory === 'Guides'" 
+              [class.active]="selectedCategory === 'Guides'" [attr.aria-pressed]="selectedCategory === 'Guides'" 
               (click)="filterBlogs('Guides')">
         Guides
       </button>
       
       <button class="filter-btn" 
-              [class.active]="selectedCategory === 'News'" 
+              [class.active]="selectedCategory === 'News'" [attr.aria-pressed]="selectedCategory === 'News'" 
               (click)="filterBlogs('News')">
         News
       </button>
       
       <button class="filter-btn" 
-              [class.active]="selectedCategory === 'Maintenance'" 
+              [class.active]="selectedCategory === 'Maintenance'" [attr.aria-pressed]="selectedCategory === 'Maintenance'" 
               (click)="filterBlogs('Maintenance')">
         Maintenance
       </button>
@@ -59,15 +53,15 @@
     <div class="blog-container">
       <div class="blog-grid">
         @for (post of availableBlogs; track post._id) {
-          <article class="blog-card" [routerLink]="['/blog', post.slug || post._id]">
+          <article class="blog-card">
             
             <div class="card-image">
               <!-- ✅ FIXED: Proper alt text binding with fallback -->
-              <img [src]="post.image" [alt]="post.imageAlt || post.title">
+              <img [src]="post.image" [alt]="post.imageAlt || ''" loading="lazy">
             </div>
 
             <div class="card-content">
-              <h2 class="blog-title">{{ post.title }}</h2>
+              <h2 class="blog-title"><a [routerLink]="['/blog', post.slug || post._id]">{{ post.title }}</a></h2>
               
               <div class="blog-meta">
                 <div class="meta-info">
@@ -78,8 +72,8 @@
 
                 @if (authService.isLoggedIn()) {
                   <div class="admin-actions">
-                     <button class="edit-blog-btn" (click)="$event.stopPropagation(); openEditModal(post)">✎</button>
-                     <button class="delete-blog-btn" (click)="$event.stopPropagation(); onDelete(post._id)">🗑</button>
+                     <button type="button" class="edit-blog-btn" aria-label="Edit post" (click)="$event.stopPropagation(); openEditModal(post)">✎</button>
+                     <button type="button" class="delete-blog-btn" aria-label="Delete post" (click)="$event.stopPropagation(); onDelete(post._id)">🗑</button>
                   </div>
                 }
               </div>

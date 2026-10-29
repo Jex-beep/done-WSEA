@@ -1,721 +1,409 @@
-/* 1. Eliminate all gaps */
-.main-content-wrapper {
-  background-color: #000000; /* Match hero background */
-  color: #ffffff;
-  font-family: 'Segoe UI', Roboto, sans-serif;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  overflow-x: hidden; /* Prevents horizontal scroll from large car image */
+/* Home page. Reads the shared tokens from styles.css. */
+
+/* styles.css gives every <main> a 90px top margin; the hero handles its own offset. */
+.home {
+  margin-top: 0;
+  color: var(--ink);
+  background: var(--surface);
 }
 
-/* 2. Maximize Hero Space */
-.hero-section {
-  min-height: 90vh;
-  display: flex;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-
-  background:
-    radial-gradient(circle at 20% 40%, rgba(139, 0, 0, 0.15), transparent 40%),
-    radial-gradient(circle at 80% 60%, rgba(255, 255, 255, 0.03), transparent 50%),
-    linear-gradient(180deg, #0a0a0a 0%, #000000 100%);
-}
-
-.hero-section::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 180px;
-
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(0,0,0,0) 0%,
-      rgba(0,0,0,0.35) 35%,
-      #ffffff 100%
-    );
-
-  pointer-events: none;
-}
-
-
-.hero-container {
-  display: flex;
-  width: 100%;
-  max-width: 1400px;
+.wrap {
+  max-width: 1200px;
   margin: 0 auto;
-  align-items: center;
-  justify-content: space-between;
-  padding: 60px 5%; /* Top padding prevents text hitting the header curve */
+  padding: 0 var(--space-5);
 }
 
-/* 3. Ample space for text */
-.hero-text-box {
-  flex: 0 0 45%; /* Text takes exactly 45% of width */
-  padding-right: 50px; /* Extra breathing room between text and car */
-  z-index: 10;
-}
-
-.hero-title {
-  font-size: clamp(2.8rem, 5vw, 4.8rem);
-  line-height: 1.05;
-  font-weight: 900;
-  letter-spacing: -1px;
-  margin-bottom: 25px;
-}
-
-.hero-subtitle {
-  font-size: 1.2rem;
-  color: rgba(255,255,255,0.75);
-  max-width: 520px;
-  line-height: 1.6;
-}
-
-.text-accent {
-  color: #e30613; /* Vibrant red from your design */
-}
-
-
-
-
-.hero-car {
-  width: 120%;
-  height: auto;
-  object-fit: contain;
-  z-index: 2;
-
-  /* Push car to the right */
-  transform: translateX(6%) translateZ(0);
-
-  filter: drop-shadow(0 30px 20px rgba(0, 0, 0, 0.9));
-  transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1);
-}
-
-.hero-car {
-  transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1);
-}
-
-.hero-visual:hover .hero-car {
-  transform: translateX(0%) scale(1.03);
-}
-
-
-
-.hero-visual {
-  flex: 0 0 55%;
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
-  /* Prevents the 'large' car from creating a horizontal scrollbar */
-  max-width: 100%; 
-}
-
-.hero-visual::after {
-  content: "";
-  position: absolute;
-  bottom: 5%;
-  right: 10%;
-  width: 60%;
-  height: 25%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0,0,0,0.8) 0%,
-    transparent 70%
-  );
-  z-index: 1;
-}
-
-
-
-/* Test */
-
-
-/* End Test */
-/* Global Button */
-.btn-outline {
-  border: 1.5px solid rgba(139, 0, 0, 0.7);
-  padding: 16px 50px;
-  letter-spacing: 1px;
-  backdrop-filter: blur(4px);
-}
-
-.btn-outline:hover {
-  background: #8b0000;
-  border-color: #8b0000;
-}
-
-/* Container padding and background */
-.featured-vehicles {
-  padding: 100px 5%;
-  background-color: #ffffff;
-  text-align: center;
-}
-
-/* Big Section Title (Featured and Services */
-.section-title {
-  border: #000 3px solid;
-  color: #8b0000;
-  font-size: 3.5rem;
-  font-weight: 900;
-  margin: 0 auto 60px auto;
-  padding: 0;
-  text-transform: uppercase;
-  text-align: center;
-  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
-}
-
-/* The Grid Layout */
-.vehicle-grid {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 25px; /* Spacing between cards */
-  flex-wrap: wrap; /* Wraps icons on smaller screens */
-}
-
-
-.category-card {
-  width: 180px;         /* Desktop fixed width */
-  height: 180px;        /* Desktop fixed height */
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  
-  /* Layout Logic */
-  display: flex;
-  flex-direction: column; /* Stacks items vertically */
-  justify-content: center; /* Centers items vertically */
-  align-items: center;     /* Centers items horizontally */
-  
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 15px;           /* Prevents text from hitting the edges */
-}
-
-/* The Car Icon */
-.cat-icon {
-  width: 80px;             /* Fixed width for the icon */
-  height: auto;
-  margin-bottom: 12px;     /* Space between car and text */
-  transition: transform 0.3s ease;
-}
-
-/* The New Text Style */
-.cat-label {
-  color: #333333;          /* Professional dark grey */
-  font-size: 1rem;
-  font-weight: 700;        /* Bold to match your headers */
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* Hover Effects */
-.category-card:hover {
-  border-color: #8b0000;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transform: translateY(-5px);
-}
-
-.category-card:hover .cat-label {
-  color: #8b0000;          /* Text turns red on hover */
-}
-
-.category-card:hover .cat-icon {
-  transform: scale(1.1);
-}
-
-/* Info Banner */
-
-/* 1. The Container "Window" */
-.info-banner {
-  height: 800px; /* Locked height to match the grid boxes */
-  position: relative;
-  width: 100%;
-  overflow: hidden; /* This crops the moving image */
-  margin: 0; 
-  padding: 0;
-  background-color: #000; /* Fallback for gaps */
-}
-
-.info-banner::before,
-.info-banner::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 120px;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.info-banner::before {
-  top: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
-}
-
-.info-banner::after {
-  bottom: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
-}
-
-/* 2. The Panning Image (No-JS Parallax) */
-.banner-img {
-  position: absolute;
-  top: -10%; /* Starts slightly higher to allow room to move */
-  left: 0;
-  width: 100%;
-  height: 120%; /* Taller than the container to allow for the pan */
-  object-fit: cover; /* Prevents stretching */
-  z-index: 1;
-
-  /* The Pure CSS Pan Logic */
-  /* This moves the image slightly when the parent section is scrolled */
-  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.3, 1);
-  will-change: transform;
-}
-
-/* 3. The Overlay (Matching your reference image) */
-.banner-overlay {
-  position: relative;
-  z-index: 2;
-  height: 100%;
-  width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  padding-left: 10%;
-
-  background:
-    linear-gradient(
-      to right,
-      rgba(0,0,0,0.85) 0%,
-      rgba(0,0,0,0.65) 40%,
-      rgba(0,0,0,0.25) 65%,
-      rgba(0,0,0,0) 100%
-    );
-}
-
-.banner-title {
-  color: #ffffff;
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  margin-bottom: 10px;
-}
-
-.banner-text {
-  color: #ffffff;
-  font-size: 1.3rem;
-  font-weight: 500;
-  max-width: 520px;
-  line-height: 1.6;
-}
-.btn-outline-small {
-  background: transparent;
-  border: 2px solid #8b0000;
-  color: #ffffff;
-  padding: 12px 30px;
-  font-size: 0.95rem;
-
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.btn-outline-small:hover {
-  border-color: #000000;
-  background: #8b0000;
-  color: #ffffff;
-}
-
-.btn-outline-small:hover {
-  transform: translateY(-1px);
-}
-
-.btn-outline-small:active {
-  transform: translateY(0);
-}
-
-/* Services Section */
-.services-section {
-  background-color: #ffffff; /* Explicitly set background to white */
-  padding: 80px 10%;
-  text-align: center;
-}
-
-.section-title {
-  display: inline-block;
-  border: #000 3px solid ;
-  border-radius: 25px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
-  color: #8b0000; 
-
-  margin: 0 auto 50px auto;
-  padding: 20px 40px;
-
-  font-weight: bold;
-  font-size: 2.5rem;
-  text-transform: uppercase;
-}
-
-.services-grid {
-  display: flex;
-  justify-content: space-around;
-  gap: 30px;
-}
-
-.service-item {
-  flex: 1;
-}
-
-/* Style the <h4> tags */
-.service-item h4 {
-  color: #8b0000;
-  margin-bottom: 20px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.service-item p {
-  color: #8b0000;
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-
-.service-img-icon {
-  width: 60px;
-  height: auto;
-  margin-bottom: 20px;
-}
-
-
-/* Container for Inspection and Services Area */
-
-
-.inspection-section {
-  padding: 100px 0; 
-  background-color: #ffffff; 
-  width: 100%;
-}
-
-/* 2. The Grid - Removing border and gaps */
-.inspection-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr; 
-  max-width: 1200px; 
-  margin: 0 auto;
-  background-color: #000000; 
-  gap: 0; 
-  border: none; 
-  outline: none;
-  border-radius: 12px;
-  overflow: hidden; 
-}
-
-/* Inspecton area */
-.inspection-card {
-  height: 450px;
-  width: 100%;
-  overflow: hidden; 
-  display: flex;
-  flex-direction: column;
-  border: none;
-}
-
-
-
-/* Text Stuff */
-.text-card {
-  padding: 60px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: linear-gradient(135deg, #4a0000 0%, #000000 100%);
-  border: none;
-}
-
-.text-card h3 {
-  color: #ffffff;
-  font-size: 1.8rem;
-  font-weight: 800;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: 18px;
-  position: relative;
-}
-
-.text-card h3::after {
-  content: "";
-  display: block;
-  width: 40px;
-  height: 3px;
-  background-color: red;
-  margin-top: 12px;
-}
-
-.text-card p {
-  color: white;
-  font-size: 1.1rem;
-  line-height: 1.7;
-  max-width: 420px;
-  margin-bottom: 28px;
-}
-
-
-.text-card.accent-bg {
-  background: linear-gradient(135deg, #8b0000 0%, #330000 100%);
-}
-
-
-.learn-more-link {
-  color: #ffffff;
-  text-decoration: none; 
-  font-weight: 700;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+/* ---------- Buttons and links ---------- */
+.btn {
   display: inline-flex;
   align-items: center;
-  width: fit-content;
-  transition: color 0.3s ease;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast);
+  font-size: var(--text-sm);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.learn-more-link .arrow {
-  margin-left: 8px;
-  transition: transform 0.3s ease;
+.btn-primary {
+  background: var(--brand);
+  color: var(--on-brand);
 }
 
-.learn-more-link:hover {
-  color: #e30613; 
+.btn-primary:hover {
+  background: var(--brand-dark);
 }
 
-.learn-more-link:hover .arrow {
-  transform: translateX(5px);
+.btn-ghost {
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #ffffff;
 }
 
-
-
-/* Mobayl */
-@media (max-width: 768px) {
-
-  .hero-section, 
-.featured-vehicles, 
-.services-section, 
-.inspection-section,
-.inspection-grid {
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
+.btn-ghost:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
 }
 
-  .main-content-wrapper {
-    overflow-x: hidden; 
-  }
+.text-link {
+  color: var(--brand-dark);
+  font-weight: 600;
+  text-decoration: none;
+}
 
-  .hero-section {
-    min-height: 40vh; 
-    padding-top: 60px;
-  }
+.text-link:hover {
+  text-decoration: underline;
+}
 
-  .hero-section::after {
-  content: "";
-  position: absolute;
-  bottom: -1px; 
-  left: 0;
+/* ---------- Hero ---------- */
+/* Pulled up under the fixed header so the dark background reaches the top edge. */
+.hero {
+  margin-top: -45px;
+  padding: calc(45px + var(--space-8)) 0 var(--space-8);
+  background: var(--ink);
+  color: #ffffff;
+  border-bottom: 1px solid var(--brand);
+}
+
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-7);
+  align-items: center;
+}
+
+.eyebrow {
+  margin: 0 0 var(--space-4);
+  font-size: 0.8125rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: var(--text-3xl);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+.hero .accent {
+  color: var(--brand-on-dark);
+  font-style: italic;
+}
+
+.hero-lead {
+  margin: var(--space-4) 0 var(--space-6);
+  max-width: 34ch;
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.hero-car {
   width: 100%;
-  height: 100px; 
-  background: linear-gradient(to bottom, transparent 0%, #ffffff 100%);
-  pointer-events: none;
-  z-index: 5;
+  height: auto;
+  max-width: 640px;
+  justify-self: end;
+  filter: drop-shadow(0 24px 24px rgba(0, 0, 0, 0.5));
 }
-  
 
-.hero-container {
-    flex-direction: column;
-    text-align: center;
-    padding: 0 24px 60px; /* Tightened spacing */
+/* ---------- Sections ---------- */
+.block {
+  padding: var(--space-8) 0;
+}
+
+.block-alt {
+  background: var(--surface-alt);
+}
+
+.block-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.block-title {
+  margin: 0 0 var(--space-6);
+  font-size: var(--text-2xl);
+  letter-spacing: -0.01em;
+}
+
+.block-title::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 2px;
+  margin-top: var(--space-3);
+  background: var(--brand);
+}
+
+/* ---------- Browse by type ---------- */
+.type-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-4);
+}
+
+.type-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-5) var(--space-4);
+  min-height: 44px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+
+.type-tile img {
+  width: 64px;
+  height: auto;
+  object-fit: contain;
+}
+
+.type-tile:hover {
+  border-color: var(--brand);
+  box-shadow: var(--shadow-card);
+}
+
+/* ---------- Latest arrivals ---------- */
+.car-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-5);
+}
+
+.car-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.car-photo {
+  display: block;
+  aspect-ratio: 4 / 3;
+  background: var(--surface-alt);
+}
+
+.car-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.car-body {
+  padding: var(--space-4);
+}
+
+.car-body h3 {
+  margin: 0;
+  font-size: var(--text-lg);
+}
+
+.car-body h3 a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.car-body h3 a:hover {
+  text-decoration: underline;
+}
+
+.car-meta {
+  margin: var(--space-1) 0 0;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.car-price {
+  font-family: var(--font-display);
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.empty {
+  margin: 0;
+  color: var(--muted);
+}
+
+.empty a {
+  color: var(--brand-dark);
+  font-weight: 600;
+}
+
+.skeleton-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  padding-bottom: var(--space-4);
+}
+
+.skeleton-img {
+  aspect-ratio: 4 / 3;
+  background: var(--line);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton-line {
+  height: 14px;
+  margin: var(--space-4) var(--space-4) 0;
+  border-radius: var(--radius-sm);
+  background: var(--line);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton-line.short {
+  width: 40%;
+}
+
+@keyframes pulse {
+  50% { opacity: 0.55; }
+}
+
+/* ---------- Trust ---------- */
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.trust-item img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.trust-item h3 {
+  margin: var(--space-3) 0 var(--space-2);
+  font-size: var(--text-lg);
+}
+
+.trust-item p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ---------- Inspection ---------- */
+.inspect-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+}
+
+.inspect-item {
+  margin: 0;
+}
+
+.inspect-item img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  display: block;
+}
+
+.inspect-item h3 {
+  margin: var(--space-4) 0 var(--space-2);
+  font-size: var(--text-lg);
+}
+
+.inspect-item p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.inspect-more {
+  margin: var(--space-6) 0 0;
+}
+
+/* ---------- Closing call to action ---------- */
+.cta {
+  padding: var(--space-7) 0;
+  background: var(--ink);
+  color: #ffffff;
+  border-top: 1px solid var(--brand);
+}
+
+.cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.cta h2 {
+  margin: 0;
+  font-size: var(--text-2xl);
+}
+
+.cta p {
+  margin: var(--space-2) 0 0;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
   }
-
-  .hero-text-box {
-    flex: 0 0 100%;
-    padding-right: 0;
-    margin-bottom: 35px;
-  }
-
-  .hero-title {
-    font-size: 2.4rem; 
-    letter-spacing: -0.5px;
-    margin-bottom: 15px;
-  }
-
-  .hero-subtitle {
-    font-size: 1rem;
-    margin: 0 auto 25px;
-    max-width: 90%;
-    line-height: 1.5;
-  }
-
 
   .hero-car {
-    display: none;
+    justify-self: center;
   }
 
-  .featured-vehicles {
-    margin-top: -1px; 
-    position: relative;
-    z-index: 2;
+  .trust-grid,
+  .inspect-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .block {
+    padding: var(--space-7) 0;
   }
 
-  .section-title {
-    font-size: 1.75rem; /* Toned down from 3.5rem */
-    padding: 10px 20px;
-    margin-bottom: 30px;
-    border-radius: 15px;
-    border-width: 2px;
-  }
-
-  .vehicle-grid {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: nowrap; /* Forces items in a row */
-    overflow-x: auto; /* Enables horizontal swipe */
-    padding: 10px 20px 30px;
-    gap: 15px;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-  }
-
-  .vehicle-grid::-webkit-scrollbar {
-    display: none; /* Clean app-like look */
-  }
-
-  .category-card {
-    flex: 0 0 135px;
-    height: 135px;
-    scroll-snap-align: center;
-    border-radius: 12px;
-  }
-
-  .cat-icon {
-    width: 55px; 
-  }
-
-  .cat-label {
-    font-size: 0.75rem;
-    letter-spacing: 0.5px;
-  }
-
-  .info-banner {
-    height: 480px; 
-  }
-
- .banner-overlay {
-    padding: 0 20px !important; 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;  
-    width: 90%;
-  }
-
-  .banner-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-
-  .banner-text {
-    margin: 0 auto 20px;
-    max-width: 90%;
-  }
-
-  /* 5. SERVICES & INSPECTION: Proportional Padding */
-  .services-section {
-    padding: 50px 20px;
-  }
-
-  .services-grid {
-    flex-direction: column;
-    gap: 35px;
-  }
-
-  .service-item h4 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-  }
-
-  .inspection-section {
-    padding: 40px 0; 
-    margin-top: -2px; 
-  }
-
-  .inspection-grid {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important; 
-    width: 100%;
-    max-width: 100%;
-    border-radius: 0; 
-    gap: 0;
-  }
-
-  .inspection-card {
-    height: 220px !important; 
-    min-height: auto;
-  }
-
-  .text-card {
-    padding: 20px 15px !important; 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-
-  .text-card h3 {
-    font-size: 0.95rem !important; /* Toned down font size */
-    margin-bottom: 8px;
-    line-height: 1.2;
-  }
-
-  .text-card h3::after {
-    width: 20px; /* Smaller accent line */
-    margin: 8px auto 0;
-  }
-
-  .text-card p {
-    font-size: 0.8rem !important;
-    line-height: 1.2;
-    margin-bottom: 12px;
-    display: -webkit-box; 
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .img-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; 
-  }
-
-  .learn-more-link {
-    font-size: 0.6rem !important;
-  }
-
-  .btn-outline, .btn-outline-small {
-    padding: 12px 35px; /* Toned down button padding */
-    font-size: 0.9rem;
+  .hero-actions .btn,
+  .cta-actions .btn {
+    flex: 1 1 100%;
   }
 }

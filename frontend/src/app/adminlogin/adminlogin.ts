@@ -36,7 +36,7 @@ export class Adminlogin {
         // 2. The service handles the Signal and LocalStorage automatically
         this.isLoading = false;
         console.log('✅ Welcome, ' + res.user);
-        this.router.navigate(['/']); 
+        this.router.navigate(['/products']);
       },
       error: (err) => {
         this.isLoading = false;

@@ -1,27 +1,29 @@
 <app-nav></app-nav>
 
 <article class="blog-detail-view" *ngIf="blog$ | async as blog; else loadingOrError">
-  <header class="author-header">
-    <img [src]="blog.authorImage || '/assets/default-author.png'" alt="Author" class="author-avatar">
-    <div class="author-info">
-      <h4 class="author-name">{{ blog.author }}</h4>
-      <p class="author-role">Author</p>
-    </div>
-  </header>
+  <div class="back-nav-container">
+    <a routerLink="/blog" class="back-btn">
+      ← Back to blog
+    </a>
+  </div>
 
   <h1 class="detail-title">{{ blog.title }}</h1>
 
   <div class="detail-meta">
-    <span><i class="far fa-clock"></i> {{ blog.readTime }}</span>
-    <span class="meta-dot"></span>
-    <span>{{ blog.date }}</span>
+    @if (blog.readTime) {
+      <span>{{ blog.readTime }}</span>
+      <span class="meta-dot" aria-hidden="true"></span>
+    }
+    <span>{{ (blog.date | date:'MMMM d, y') || blog.date }}</span>
   </div>
 
-  <div class="back-nav-container">
-    <a routerLink="/blog" class="back-btn">
-      <i class="fas fa-arrow-left"></i> Back to Gallery
-    </a>
-  </div>
+  <header class="author-header">
+    <img [src]="blog.authorImage || '/assets/default-author.png'" alt="" class="author-avatar">
+    <div class="author-info">
+      <p class="author-name">{{ blog.author }}</p>
+      <p class="author-role">Author</p>
+    </div>
+  </header>
 
   <div class="main-layout">
     <div class="post-body">

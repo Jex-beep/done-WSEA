@@ -3,25 +3,26 @@
    Components should read these instead of hardcoding values.
    ========================================================== */
 :root {
-  /* Color */
-  --ink: #0b0b0c;
-  --surface: #ffffff;
-  --surface-alt: #f4f4f5;
-  --line: #e4e4e7;
-  --muted: #5b5b63;
-  --brand: #e30613;
-  --brand-dark: #b8000d; /* use for small red text on white */
+  /* Color: warm ivory, near-black ink, one deep crimson accent */
+  --ink: #111012;
+  --surface: #faf8f5;
+  --surface-alt: #f1ede6;
+  --line: #e2dcd0;
+  --muted: #6a645b;
+  --brand: #a50f1d;
+  --brand-dark: #7d0b16; /* small red text on light backgrounds */
+  --brand-on-dark: #ef5b66; /* red text on the dark hero / footer */
   --on-brand: #ffffff;
 
-  /* Type */
-  --font-body: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-display: var(--font-body);
+  /* Type: serif headlines, clean sans body */
+  --font-body: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --text-sm: 0.875rem;
   --text-base: 1rem;
   --text-lg: 1.25rem;
   --text-xl: 1.75rem;
-  --text-2xl: clamp(1.75rem, 3vw, 2.5rem);
-  --text-3xl: clamp(2.25rem, 5vw, 3.5rem);
+  --text-2xl: clamp(1.9rem, 3.2vw, 2.75rem);
+  --text-3xl: clamp(2.5rem, 6vw, 4.25rem);
 
   /* Space */
   --space-1: 4px;
@@ -31,13 +32,13 @@
   --space-5: 24px;
   --space-6: 32px;
   --space-7: 48px;
-  --space-8: 72px;
-  --space-9: 96px;
+  --space-8: 88px;
+  --space-9: 120px;
 
-  /* Shape */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --shadow-card: 0 1px 2px rgba(11, 11, 12, 0.06), 0 4px 12px rgba(11, 11, 12, 0.06);
+  /* Shape: sharper corners, hairline borders, very soft shadow */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --shadow-card: 0 1px 2px rgba(17, 16, 18, 0.04), 0 8px 24px rgba(17, 16, 18, 0.05);
 
   /* Motion */
   --dur-fast: 150ms;
@@ -58,7 +59,9 @@ html, body {
 }
 
 body {
+  background: var(--surface);
   font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
   color: var(--ink);
 }
 
@@ -80,4 +83,10 @@ main {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Headlines use the serif display face; weight stays light for a refined look */
+h1, h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
 }

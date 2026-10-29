@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
@@ -6,6 +6,8 @@ import { CarService } from '../../services/car';
 import { Nav } from '../../nav/nav';
 import { Footer } from '../../footer/footer';
 import { Observable, tap, map } from 'rxjs';
+import { API_BASE } from '../../api-config';
+import { SITE } from '../../site-info';
 
 @Component({
   selector: 'app-product-detail',
@@ -14,15 +16,17 @@ import { Observable, tap, map } from 'rxjs';
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.css'
 })
-export class ProductDetail implements OnInit {
+export class ProductDetail implements OnInit, OnDestroy {
   car$: Observable<any> | undefined;
   mainDisplayImage: string | null = null;
-  
+
   // LIGHTBOX STATE
   zoomedImage: string | null = null;
 
-  // CHANGE THIS to your backend URL if images are stored there
-  private baseImageUrl = 'http://localhost:3000'; 
+  site = SITE;
+
+  // Relative image paths are served by the backend.
+  private baseImageUrl = API_BASE;
 
   private route = inject(ActivatedRoute);
   private carService = inject(CarService);
@@ -42,6 +46,11 @@ export class ProductDetail implements OnInit {
         })
       );
     }
+  }
+
+  ngOnDestroy(): void {
+    // Never leave the page scroll-locked if the visitor navigates away while zoomed.
+    document.body.style.overflow = '';
   }
 
   // --- IMAGE HELPERS ---
@@ -64,10 +73,12 @@ export class ProductDetail implements OnInit {
     document.body.style.overflow = 'hidden';
   }
 
+  @HostListener('document:keydown.escape')
   closeZoom(): void {
+    if (!this.zoomedImage) return;
     this.zoomedImage = null;
     // Restore body scroll
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = '';
   }
 
   // --- SEO ENHANCEMENT ---
@@ -101,7 +112,7 @@ export class ProductDetail implements OnInit {
     this.metaService.updateTag({ name: 'twitter:title', content: carTitle });
     this.metaService.updateTag({ name: 'twitter:description', content: fullDesc });
     this.metaService.updateTag({ name: 'twitter:image', content: this.formatImg(car.image) });
-    
+
     // Additional SEO Tags from Saved Info
     this.metaService.updateTag({ name: 'geo.region', content: 'PH-PAM' });
     this.metaService.updateTag({ name: 'geo.placename', content: 'Mabalacat City' });
