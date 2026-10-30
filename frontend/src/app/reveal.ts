@@ -11,6 +11,45 @@ import { Directive, ElementRef, Input, OnDestroy, OnInit, inject } from '@angula
  * straight away. The .reveal / .reveal-in classes live in styles.css and are
  * removed again after the animation so they never fight with hover styles.
  */
+
+/*
+ * IntersectionObserver only reports when an element's visibility changes. If a
+ * visitor jumps or flicks straight past an element (End key, fast scroll,
+ * restored scroll position) it goes from "below the screen" to "above the
+ * screen" without ever being visible, so the observer never says anything and
+ * the element would stay hidden until they scrolled back up. One shared scroll
+ * check reveals anything that has been left behind.
+ */
+const waiting = new Set<Reveal>();
+let sweepQueued = false;
+
+function sweep(): void {
+  sweepQueued = false;
+  for (const item of [...waiting]) item.showIfPassed();
+}
+
+function queueSweep(): void {
+  if (sweepQueued) return;
+  sweepQueued = true;
+  requestAnimationFrame(sweep);
+}
+
+function startWatching(item: Reveal): void {
+  if (waiting.size === 0) {
+    window.addEventListener('scroll', queueSweep, { passive: true });
+    window.addEventListener('resize', queueSweep, { passive: true });
+  }
+  waiting.add(item);
+}
+
+function stopWatching(item: Reveal): void {
+  waiting.delete(item);
+  if (waiting.size === 0) {
+    window.removeEventListener('scroll', queueSweep);
+    window.removeEventListener('resize', queueSweep);
+  }
+}
+
 @Directive({ selector: '[appReveal]' })
 export class Reveal implements OnInit, OnDestroy {
   @Input('appReveal') delay: number | string = 0;
@@ -23,30 +62,64 @@ export class Reveal implements OnInit, OnDestroy {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     this.el.classList.add('reveal');
+    startWatching(this);
 
     this.observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        this.observer?.disconnect();
-
-        this.el.style.animationDelay = `${Number(this.delay) || 0}ms`;
-        this.el.classList.add('reveal-in');
-
-        const done = (event: AnimationEvent) => {
-          // animationend bubbles, so ignore animations that belong to children.
-          if (event.target !== this.el) return;
-          this.el.removeEventListener('animationend', done);
-          this.el.classList.remove('reveal', 'reveal-in');
-          this.el.style.animationDelay = '';
-        };
-        this.el.addEventListener('animationend', done);
+      (entries) => {
+        // One callback can carry several entries for this element (for example an
+        // early "not visible" one followed by a "visible" one), so check all of
+        // them rather than only the first.
+        if (entries.some((entry) => entry.isIntersecting)) {
+          this.playReveal();
+        } else {
+          this.showIfPassed();
+        }
       },
-      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+      // No bottom inset: shrinking the viewport made elements near the end of the
+      // page impossible to reveal on tall or zoomed-out screens.
+      { threshold: 0.1 }
     );
     this.observer.observe(this.el);
   }
 
-  ngOnDestroy(): void {
+  /**
+   * Called by the shared scroll check. An element that has not revealed yet but
+   * whose top edge is above the top of the screen has been scrolled past (it can
+   * only be partly on screen, as a thin sliver, or not at all), so show it.
+   */
+  showIfPassed(): void {
+    if (this.el.getBoundingClientRect().top < 0) this.showNow();
+  }
+
+  /** Reveal with the fade-up animation (element is on screen). */
+  private playReveal(): void {
+    this.finishWatching();
+
+    this.el.style.animationDelay = `${Number(this.delay) || 0}ms`;
+    this.el.classList.add('reveal-in');
+
+    const done = (event: AnimationEvent) => {
+      // animationend bubbles, so ignore animations that belong to children.
+      if (event.target !== this.el) return;
+      this.el.removeEventListener('animationend', done);
+      this.el.classList.remove('reveal', 'reveal-in');
+      this.el.style.animationDelay = '';
+    };
+    this.el.addEventListener('animationend', done);
+  }
+
+  /** Reveal instantly with no animation (element is off screen, above the visitor). */
+  private showNow(): void {
+    this.finishWatching();
+    this.el.classList.remove('reveal', 'reveal-in');
+  }
+
+  private finishWatching(): void {
     this.observer?.disconnect();
+    stopWatching(this);
+  }
+
+  ngOnDestroy(): void {
+    this.finishWatching();
   }
 }
