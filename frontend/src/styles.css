@@ -94,6 +94,25 @@ main {
   }
 }
 
+/* Home hero animations. These are global on purpose: Angular scopes keyframes
+   per component, and in the production build it does not rewrite the names used
+   inside the hero's @supports block, which left the headline animations without
+   matching keyframes. Global names are never rewritten, so they always resolve. */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes hero-drift {
+  from { opacity: 0; transform: translateX(36px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes headline-shine {
+  0% { background-position: 100% 0, 0 0; }
+  45%, 100% { background-position: 0% 0, 0 0; }
+}
+
 /* Visible keyboard focus everywhere (WCAG 2.4.7 / 2.4.11) */
 :focus-visible {
   outline: 3px solid var(--brand);
